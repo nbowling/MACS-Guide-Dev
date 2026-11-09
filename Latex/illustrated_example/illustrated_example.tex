@@ -1,7 +1,7 @@
 \section{Classification Examples and Exercises}
 \textcolor{commentGreen}{*** WIP ***}
 
-\subsection{Exercise 1: A surface contact has been detected can you narrow down its class or type?}
+\subsection{Illustrated Example 1: A surface contact has been detected can you narrow down its class or type?}
 
 \subsubsection{MNW In Game Tools}
 
@@ -199,48 +199,52 @@ For the Arleigh Burke the reported noise band and 30 Hz tonal are supposed to lo
 
 \textbf{On the balance of probabilities the best fit based on the information we have is that our target is a Type 055 Renhai.}
 
-\subsection{Exercise 2: Sabre Dance}
+\subsection{Illustrated Example 2: LOFAR - DEMON - Cepstrum}
+This exercise demonstrates how a relatively complicated acoustic signal can be examined through three complementary forms of analysis: LOFAR, DEMON and cepstrum. Each technique approaches the signal differently. More importantly, the observations can be compared with one another and with the mathematical relationships expected from rotating machinery.
 
-The aim of this exercise is to provide a practical example of how to use the LOFAR and DEMON screens to identify the acoustic signature of a new OPFOR frigate class. The exercise will also provide an opportunity to practice the use of the MACS database and vessel matching system. At the end of this exercise you should be able to:
-
+\textbf{Set Up:}
 \begin{compactenum}
-    \item To make the information given in Exercise 1 concrete by practical application.
-    \item Use the LOFAR and DEMON screens to identify the acoustic signature of a new OPFOR frigate class.
-    \item Assess changes in the display as the ship changes speed or course and identify the features that are speed dependent and those that are not.
-    \item Use the MACS database and vessel matching system to establish if a new recording is the same vessel.
-    \item To make reasonable assumptions about the ship's speed
-    \item To prepare a report that will allow future operators to quickly identify this class of ship.
+    \item Download and extract \texttt{"IE2 LOFAR DEMON Cepstrum.zip"}
+    \item You should have the following directory structure.
+    \begin{compactitem}
+        \item csv
+        \item img
+        \item matlab
+        \item python
+        \item sound
+    \end{compactitem}
+    \item Using the matlab and python programs is discussed later
 \end{compactenum}
 
-\textbf{Setup Instructions}
 
+\subsection{Exercise 2: Sabre Dance}
 \begin{compactenum}
-    \item Download the “Sabre Dance Package.zip” from the GitHub Repository.
-    \item Extract and copy the 6 sound files to your MACS recordings folder typically \\
-    \verb|\Documents\MACS\Recordings| on Windows but may vary if using OneDrive or the location of the recordings folder has been changed in Settings. If using Linux or MACos it is recommended to leave the recordings folder in the default location of \\
-    \verb|/home/<user>/Documents/MACS/Recordings|.
-    \item Start MACS and select LOFAR in Panel A and PSD in Panel B.
-    \item Initially set the LOFAR and PSD Palettes to Thermal and FFT to 131072 and in the LOFAR panel set $f_{min}$ to 0 and $f_{max}$ to 1000 and Normalisation (Norm) on.
-    \item Click the play button (green triangle) for the \verb|sabre_flank_28kt| recording, set playback to loop then wait for a minute or so while data accumulates.
-    \item Adjust the Floor and Dyn sliders to get the best image. Floor -27 and Dyn 123 works well.
-    \item Carefully read the exercise outline \verb|Ex2 Outline.pdf| and follow the instructions. The outline will guide you through the exercise and provide hints and tips to help you complete it.
-    \item You are now ready to start the exercise.
-    \item The remaining files in the package are for use in the exercise.
+    \item Download and extract \texttt{"Sabre Dance".zip}
+    \item Carefully read the exercise \texttt{Outline.pdf} and then follow the instructions
 \end{compactenum}
 
 \subsection{Exercise 3: Snaky Medusa}
-To be added
+\begin{compactenum}
+    \item Download and extract \texttt{"Snaky Medusa".zip}
+    \item Carefully read the exercise \texttt{Outline.pdf} and then follow the instructions
+\end{compactenum}
 
 \subsection{Exercise 4: Classification \#1}
-To be added
+\begin{compactenum}
+    \item Download and extract \texttt{"EX4 Classification 1".zip}
+    \item Carefully read the exercise \texttt{Outline.pdf} and then follow the instructions
+\end{compactenum}
 
 \subsection{Exercise 5: Classification \#2}
-To be added
+\begin{compactenum}
+    \item Download and extract \texttt{"EX5 Classification 2".zip}
+    \item Carefully read the exercise \texttt{Outline.pdf} and then follow the instructions
+\end{compactenum}
 
 \subsection{Final Test}
-To be added
-
-\subsection{Bonus Exercise: A real life vessel}
-To be added
+\begin{compactenum}
+    \item Download and extract \texttt{"Exam Distribution".zip}
+    \item Carefully read the exercise \texttt{Exam Outline.pdf} and then follow the instructions
+\end{compactenum}
 
 \pagebreak
