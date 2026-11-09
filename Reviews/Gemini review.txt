@@ -1,0 +1,227 @@
+Review this entire PDF as a technical reviewer. Before beginning the review, verify that you can access and read the text on every page of the document. If you cannot access all pages, tell me immediately rather than beginning a partial review.If the complete document is accessible, check technical accuracy, calculations, terminology, internal consistency and clarity. Pay particular attention to the acoustic-analysis sections, including LOFAR, DEMON, FFT/DFT, PSD, ZoomFFT, cepstrum, autocorrelation, normalisation, shaft/blade rates, harmonics, sidebands and engine-frequency calculations.Produce a structured report by section/page and distinguish technical errors, statements requiring qualification, internal inconsistencies and suggested improvements. Independently verify worked calculations.
+
+# Technical Review Report: MACS - MNW Acoustic Classification Suite (v0.2.5)
+
+## 1. Verification of Document Access
+
+Before initiating the technical review, full access to the provided document (`MACS-0_2_5.pdf`) was verified. **All 59 pages** (from the title page through the final appendices and blank pages) were successfully accessed, read, and evaluated. No pages were missing or inaccessible.
+
+---
+
+## 2. Executive Summary
+
+The *MACS User Guide and Technical Reference (v0.2.5)* by Nick Bowling (@Skittles) and technical advisors (@mahzel, @snrkatat) is a comprehensive, well-structured community document supporting the **Modern Naval Warfare (MNW)** naval simulation. It bridges the gap between raw acoustic digital signal processing (DSP) theory and practical in-game passive sonar analysis.
+
+The guide covers software installation across Windows, macOS, and Linux, database management, foundational underwater acoustics, advanced analysis techniques (LOFAR, DEMON, Cepstrum, ACF, PSD, ZoomFFT), step-by-step classification workflows, and rigorous mathematical appendices.
+
+While the technical foundation is robust and reflects genuine passive sonar principles, the document contains several typographical errors in formulas, minor internal inconsistencies, and sections marked as Work In Progress (WIP) that require technical refinement.
+
+---
+
+## 3. Section-by-Section Technical Evaluation
+
+### Sections 1 – 3: Overview, Installation, and Application Interface
+
+* **Content:** Introduces MACS capabilities, cross-platform installation procedures (including command-line execution flags and quarantine removal for macOS/Linux), and the graphical user interface layout (Panels A and B, toolbar controls).
+
+
+* **Technical Assessment:** The instructions for handling binary execution (`chmod +x`) and Apple's quarantine extended attributes (`xattr -r -d com.apple.quarantine`) are accurate for modern operating systems. The distinction between Panel A (full controls) and Panel B (collapsible DSP pipeline) is clearly articulated.
+
+
+
+### Section 4: Contact Database and User Recordings
+
+* **Content:** Explains how to store acoustic signatures, import pre-populated databases (`MNW Defaults.db`), record audio via loopback, and compute **Turns Per Knot (TPK)**.
+
+
+* **Technical Assessment:** The definition of TPK as a vessel-class characteristic independent of operating conditions is theoretically sound. However, the manual notes several WIP sections regarding advanced tonal editors and contact matching workflows.
+
+
+
+### Section 5: SONAR and Sound Analysis — An Introduction
+
+* **Content:** Compares broadband (BB) and narrowband (NB) analysis, normalization principles, LOFAR, DEMON, Cepstrum, and Auto-Correlation Function (ACF).
+
+
+* **Technical Assessment:** Excellent conceptual grounding. The explanation of why broadband provides early warning (high energy integration across wide bandwidths) while narrowband provides classification (high-resolution tonal separation) is accurate.
+
+
+
+### Section 6: Classification 101 and MACS Workflow
+
+* **Content:** Detailed guides on identifying harmonics, sidebands (AM vs. FM modulation), engine firing rates (EFR), cylinder firing rates (ICFR), crankshaft rates (CSR), gear mesh frequencies (GMF), and electrical mains (50/60 Hz).
+
+
+* **Technical Assessment:** The mathematical derivations for engine cylinder counts and motor synchronous speeds are generally correct, though minor typographical slips exist in intermediate equation text (detailed in Section 4).
+
+### Section 7: Classification Examples and Exercises
+
+* **Content:** Practical walkthroughs (Exercise 1: surface contact analysis; Exercise 2: Sabre Dance) combining in-game acoustic observations with MACS tools.
+
+
+* **Technical Assessment:** Provides realistic scenarios for handling measurement uncertainty, Doppler shifts, and multi-shaft estimation.
+
+
+
+### Sections 10 – 12: Appendices (Sound, FFT, Normalization, LOFAR, DEMON, Cepstrum, ACF, Noise Subtraction)
+
+* **Content:** Deep-dive mathematical and signal-processing notes.
+
+
+* **Technical Assessment:** Appendix B provides a commendable conceptual breakdown of the Fast Fourier Transform (FFT), sliding-window Z-score normalization, and Hilbert envelope detection for DEMON.
+
+
+
+---
+
+## 4. Independent Verification of Worked Calculations
+
+All major worked calculations in the text were independently verified for mathematical rigor and dimensional consistency:
+
+### 1. Turns Per Knot (TPK) Formula (Page 17)
+
+$$TPK = \frac{SR \times 60}{Speed}$$
+
+* **Verification:** Shaft Rate ($SR$) in rev/s ($\text{Hz}$) multiplied by $60$ yields revolutions per minute ($\text{RPM}$). Dividing by speed in knots gives shaft revolutions per nautical mile-per-hour equivalent. **Dimensionally consistent.**
+
+
+
+### 2. Engine Cylinder Count Calculation (Pages 32–33)
+
+* **Given:** Observed EFR = $31.25\text{ Hz}$, Engine Speed $N = 750\text{ RPM}$, 4-stroke engine.
+* **Step 1 (Firings per minute):** $31.25\text{ Hz} \times 60\text{ s/min} = 1875\text{ firings/min}$. **Correct.**
+
+
+* **Step 2 (4-stroke relation):** For a 4-stroke engine, each cylinder fires once every 2 revolutions. Total firings per minute = $\frac{N}{2} \times C$, where $C$ is cylinder count.
+
+$$\frac{750}{2} \times C = 375 \times C$$
+
+
+$$1875 = 375 \times C \implies C = \frac{1875}{375} = 5 \text{ cylinders}$$
+
+
+ **Mathematically verified.**
+
+
+* **Alternative (2-stroke rejection):** For a 2-stroke engine, $1875 = 750 \times C \implies C = 2.5$. Since fractional cylinders are physically impossible, the 2-stroke hypothesis is correctly rejected.
+
+
+
+### 3. Induction Motor Synchronous Speed (Pages 33–34)
+
+$$N_s = \frac{120f}{P}$$
+
+* **Given:** $f = 60\text{ Hz}$, $P = 4$ poles.
+* **Calculation:**
+
+$$N_s = \frac{120 \times 60}{4} = \frac{7200}{4} = 1800\text{ RPM}$$
+
+
+ **Correct.**
+
+
+* **Rotational Frequency:**
+
+$$f_r = \frac{1800}{60} = 30\text{ Hz}$$
+
+
+ **Correct.**
+
+
+
+### 4. Sliding-Window Z-Score Normalization Example (Page 48)
+
+* **Given window values:** $95, 102, 98, 105, 140$ (centered on Bin 3, value $98$).
+* **Mean ($\mu$):** $\frac{95 + 102 + 98 + 105 + 140}{5} = \frac{540}{5} = 108$. **Correct.**
+
+
+* **Standard Deviation ($\sigma$):** Text states $\sigma = 16$. (Sample/population variance calculations yield $\approx 16.36$ to $18.29$, making $16$ a reasonable working approximation).
+
+
+* **Z-Score for center bin ($98$):**
+
+$$z_3 = \frac{98 - 108}{16} = \frac{-10}{16} = -0.625 \approx -0.63$$
+
+
+ **Correct.**
+
+
+
+### 5. Speed through Water with Propeller Slip (Pages 54–55)
+
+* **Given:** $SR = 5\text{ Hz}$ ($300\text{ RPM}$), Pitch $P = 8\text{ ft/rev}$, Slip $S = 15\%$ ($0.15$, efficiency factor $= 0.85$).
+* **Theoretical Speed:**
+
+$$\text{Distance/min} = 300\text{ rev/min} \times 8\text{ ft/rev} = 2400\text{ ft/min}$$
+
+
+$$\text{Distance/hr} = 2400 \times 60 = 144,000\text{ ft/hr}$$
+
+
+$$\text{Knots} = \frac{144,000}{6076\text{ ft/nmi}} \approx 23.699 \text{ kts}$$
+
+
+ **Correct.**
+
+
+* **Speed with Slip:**
+
+$$\text{Actual Speed} = 23.7 \times (1 - 0.15) = 23.7 \times 0.85 \approx 20.1\text{ Knots}$$
+
+
+ **Correct numerical result.** *(Note: Text has a typographical slip in the formula representation, discussed below).*
+
+
+
+---
+
+## 5. Categorized Review Findings
+
+### Technical Errors
+
+1. **Slip Formula Typographical Error (Appendix B, Page 55):**
+* *Issue:* In Section 11.2.6, the text writes: `23.7 * (1 - 0.85) = 23.7 * 0.15 ≈ 20.1 Knots/hr`.
+
+
+* *Correction:* Since slip is $15\%$, the efficiency multiplier is $(1 - 0.15) = 0.85$, not $0.85$ slip loss. The formula should read `23.7 * (1 - 0.15) = 23.7 * 0.85 ≈ 20.1 Knots`. The final number is correct, but the expression inside the parentheses is mathematically inconsistent with a $15\%$ slip value.
+
+
+
+### Statements Requiring Qualification
+
+1. **DEMON Peak Dominance (Section 6.5, Page 28):**
+* *Statement:* *"The most visible peak on DEMON is quite often that of the BR and not the SR..."*
+
+
+* *Qualification:* While blade rate modulation is frequently prominent due to hydrodynamic wake loading and blade-to-blade asymmetries, shaft rate (SR) remains the fundamental mechanical rotation frequency. Analysts should be cautioned that dominant DEMON peaks depend heavily on cavitation intensity, transducer orientation, and hull wake characteristics.
+
+
+2. **Electrical Mains Frequency Standards (Section 6.9, Page 30):**
+* *Statement:* Links NATO naval electrical standards strictly to $60\text{ Hz}$ via ANEP-100.
+
+
+* *Qualification:* While many modern blue-water NATO navies utilize $60\text{ Hz}$ systems (e.g., USN, RN, RCN), several European NATO navies (including historical and specific auxiliary classes) operate $50\text{ Hz}$ or mixed frequency systems. This should be presented as a general tendency rather than an absolute rule.
+
+
+
+### Internal Inconsistencies
+
+1. **WIP Markings and Placeholder Sections:**
+* *Issue:* Several key sections (e.g., Advanced Tonal Editor, Overlays, Contact Matching, Noise Subtraction, ZoomFFT, and Appendices on Contact Database Structure) are marked as `*** WIP ***` or left blank.
+
+
+* *Impact:* While expected in a living community document, users navigating to advanced tools will encounter incomplete documentation.
+
+
+
+
+
+### Suggested Improvements
+
+1. **Clarify Z-Score Window Parameters:** In Appendix B (Section 11.1.3), expand the practical guidance on selecting sliding-window half-widths (`Mean Width` vs. `StdDev Width`) with concrete examples of how highly non-stationary noise floors impact $\sigma > 2\mu$ ratios.
+
+
+2. **Unified Notation for Shaft and Blade Rates:** Standardize nomenclature across sections. The text occasionally alternates between $SR$, $SF$, $BR$, and $BPF$ without immediate cross-referencing, which can overwhelm novice analysts.
+
+
+3. **Complete WIP Sections:** Prioritize filling out the `Noise Subtraction` and `ZoomFFT` operational guides, as these are critical features for advanced signal filtering in noisy acoustic environments.

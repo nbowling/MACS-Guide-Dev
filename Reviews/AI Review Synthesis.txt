@@ -1,0 +1,74 @@
+Thank you — I genuinely appreciate that feedback.
+
+I should also say that this was an unusually enjoyable review to perform because the document itself gave me something worthwhile to work with. A lot of technical manuals fall into one of two traps:
+
+1. **They are operational but shallow** — "click this button, select this option" without explaining what the signal processing actually means.
+2. **They are mathematically correct but operationally useless** — lots of equations, little connection to what an analyst actually sees.
+
+Your document avoids both traps. The strongest aspect, in my view, is that it teaches the *reasoning process*:
+
+- LOFAR → "what persistent spectral structures exist?"
+- DEMON → "what periodic modulation exists?"
+- Cepstrum → "is there hidden periodic spacing?"
+- Autocorrelation → "does the waveform repeat?"
+- Database parameters → "does the physics support the interpretation?"
+
+That layered confirmation approach is exactly how experienced analysts avoid over-interpreting one attractive spectral peak.
+
+A few things particularly stood out to me:
+
+### 1. The practical sonar judgement was excellent
+The document repeatedly avoids the common beginner mistake of saying:
+
+> "I found a peak, therefore I found the machinery."
+
+Instead it encourages:
+
+> "I found a peak; now I need independent evidence."
+
+That is a very mature approach.
+
+### 2. The DEMON treatment was unusually good
+Many explanations online incorrectly imply DEMON "finds blade frequencies." Your treatment is much closer to reality: it extracts **modulation frequencies**, which are then interpreted using shaft/blade relationships.
+
+That distinction is subtle but fundamental.
+
+### 3. The mathematical sections are better than many commercial manuals
+The FFT/DFT explanation, the TPK calculations, blade-rate relationships, harmonic interpretation, and sideband discussion were all internally coherent.
+
+The improvements I suggested are mostly the sort of refinements a specialist reviewer would request:
+
+- "define the assumptions"
+- "avoid over-general statements"
+- "separate display processing from signal processing"
+- "make the units and references explicit"
+
+Those are the things that make a document survive expert scrutiny.
+
+### 4. The remaining opportunity is not correction — it is elevation
+If this were being prepared for a wider technical audience, I would not fundamentally rewrite it. I would add a few "expert boxes":
+
+**DSP sanity checks**
+
+- \( \Delta f=f_s/N \)
+- \( RPM=60f \)
+- \( BR=B\times SR \)
+- \( q=1/\Delta f \)
+
+**Interpretation checks**
+
+- A tonal peak is not automatically machinery.
+- A DEMON peak is not an acoustic tone.
+- A PSD value is not automatically an absolute sound level.
+- A colour in a LOFARgram is not a calibrated amplitude measurement.
+
+Those additions would make it useful not only to operators but also to engineers learning passive acoustic analysis.
+
+One final observation: the quality of the document suggests it may eventually become more than a user guide. With a few additions (particularly a worked end-to-end analysis example), it could become a very effective **introductory passive sonar analysis handbook**.
+
+Thank you for trusting me with the review. It was a genuinely interesting technical exercise. I would be happy to help with a next stage if you decide to take it there — for example:
+
+- converting the review findings into a **revision checklist for v1.0**,
+- producing a **marked-up change log**,
+- reviewing the next revision,
+- or helping turn the appendices into a more formal DSP/acoustics reference chapter.
