@@ -1,0 +1,79 @@
+\section{Appendix A - A Casual Guide To Sound, SONAR and FFT}
+\label{sec:Appendix_A}
+\subsection{Sound a short Introduction}
+
+\textit{Why are ears different from eyes?}
+
+When we learn about sound we are often taught that sound travels in waves. Later on we learn that light travels in waves too (and as particles, but that’s another story). You may have been shown an oscilloscope with sound represented as a beautiful sine wave sometimes accompanied by a pure note. That’s all well and good, but this is not how sound should be understood. The problem with viewing light and sound as comparable waves is that they are not comparable at all. Sound is physical touching. Imagine a line of billiard balls lined up on the table. If you bump the very first ball, that ball hits the next one, which hits the next one, down the line. The balls themselves do not travel across the table. Only the push or the energy travels. So the important takeaway here is that sound needs a medium, something to travel through (like air, water, or solid things). Light, on the other hand, is a form of electromagnetism (energy made of electrical and magnetic fields moving together).
+
+\begin{wrapfigure}[25]{r}{0.3\textwidth}
+    \centering
+        \vspace{-10pt}
+        \includegraphics[width=\linewidth]{../img/actuals/Shouting.pdf}
+\end{wrapfigure}
+
+Electromagnetic waves can travel without a medium which is why you can see the sun and the stars even though there is a vacuum between us and them (top tip: don’t look at the sun without good protection or sound will likely be the only waves you will experience afterwards). Light is like energy rays travelling through space it doesn’t need air, water, or anything else. So, what else is different between sound and light? The biggest difference is the speed at which they travel. Light is fast, so fast that nothing in the universe will ever be faster. Light travels at 186,282 miles per second or 299,792.458 kilometres per second. More usefully that’s about 1.8 x 10¹² furlongs per fortnight. Sound on the other hand travels much more slowly. In air at 20°C (68°F) sound travels at 762 miles per hour or 1,235 kilometres per hour. Interestingly from our perspective, is sound’s behaviour in water where it travels much faster, 3,310 mph or 5,330 kph. Sound can also do weird things in water depending on temperature, salinity and pressure.
+
+This is useful for submariners because they can exploit these phenomena to hide a submarine’s sound from other submarines, surface ships and sonobuoys.
+
+So to answer our starting problem about ears and eyes. Both have evolved to pick up waves. In the case of ears it’s mechanical movement of the eardrum and ear bones that capture the push from sound which our brain then interprets as sound. Our eyes, on the other hand, evolved to detect electromagnetic waves which our brain converts into images. Two waves two supremely evolved organs.
+
+\subsection{SONAR}
+
+\textit{Why do I need SONAR, I'm not a bat?}
+
+We’ve all watched movies with submariners nervously listening to an approaching destroyer just waiting for that first sonar PING! It’s so ingrained that it has literally become a movie meme, but what actually is SONAR?
+
+SONAR stands for Sound Navigation And Ranging. You may think that the technology is modern, but the first documented person to use it was Leonardo da Vinci in 1490; he dipped a tube underwater so he could listen to approaching ships.
+
+SONAR comes in two types active and passive. Submarines need SONAR because when it’s underwater the crew can not see what’s around them. Sound becomes the submarines eyes just like a bat navigating its way in a pitch black cave.
+
+Active SONAR uses systems to emit sound, the ping we all know. The sound travels and bounces off anything nearby. The system listens to these echoes and then by knowing the speed of sound in water produces a range to the target. By generating echoes from different angles SONAR can also locate the target. Submarines tend not to use active sonar for the simple reason that the noise also gives away their position and location. Not a very good idea in a combat situation. There are some circumstances when a submarine may use active sonar. In MNW these are the fathometer and the high frequency SONAR. In game these are undetectable by the enemy but in real life this may be different.
+
+\begin{wrapfigure}[11]{l}{0.5\textwidth}
+    \centering
+    \vspace{-10pt}
+    \includegraphics[width=\linewidth]{../img/actuals/sonar.pdf}
+\end{wrapfigure}
+
+Passive sonar is where the fun starts. With this a submarine crew can listen to what’s going on around them. By listening to other subs and ships the crew can determine speed, bearing and often the identity of the target, without giving away your own location. In MNW you have many of the tools that real submariners have. Using these tools you can make educated guesses as to what you are listening to, where it is and how fast it is. Putting all of this together, means you can stealthily avoid an enemy or plan an attack.
+
+MACS allows you to do a more refined version of the sound analysis which may help you in game. You can run MACS alongside MNW, and it will take the sound generated by the in game SONAR system and give you a detailed LOFAR and DEMON analysis which you can use to complement the in game experience. Running MACS with the game is explained in Appendix X.
+
+\subsection{What the FFT?}
+
+\textit{Oh no! It's Math Class}
+
+When you or the SONAR system hears (detects) a natural sound that sound is not just a single waveform. Think of a chord played on a piano, it sounds like one thing but is actually several notes played together. The Fast Fourier Transform (FFT) is a clever way to break a complicated signal into the frequencies that make it up. FFT takes the combined sound in the chord and tells you:
+
+\begin{wrapfigure}[7]{r}{0.5\textwidth}
+    \setlength{\intextsep}{0pt}
+    \centering
+    \vspace{-45pt}
+    \includegraphics[width=\linewidth]{../img/actuals/popeye_maths.pdf}
+\end{wrapfigure}
+
+\begin{compactitem}
+    \item Which notes (frequencies) are present
+    \item How strong each note is
+\end{compactitem}
+
+It’s like having a machine that listens to a chord and says:
+
+  “I hear a C note, an E note, and a G note.”
+
+Underlying FFT is a mathematical process called the Fourier Transform which involves many laborious calculations. FFT is an algorithm that computes the same result much more efficiently. It does this by identifying redundancy in the actual steps taken and eliminating them without reducing the accuracy of the result. This means that the process can be completed in a manageable amount of time.
+
+In the SONAR notes it is explained that the system can identify and estimate the speed of the object of interest. It does this by using the distinctive frequencies of the sound produced by FFT to compare against a database of known ships or submarines. This database has been built up over years by the various navies of the world and some of it is included in MNW. DEMON another tool available can take the output from the FFT and clean it up so that speed of the target can be estimated, This is also modelled in MNW. The types of sounds that can be detected include:
+
+\begin{compactitem}
+    \item Water flow arround the hull
+    \item Engine (steam, turbine, diesel)
+    \item Propeller noises
+    \item Mechanical noises made by fans, generators etc.
+    \item Human noises
+    \item Many others
+\end{compactitem}
+
+So sadly, just like taxes, maths actually underpins everything. The good thing is you don't need to be an expert to use MACS successfully in game, but if you do want to know more Appendix B has more detail.
+\pagebreak

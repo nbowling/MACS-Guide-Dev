@@ -1,0 +1,84 @@
+\documentclass [10pt]{article}
+\usepackage[a4paper, inner=3cm, outer=3cm, top=2cm, bottom=3cm, bindingoffset=0.5cm]{geometry}
+\usepackage[english]{babel} % localization and internationalization
+\usepackage{blindtext}
+\usepackage{graphicx}
+\usepackage{parskip} % for paragraph spacing
+\usepackage{xcolor} % increases range of colours available
+\usepackage{colortbl}
+\usepackage{tcolorbox} % for coloured quotation pulls
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=green, urlcolor=macsblue]{hyperref} % to enable and colour hyperlinks urlcolor was cyan
+% \usepackage[colorlinks=true, linkcolor=red, urlcolor=blue]{hyperref}
+\usepackage{wrapfig} % to layout images etc.
+\usepackage[normalem]{ulem}
+\usepackage{paralist}  % for list and enum formatting
+\usepackage{caption}
+\usepackage{url}
+\usepackage[autostyle]{csquotes} % for correct quotation marks
+\usepackage{amsmath}
+\usepackage{placeins}
+\usepackage{float} % To help with image placement
+
+
+\newtcolorbox{faintquote}{ colback=blue!15, colframe=blue!50, boxrule=1pt, arc=2mm, left=4mm, right=4mm }
+\newtcolorbox{advisory}{ colback=red!15, colframe=red!50, boxrule=1pt, arc=2mm, left=4mm, right=4mm }
+\newtcolorbox{learnpoint}{ colback=green!15, colframe=green!50, boxrule=1pt, arc=2mm, left=4mm, right=4mm }
+\definecolor{commentGreen}{RGB}{48,110,30}
+\definecolor{macsblue}{RGB}{0,12,123}
+
+\setlength{\plitemsep}{3pt}
+
+\newcommand{\collaborators}[1]{\par\small\textbf{Technical Advisors:\\} #1}
+\newcommand{\soundfiles}[1]{\par\small\textbf{Sound Files By:\\} #1}
+\newcommand{\review}[1]{\par\small\textbf{Reviewers:\\} #1}
+
+\hypersetup{pdftitle={MACS - MNW Acoustic Classification Suite}}
+
+% \pagestyle{empty}
+
+\title{MACS - MNW Acoustic Classification Suite (v0.2.5)}
+\author{Nick Bowling (@Skittles)}
+\date{\today}
+
+\begin{document}
+\maketitle
+\collaborators{@mahzel\\ @snrkatat}
+\soundfiles{@snrkatat\\ @Skittles\\ @Johns}
+% \review{@Mahzel, @snrkatat, @Johns, \verb|@Doctor_Dystopia|, \verb|@Pgen_FFW36|, @PLOP, @MasterGunner309}
+\review{@Mahzel\\ @snrkatat\\ @Johns\\ @Doctor\_Dystopia\\ @Pgen\_FFW36\\ @PLOP\\ @MasterGunner309} \\
+
+{\centering
+\includegraphics[width=400px]{../img/actuals/Cover.pdf}
+\par}
+
+\newpage
+{
+\setcounter{tocdepth}{3}
+\tableofcontents
+}
+
+\begin{advisory}
+    This document is still under active development as @Mahzel adds exciting new features and improves existing ones. This means that inevitably this guide will lag behind the currently available version of MACS. This is not necessarily a problem as this guide is primarily aimed at new users looking to enhance their experience of playing Modern Naval Warfare. New users are unlikely to be concerned with the more advanced capabilities of MACS.\\
+    \\ \textbf{This guide is a community document so the team that has produced it welcome feedback and suggestions via the two MNW Discord channels. Updates to this document will be announced there as well.}
+\end{advisory}
+
+\newpage
+
+
+\input{../overview/overview}
+\input{../Install/install}
+\input{../Interface/interface}
+\input{../contact_database/contact_database}
+\input{../sound_analysis/sound_analysis.tex}
+
+\input{../classification/classification}
+\input{../illustrated_example/illustrated_example}
+\input{../tools/tools}
+\input{../references/references}
+\input{../appendix/appendix_A}
+\input{../appendix/appendix_B}
+\input{../appendix/appendix_C}
+\end{document}

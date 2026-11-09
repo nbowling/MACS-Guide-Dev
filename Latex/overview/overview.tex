@@ -1,0 +1,42 @@
+\section{Overview}
+\textbf{Note for new users.} If you are unfamiliar with sound analysis, SONAR, and the mathematics behind it I strongly recommend that you read the friendly guides in \hyperref[sec:Appendix_A]{Appendix A} and the relevant chapter in the \href{https://docs.waveops.io/mnw/mnw-guide.pdf}{MNW guide}. You do not need to be a maths wizard to use MACS, but a basic knowledge of the concepts will help you understand what is going on. If you enjoy the detail then \hyperref[sec:Appendix_B]{Appendix B} goes deeper into the concepts. In Mahzel's own words:
+
+\begin{faintquote}
+	MACS is a tool provided as an advanced suite for enthusiasts of acoustic analysis. It also provides a custom user-build database where you can slowly build your measurements history, along with all your comments about an encounter. Only had a few seconds of contact? No worries just record it and replay the contact for further analysis for as long as you wish. It includes a database matcher, where you can see if a current contact's markings correspond to something in the database. You may have numerous matches, but in the end, you are in charge of the sonar.
+\end{faintquote}
+
+\textbf{Download} MACS for Widows, Linux and MacOS from \href{https://github.com/Mahzel/MACS}{here}.
+
+\subsection{Capabilities}
+MACS is an acoustic classification tool designed for use with the naval simulation Modern Naval Warfare (MNW) developed by The Maslas Bros and published by Matrix / Slitherine. MACS does not replace the in game tools.
+
+\textbf{MACS features include:}
+
+\begin{compactitem}
+	\item Accepting sound input directly from the PC's sound card or other system capability.
+	\item Running alongside MNW without significantly impacting performance.
+	\item Fine control of several input and output parameters.
+	\item Detailed, fine grain multicolour representations of the analysed sound.
+	\item Normalization and noise suppression to manage the impact of background noise.
+	\item Allowing recording and replay of sounds for future analysis.
+	\item A user-managed database of contacts and measurements (a pre-populated downloadable database is available at the MACS website).
+	\item A built in matcher to compare current contacts with those in the database.
+\end{compactitem}
+
+\subsection{What MACS does and why would I need it?}
+
+MACS provides six complementary signal-processing views to help you identify and characterise surface or submarine contacts by their acoustic signature. The underlying processing is grounded in real passive sonar digital signal analysis: 
+
+\begin{compactitem}
+	\item FFT based spectrograms (LOFARgrams).
+	\item DEMON envelope detection (DEMONgrams).
+	\item Real cepstrum analysis.
+	\item Auto correlation.
+	\item Power Spectral Density (PSD) analysis.
+	\item ZoomFFT analysis.
+\end{compactitem}
+
+Explanations of these and how to use them are described in the following sections. Each processing technique provides a different view of the same signal, when used together they can provide a clearer picture of what is happening around you. The more information you have, the better your chances of detecting and classifying a contact.
+
+\textbf{MACS supplements, it does not replace the in-game tools}
+\pagebreak

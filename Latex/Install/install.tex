@@ -1,0 +1,174 @@
+\section{Installing and Configuring MACS}
+
+Currently the MACS application is a stand alone program there is no specific installer. The following describes installation for Windows (11), OSx-x64, OSx-ARM and Linux.
+
+\subsection{Windows.}
+
+\begin{compactenum}
+    \item Download the current version from \href{https://github.com/Mahzel/MACS/releases}{\texttt{https://github.com/Mahzel/MACS/releases}}
+    \item Copy the downloaded compressed file to a location of your choice, e.g. \path{C:\MACS*.rar}. Where * is current version and OS type suffix, e.g. \enquote{.v0.5.1.win-x64}
+    \item Extract the compressed files, Windows' own tools can handle tar compressed files. Right click the file and select extract all, accept defaults which will create a folder called MACS* (where * is version and OS)
+    \item Navigate into the extracted folder and again into the folder called win-x64
+    \item This step is important. Scroll down until you see the MACS.exe item and \textbf{right click} on it. Select \enquote{Properties} and towards the bottom tick the \enquote{Unblock} option. Unless you have changed the default settings windows blocks downloaded .exe files by default to protect users.
+    \item You can now run the application by clicking on the MACS.exe file
+    \item \textbf{Optionally create a shortcut.} At the location for the shortcut (e.g. Desktop) right click $\rightarrow$ New $\rightarrow$ Shortcut. Enter the path to the application e.g. \path{C:\MACS.v0.5.1.win-x64\win-x64\MACS.exe} or wherever you extracted it. Name the shortcut and select Finish.
+\end{compactenum}
+
+\subsection{Installing MACS on the Apple MAC OSx-64 and OSx-ARM}
+
+\textbf{Prerequisites}
+
+\begin{compactenum}
+    \item User must have Administrator access to the computer and sudo rights, i.e. have an administrator account.
+    \item User should determine the type of CPU their machine to ensure correct MACS version is installed.
+    \item User will need to install a .rar file unarchiver such as “The Unarchiver” from the App store (free) if a suitable app is not already installed.
+\end{compactenum}
+
+\textbf{To determine the type of CPU}
+
+Method 1: Using “About This Mac” (GUI)
+
+\begin{compactenum}
+    \item Click the Apple logo in the top-left corner of your screen.
+    \item Select About This Mac.
+    \item Look at the processor description:
+    \begin{compactitem}
+        \item Apple Silicon (ARM): You will see an entry labelled Chip (e.g., Apple M1, M2, M3, etc.). Or
+        \item Intel (x64): You will see an entry labelled Processor (e.g., Intel Core i7).
+    \end{compactitem}
+\end{compactenum}
+
+Method 2: Using the Terminal
+
+If you prefer using the command line:
+
+\begin{compactenum}
+    \item Open the Terminal app (search for it in Spotlight or find it in Applications > Utilities).
+    \item Type the following at the command prompt and press Enter: uname -m
+    \item Check the output:
+    \begin{compactitem}
+        \item arm64: This means your Mac is running on ARM (Apple Silicon).
+        \item x86\_64: This means your Mac is running on x64 (Intel).
+    \end{compactitem}
+\end{compactenum}
+
+\textbf{Download and Extract MACS}
+
+\begin{compactenum}
+    \item Download the correct version of MACS from \href{https://github.com/Mahzel/MACS/releases}{\texttt{https://github.com/Mahzel/MACS/releases}}
+    \begin{compactitem}
+        \item MACSosx-x64.rar for i86-64x CPUs
+        \item MACSosx-arm64 for ARM CPUs
+    \end{compactitem}
+    \item Normally this will download into the Downloads folder
+    \item Copy the downloaded file to a directory of your choice, e.g. create a folder with \\
+    \texttt{mkdir /Users/yourusername/Apps}
+    \begin{compactitem}
+        \item Note it may be easier to move the file from Downloads to your new directory, e.g. \texttt{mv /Downloads/MACS*.rar /Apps}
+    \end{compactitem}   
+    \item Extract the file using your .rar file un-packer and export the files. It should create a directory called MACS. Note the exact way the un-archiver will do this varies depending on type. Make sure you are familiar with the way your un-packer works.
+\end{compactenum}
+
+\textbf{Making the binary executable}
+
+Downloaded files are not immediately executable by default.
+
+\begin{compactenum}
+    \item Open a Terminal and navigate into the MACS folder, e.g. in Terminal \texttt{cd Apps/MACS/osx-x64} or osx-arm64
+    \item Type the following at the command prompt \texttt{chmod +x MACS} this sets the execution flag so that the application can run. Note The OS may require you to run this as an administrator, i.e. \texttt{sudo chmod +x MACS} then enter user password to authenticate.
+\end{compactenum}
+
+\textbf{How to remove the quarantine flag recursively}
+
+\begin{faintquote}
+    Note Un-quarantining software from dubious sources can be risky do not do this routinely. The MACS software is rigorously checked for malware so it is safe to proceed.
+\end{faintquote}
+
+Apple blocks direct execution of downloaded files by quarantining them, un-quarantine them as follows:
+
+\begin{compactenum}
+    \item Open the Terminal and type the following command (make sure to include a space after the final -d): \texttt{sudo xattr -r -d com.apple.quarantine}. \textbf{Do not press RETURN yet}
+    \item Leave a space after quarantine, then drag and drop the folder from Finder directly into the Terminal window. This will automatically fill in the correct path to the folder. Your command should look similar to this: \texttt{sudo xattr -r -d com.apple.quarantine /Users/yourusername/Apps/MACS}
+    \item Press Return/Enter on your keyboard.
+    \item If asked enter your Mac's login password (no characters or asterisks will show on screen as you type, which is normal security behaviour) and hit Enter again. You may not be asked if your sudo session from above ius still active.
+\end{compactenum}
+
+\textbf{Running MACS}
+
+\begin{compactenum}
+    \item Open the Terminal and navigate to where you have saved MACS, e.g \\
+    \texttt{cd /Users/yourusername/Apps/MACS/osx-x64} or osx-arm64
+    \item Type at the prompt \texttt{./MACS}. The first time may take a some time to run because OSx has to build and link the assemblies in the program. Subsequent starts will be much faster.
+    \item MACS starts in its own window
+\end{compactenum}
+
+\subsection{Installing and Running MACS on Linux}
+
+\textbf{Applies to generic Linux (tested on Ubuntu / Debian)}
+
+\begin{faintquote}
+    Note: Because of the variation in the way Linux users configure their computers it is not possible to cover every possible situation. This guide assumes a standard set up with a \path{~/User/Downloads} folder. The author has successfully tested MACS on WSL 2 on Windows 11. However the installation is complicated and requires downloading extra software particularly for the sound system. Since this installation is such an edge case no further details are given here.
+\end{faintquote}
+
+\textbf{Prerequisites}
+
+\begin{compactitem}
+    \item User must have Administrator access to the computer and sudo rights, i.e.have an administrator account.
+    \item User will need to install a .rar file unarchiver such as unrar from if a suitable app is not already installed.
+\end{compactitem}
+
+\textbf{Download and Extract MACS}
+
+\begin{compactenum}
+    \item Download the current version from \href{https://github.com/Mahzel/MACS/releases}{\texttt{https://github.com/Mahzel/MACS/releases}}
+    \item Ensure you download linux-x64.rar version for Linux
+    \item Normally this will download into the Downloads folder
+    \item Copy the downloaded file to a directory of your choice, e.g. create a folder with \\
+    \texttt{mkdir /Users/yourusername/Apps} then move the .rar file to your new folder with \\
+    \texttt{mv /Downloads/MACS*.rar /Apps}
+    \item Extract the file using your .rar file un-packer, it should create a directory called MACS. Note the exact way the un-archiver will do this varies depending on type. Make sure you are familiar with the way your un-packer works.
+\end{compactenum}
+
+\textbf{Making the binary executable}
+
+Downloaded files are not immediately executable by default.
+
+\begin{compactenum}
+    \item Open a Terminal and navigate into the MACS folder, e.g. in Terminal cd Apps/MACS/linux-x64
+    \item Type the following at the command prompt \texttt{chmod +x MACS} this sets the execution flag so that the application can run. Note The OS may require you to run this as an administrator, i.e. \texttt{sudo chmod +x MACS} then enter user password to authenticate.
+\end{compactenum}
+
+\textbf{Running MACS}
+
+\begin{compactenum}
+    \item Open the Terminal and navigate to where you have saved MACS, e.g \\
+    \texttt{cd /Users/yourusername/Apps/MACS/linux-x64}
+    \item Type at the prompt ./MACS the first time may take a while to run because Linux has to build and link the assemblies in the program. Subsequent starts will be much faster.
+    \item MACS starts in its own window
+\end{compactenum}
+
+\subsection{Initial Configuring and Basic Settings}
+
+After installation MACS is configured with sensible basic defaults for most settings. Two settings that should be checked are:
+
+\begin{compactitem}
+    \item Devices
+    \item Recordings Location
+\end{compactitem}
+
+\textbf{Devices}
+This depends on individual users PCs set up but in most cases defaults will work.
+
+\begin{compactitem}
+    \item \textbf{Capture Device} is the device that MACS uses to capture the sound input. In most cases this will be the active sound card in a loopback configuration. In some cases this may be something else such as a microphone.
+    \item \textbf{Live Monitor Output Device} The device used to play back the live sound. This must be a separate device to that used for capture or feedback will occur.
+    \item \textbf{Recording playback device} Device used to playback recordings. Normally set to default or the same as input device as usually the aim is to analyse the sound in app. However this can be configured to play to another device such as headphones if no immediate analysis is needed and the aim is to assess audio such as propeller passes etc.
+\end{compactitem}
+
+\textbf{Recordings Location}. Out of the box this is set up by the application on first run. For Windows the default is \path{Documents}. This is generally fine but there are some circumstances where you may want to change this. The most common case is if you are using OneDrive and it is auto-synchronizing. The recordings .wav files can be large and take a long time to upload and take up valuable storage space. Change the location of recordings storage from the Settings $\rightarrow$ General tab. Browse to the location you want to use and select folder in the normal way. This will change the recordings storage to the new location.
+
+For OSx and Linux I currently recommend leaving the default location as it is.
+
+\textbf{Other settings} are configured in a .json file. If the user changes something in the settings panel this file is updated. The .json file is located in different places depending on the operating system. Further details about this file and restoring defaults are given in the  Application Interface - Settings Persistence section.
+
+\pagebreak
