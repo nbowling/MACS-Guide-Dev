@@ -14,9 +14,7 @@ $(PDF).pdf: main.tex
 	pdflatex -jobname="$(PDF)" -output-directory=$(BUILD) main.tex
 	pdflatex -jobname="$(PDF)" -output-directory=$(BUILD) main.tex
 	copy $(BUILD)\$(PDF).pdf $(PDF).pdf
-	rmdir /s /q $(BUILD)
 
 clean:
 	if exist $(PDF).pdf del $(PDF).pdf
-	if exist $(BUILD) rmdir /s /q $(BUILD)
     

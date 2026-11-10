@@ -2,6 +2,7 @@
 \textcolor{commentGreen}{*** WIP ***}
 
 \subsection{Illustrated Example 1: A surface contact has been detected can you narrow down its class or type?}
+\large Difficulty Rating \includegraphics{../img/actuals/Stars/"1 Star.jpg"}
 
 \subsubsection{MNW In Game Tools}
 
@@ -200,6 +201,12 @@ For the Arleigh Burke the reported noise band and 30 Hz tonal are supposed to lo
 \textbf{On the balance of probabilities the best fit based on the information we have is that our target is a Type 055 Renhai.}
 
 \subsection{Illustrated Example 2: LOFAR - DEMON - Cepstrum}
+\large Difficulty Rating \includegraphics{../img/actuals/Stars/"3 Stars.jpg"}
+
+\begin{advisory}
+    \textbf{Note: }Figures 22 - 27 were produced by the simulation engine not MACS. The equivalent MACS images are included in the download package.
+\end{advisory}
+
 This exercise demonstrates how a relatively complicated acoustic signal can be examined through three complementary forms of analysis: LOFAR, DEMON and cepstrum. Each technique approaches the signal differently. More importantly, the observations can be compared with one another and with the mathematical relationships expected from rotating machinery.
 
 \textbf{Set Up:}
@@ -213,9 +220,277 @@ This exercise demonstrates how a relatively complicated acoustic signal can be e
         \item python
         \item sound
     \end{compactitem}
-    \item Using the matlab and python programs is discussed later
+    \item Using the matlab and python programs is discussed in Appendix D
 \end{compactenum}
 
+\textbf{Signal characteristics: }The supplied WAV has known parameters:
+\begin{compactitem}
+    \item Sample rate: 4,000 Hz
+    \item Duration: 60 seconds
+    \item Mean shaft rate: 1.30 Hz
+    \item Shaft speed: 78 rpm
+    \item Propeller blades: 5
+    \item Blade rate: 6.50 Hz
+    \item Second blade-rate harmonic: 13.00 Hz
+    \item Machinery carriers: 150, 310, 620 and 900 Hz
+    \item Additional machinery tonals: 48 and 96 Hz
+\end{compactitem}
+
+The relationship is: $\text{Shaft speed} = 60 \times 1.30 = 78\ \mathrm{rpm}$ and: $\text{Blade rate} = 5 \times 1.30 = 6.50\ \mathrm{Hz}$. A small ±0.025 Hz shaft-rate variation is included so the signal is not unrealistically perfect. Since we know what the two major fundamentals are the aim of the exercise is to see whether the three forms of analysis can recover them.
+
+The synthetic example represents a five-bladed propeller turning at a Shaft Rate (SR) of 1.30 Hz, equivalent to 78 RPM. Its corresponding Blade Rate (BR) is therefore 6.50 Hz, with further related structure at multiples such as 13.00 Hz.
+
+The objective is not simply to find those numbers in a graph. The exercise demonstrates the reasoning process by which several apparently different observations may be recognised as manifestations of the same underlying mechanical process.
+
+\subsubsection{The Waveform}
+
+The first image shows the acoustic waveform in the time domain.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=350px]{../img/actuals/01_waveform.pdf}
+	\caption{The Waveform}
+\end{figure}
+
+At this stage, the complete signal is represented as amplitude against time. Although the waveform confirms the presence and evolution of acoustic energy, most of the useful mechanical relationships are difficult to determine directly by eye. This is an important starting point. Information can be present in a signal without being visually obvious in the time waveform. The remaining analyses therefore transform or process the same underlying information to make particular characteristics easier to observe.
+
+\subsubsection{The LOFAR Spectrogram}
+
+The second image introduces frequency as a major analytical dimension.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=350px]{../img/actuals/02_lofar_spectrogram.pdf}
+	\caption{LOFAR Waterfall}
+\end{figure}
+
+The LOFAR-style display shows frequency against time, with intensity indicating the relative strength of spectral components. Persistent tonal components consequently appear differently from broadband energy or components that vary with time.
+
+LOFAR asks: What frequency components are present, and how persistent are they?
+
+This is the first move from observing a complex acoustic waveform towards identifying structure within it. The synthetic signal contains machinery-related frequencies and modulated carrier energy. LOFAR therefore provides evidence of the signal's spectral organisation. It can show tonals, harmonics and potentially the effects of modulation around stronger components. However, the presence of a frequency line does not by itself establish what produced it. The MACS review specifically identifies this distinction as important: a tonal peak is not automatically machinery. LOFAR therefore supplies the spectral evidence, but interpretation requires further corroboration.
+
+\subsubsection{The Mean LOFAR Spectrum}
+
+The third image collapses the time dimension by averaging the LOFAR spectra.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=350px]{../img/actuals/03_mean_lofar_spectrum.pdf}
+	\caption{Mean LOFAR Spectrum}
+\end{figure}
+
+The result makes persistent frequencies easier to inspect quantitatively. The distinction between Images 2 and 3 is useful:
+
+ \begin{compactitem}
+    \item The LOFAR spectrogram answers when and where spectral energy occurs;
+    \item The mean spectrum emphasises which spectral components persist strongly across the observation.
+ \end{compactitem}
+
+
+A peak in the mean spectrum is consequently an analytical clue rather than an automatic identification. Relationships between peaks matter considerably more. If components show harmonic spacing, sideband relationships or other regular structure, the analyst has a basis for asking whether they share a common mechanical origin.
+
+This naturally leads to DEMON analysis.
+
+\subsubsection{The DEMONgram}
+
+DEMON provides a fundamentally different view of the signal.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=350px]{../img/actuals/04_demongram.pdf}
+	\caption{DEMON Waterfall}
+\end{figure}
+
+Rather than simply asking which acoustic frequencies are present, DEMON examines periodic amplitude modulation within a selected acoustic band. This distinction is fundamental and was specifically highlighted as a strength in the review of the MACS material: DEMON extracts modulation frequencies, which are subsequently interpreted through shaft and blade relationships.
+
+The DEMONgram therefore asks: At what rates is the acoustic energy being modulated, and how do those rates behave with time?
+
+That question is particularly relevant to rotating machinery.
+
+In the synthetic example there is a known Shaft Rate:
+
+$SR=1.30\text{ Hz}$
+
+and a five-bladed propeller.
+
+The corresponding Blade Rate is therefore:
+
+$BR=B\times SR$
+
+where BB is the number of blades.
+
+Thus:
+
+$BR=5\times1.30=6.50\text{ Hz}$
+
+The DEMON display allows those low-frequency modulation relationships to become much more apparent than they may have been in the original waveform or conventional spectral display.
+
+\subsubsection{The Mean DEMON Spectrum}
+
+The fifth image is particularly useful for interpretation because it converts the DEMONgram into an averaged modulation spectrum. The principal frequencies of interest are:
+
+$1.30\text{ Hz},\quad6.50\text{ Hz},\quad13.00\text{ Hz}$
+
+These are not three arbitrary numbers, they form a mathematically related family.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=350px]{../img/actuals/05_mean_demon_spectrum.pdf}
+	\caption{Mean DEMON spectrum}
+\end{figure}
+
+\begin{advisory}
+\textbf{Why the 13 Hz line is unclear: }The second Blade Rate harmonic is not convincingly visible in the supplied DEMONgram. That is a limitation of the synthetic signal rather than something that should be explained away in the guide.
+\end{advisory}
+
+The 1.30 Hz component corresponds to the known Shaft Rate, while:
+
+$\frac{6.50}{1.30}=5$
+
+This is consistent with a five-bladed propeller.
+
+Furthermore:
+
+$13.00=2\times6.50$
+
+so 13.00 Hz is consistent with the second harmonic of Blade Rate.
+
+The value of the DEMON spectrum therefore lies not merely in finding a strong peak, but in recognising a coherent pattern:
+
+$SR\rightarrow BR\rightarrow2BR$
+
+That provides substantially more meaningful evidence than interpreting any one component alone.
+
+\subsubsection{The Real Cepstrum}
+
+The sixth image examines the signal from yet another perspective.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=350px]{../img/actuals/06_real_cepstrum.pdf}
+	\caption{Real Cepstrum}
+\end{figure}
+
+
+Cepstral analysis is useful for revealing regular spectral spacing. Its horizontal coordinate is termed quefrency and has units of time.
+
+The basic relationship is:
+
+\[
+    q=\frac{1}{\Delta f}
+\]
+
+where $\Delta f$ is a repeating frequency spacing.
+
+For the 6.50 Hz Blade Rate relationship:
+
+\[
+    q=\frac{1}{6.50}\approx0.154\text{ s}
+\]
+
+For the 1.30 Hz shaft relationship:
+
+\[
+    q=\frac{1}{1.30}\approx0.769\text{ s}
+\]
+
+The significance of the cepstrum is therefore that it provides another way of searching for periodic organisation within the signal.
+
+The real cepstrum contains numerous peaks because it responds to regular spacing anywhere in the acoustic spectrum. The vertical markers at 0.154 s and 0.769 s are expected quefrencies calculated from the Blade Rate and Shaft Rate estimated by DEMON. They are reference positions, not automatic detections. A peak at either position supports the interpretation only when it is locally prominent and agrees with independent LOFAR and DEMON evidence.
+
+\begin{learnpoint}
+    \textbf{Learning Point} \\
+    You should be cautious in identifying 0.154 s and 0.769 s as BR and SR from this cepstrum alone. First obtain candidate rates from DEMON and supporting spectral structure from LOFAR, then uses the cepstrum to look for compatible periodic spacing. If the expected positions do not stand out locally, the cepstrum has not added strong corroborating evidence in that particular recording.
+\end{learnpoint}
+
+
+To summarise so far:
+
+\begin{compactitem}
+    \item \textbf{LOFAR} presents spectral structure.
+    \item \textbf{DEMON} presents modulation structure.
+    \item \textbf{CEPSTRUM} presents periodic spectral-spacing structure.
+\end{compactitem}
+
+When compatible relationships appear in these different representations, confidence in the interpretation can increase.
+
+\begin{learnpoint}
+    \textbf{Learning Point}\\
+    No individual display needs to carry the whole interpretation. LOFAR may reveal persistent spectral features but leave their origin uncertain. DEMON may expose a family of modulation rates. The cepstrum may independently indicate corresponding periodic spacing. Mathematical relationships can then test whether these observations form a physically coherent pattern. This layered confirmation principle is the means by which an analyst avoids over-interpreting one attractive spectral peak.
+\end{learnpoint}
+\subsubsection{Correlating the Evidence}
+
+This is the central purpose of the exercise.
+
+The analytical progression can be thought of as:
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=350px]{../img/actuals/LDC_evidence_flow.pdf}
+	\caption{LOFAR, DEMON, CEPSTRUM evidence flow}
+\end{figure}
+
+
+
+\subsubsection{Summary of Findings}
+
+The synthetic example begins with a known:
+\[
+    \boxed{SR=1.30\text{ Hz}}
+\]
+
+Shaft frequency converts directly to rotational speed: $RPM=60\times SR$
+
+therefore:
+\begin{align*}
+    RPM &= 60\times1.30 \\
+    RPM &= \boxed{78 RPM}
+\end{align*}
+
+For five propeller blades: $BR=B\times SR$ and therefore:
+\begin{align*}
+    BR = 5\times1.30 \\
+    \boxed{BR = 6.50\text{ Hz}}
+\end{align*}
+
+The next Blade Rate harmonic occurs at:
+\begin{align*}
+    BR = 2\times6.50 \\
+    \boxed{BR = 13.00\text{ Hz}}
+\end{align*}
+    
+Conversely, if SR and BR were measured without knowing the blade count:
+\begin{align*}
+    B &= \frac{BR}{SR} \\[1ex]
+    B &= \frac{6.50}{1.30} \\[1ex]
+    B &= \boxed{5}
+\end{align*}
+
+Finally, the corresponding reciprocal relationships provide expected cepstral quefrencies:
+\[
+    q_{BR}=\frac{1}{6.50}\approx\boxed{0.154\text{ s}}
+\]
+
+and:
+\[
+    q_{SR}=\frac{1}{1.30}\approx\boxed{0.769\text{ s}}
+\]
+
+The exercise therefore brings the analysis full circle. LOFAR identifies spectral structure, DEMON exposes modulation structure, and the cepstrum searches for periodic spectral spacing. The mathematical relationships between Shaft Rate, rotational speed, Blade Rate, harmonics and quefrency then provide a common framework within which those observations can be compared.
+
+The important finding is consequently not simply “there is a peak at 6.5 Hz”. It is the much stronger chain of reasoning:
+\[
+    \boxed{ 1.30\text{ Hz} \rightarrow 78\text{ RPM} \rightarrow 5\times1.30 \rightarrow 6.50\text{ Hz} \rightarrow 2\times6.50 \rightarrow 13.00\text{ Hz} }
+\]
+
+supported by complementary views of the same underlying signal.
+
+That is ultimately what the exercise demonstrates: acoustic analysis becomes most persuasive when observations from different analytical domains agree with one another and with the underlying mathematics, rather than when an interpretation depends upon a single conspicuous peak. This reflects the broader MACS principle that the physics should support the interpretation.
+
+\subsection{Exercise 1: Finding the way}
+\textcolor{commentGreen}{*** WIP ***}
+
+This exercise is to help you find your way around MACS, identify fundamental tonals and to optimize settings.
 
 \subsection{Exercise 2: Sabre Dance}
 \begin{compactenum}
@@ -224,6 +499,7 @@ This exercise demonstrates how a relatively complicated acoustic signal can be e
 \end{compactenum}
 
 \subsection{Exercise 3: Snaky Medusa}
+\textcolor{commentGreen}{*** WIP ***}
 \begin{compactenum}
     \item Download and extract \texttt{"Snaky Medusa".zip}
     \item Carefully read the exercise \texttt{Outline.pdf} and then follow the instructions
