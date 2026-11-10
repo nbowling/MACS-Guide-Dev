@@ -179,6 +179,7 @@ endfunction
 
 
 The main analysis is now a function, while hann_local, stft_local, analytic_local and the other routines are subfunctions in the same file. I have also checked the corrected ZIP archive for integrity.
+*****
 
 This is great - thank you. One thing - can you reproduce the lofar_demon_cepstrum_demo_fixed.m in python. That can then be distributed with the MACS Guide, most people won't have access to Octave / Matlab.
 

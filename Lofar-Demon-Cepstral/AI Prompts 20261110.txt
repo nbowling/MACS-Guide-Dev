@@ -1,0 +1,18 @@
+Can you convert this into a nice diagram suitable for the MACS Guide
+
+		ORIGINAL SIGNAL
+                       │
+        ┌──────────────┼──────────────┐
+        ▼              ▼              ▼
+      LOFAR           DEMON        CEPSTRUM
+        │              │              │
+        ▼              ▼              ▼
+    Spectral       Modulation       Regular
+    structure        rates          spacing
+        │              │              │
+        └──────────────┼──────────────┘
+                       ▼
+               CORRELATED EVIDENCE
+                       │
+                       ▼
+             Physical interpretation
