@@ -350,11 +350,9 @@ That provides substantially more meaningful evidence than interpreting any one c
 \textbf{Why the 13 Hz line is unclear: }The second Blade Rate harmonic is not convincingly visible in the supplied DEMONgram. That is a limitation of the synthetic signal rather than something that should be explained away in the guide. It is however clearly visible in the MACS versions of these images produce by analysing the sound file in MACS. These images and explanatory notes are available in the download package for Illustrated Example 2.
 \end{advisory}
 
-
-
 \subsubsection{The Real Cepstrum}
 
-The sixth image examines the signal from yet another perspective.
+Figure 27 examines the signal from yet another perspective.
 
 \begin{figure}[h]
 	\centering
@@ -362,8 +360,7 @@ The sixth image examines the signal from yet another perspective.
 	\caption{Real Cepstrum}
 \end{figure}
 
-
-Cepstral analysis is useful for revealing regular spectral spacing. Its horizontal coordinate is termed quefrency and has units of time.
+Cepstral analysis is useful for revealing regular spectral spacing. Its horizontal coordinate is termed \textbf{quefrency} and has units of time.
 
 The basic relationship is:
 
@@ -409,6 +406,7 @@ When compatible relationships appear in these different representations, confide
     \textbf{Learning Point}\\
     No individual display needs to carry the whole interpretation. LOFAR may reveal persistent spectral features but leave their origin uncertain. DEMON may expose a family of modulation rates. The cepstrum may independently indicate corresponding periodic spacing. Mathematical relationships can then test whether these observations form a physically coherent pattern. This layered confirmation principle is the means by which an analyst avoids over-interpreting one attractive spectral peak.
 \end{learnpoint}
+
 \subsubsection{Correlating the Evidence}
 
 This is the central purpose of the exercise.
@@ -421,8 +419,6 @@ The analytical progression can be thought of as:
 	\caption{LOFAR, DEMON, CEPSTRUM evidence flow}
 \end{figure}
 
-
-
 \subsubsection{Summary of Findings}
 
 The synthetic example begins with a known:
@@ -430,15 +426,13 @@ The synthetic example begins with a known:
     \boxed{SR=1.30\text{ Hz}}
 \]
 
-Shaft frequency converts directly to rotational speed: $RPM=60\times SR$
-
-therefore:
+Shaft frequency converts directly to rotational speed therefore:
 \begin{align*}
     RPM &= 60\times1.30 \\
     RPM &= \boxed{78 RPM}
 \end{align*}
 
-For five propeller blades: $BR=B\times SR$ and therefore:
+For five propeller blades we find:
 \begin{align*}
     BR = 5\times1.30 \\
     \boxed{BR = 6.50\text{ Hz}}
@@ -450,7 +444,7 @@ The next Blade Rate harmonic occurs at:
     \boxed{BR = 13.00\text{ Hz}}
 \end{align*}
     
-Conversely, if SR and BR were measured without knowing the blade count:
+Alternatively, if SR and BR were measured without knowing the blade count:
 \begin{align*}
     B &= \frac{BR}{SR} \\[1ex]
     B &= \frac{6.50}{1.30} \\[1ex]
@@ -469,12 +463,10 @@ and:
 
 The exercise therefore brings the analysis full circle. LOFAR identifies spectral structure, DEMON exposes modulation structure, and the cepstrum searches for periodic spectral spacing. The mathematical relationships between Shaft Rate, rotational speed, Blade Rate, harmonics and quefrency then provide a common framework within which those observations can be compared.
 
-The important finding is consequently not simply “there is a peak at 6.5 Hz”. It is the much stronger chain of reasoning:
+The important finding is consequently not simply “there is a peak at 6.5 Hz”. It is the much stronger chain of reasoning supported by complementary views of the same underlying signal.
 \[
     \boxed{ 1.30\text{ Hz} \rightarrow 78\text{ RPM} \rightarrow 5\times1.30 \rightarrow 6.50\text{ Hz} \rightarrow 2\times6.50 \rightarrow 13.00\text{ Hz} }
 \]
-
-supported by complementary views of the same underlying signal.
 
 \begin{learnpoint}
     \textbf{Learning Point:}\\
@@ -482,6 +474,8 @@ supported by complementary views of the same underlying signal.
 \end{learnpoint}
 
 \subsection{Exercise 1: Finding the way}
+\large Difficulty Rating \includegraphics{../img/actuals/Stars/"1 Star.jpg"}
+
 \textcolor{commentGreen}{*** WIP ***}
 
 This exercise is to help you find your way around MACS, identify fundamental tonals and to optimize settings.
