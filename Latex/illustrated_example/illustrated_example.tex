@@ -220,7 +220,7 @@ This exercise demonstrates how a relatively complicated acoustic signal can be e
         \item python
         \item sound
     \end{compactitem}
-    \item Using the matlab and python programs is discussed in Appendix D
+    \item Using the Matlab and python programs is discussed in Appendix D
 \end{compactenum}
 
 \textbf{Signal characteristics: }The supplied WAV has known parameters:
@@ -236,15 +236,13 @@ This exercise demonstrates how a relatively complicated acoustic signal can be e
     \item Additional machinery tonals: 48 and 96 Hz
 \end{compactitem}
 
-The relationship is: $\text{Shaft speed} = 60 \times 1.30 = 78\ \mathrm{rpm}$ and: $\text{Blade rate} = 5 \times 1.30 = 6.50\ \mathrm{Hz}$. A small ±0.025 Hz shaft-rate variation is included so the signal is not unrealistically perfect. Since we know what the two major fundamentals are the aim of the exercise is to see whether the three forms of analysis can recover them.
-
-The synthetic example represents a five-bladed propeller turning at a Shaft Rate (SR) of 1.30 Hz, equivalent to 78 RPM. Its corresponding Blade Rate (BR) is therefore 6.50 Hz, with further related structure at multiples such as 13.00 Hz.
+The relationship is: $\text{Shaft speed} = 60 \times 1.30 = 78\ \mathrm{rpm}$ and: $\text{Blade rate} = 5 \times 1.30 = 6.50\ \mathrm{Hz}$ with further related structure at multiples such as 13.00 Hz. A small ±0.025 Hz shaft-rate variation is included so the signal is not unrealistically perfect. Since we know what the two major fundamentals are, the aim of the exercise is to see whether the three forms of analysis can recover them.
 
 The objective is not simply to find those numbers in a graph. The exercise demonstrates the reasoning process by which several apparently different observations may be recognised as manifestations of the same underlying mechanical process.
 
 \subsubsection{The Waveform}
 
-The first image shows the acoustic waveform in the time domain.
+Figure 22 shows the acoustic waveform in the time domain.
 
 \begin{figure}[h]
 	\centering
@@ -252,11 +250,11 @@ The first image shows the acoustic waveform in the time domain.
 	\caption{The Waveform}
 \end{figure}
 
-At this stage, the complete signal is represented as amplitude against time. Although the waveform confirms the presence and evolution of acoustic energy, most of the useful mechanical relationships are difficult to determine directly by eye. This is an important starting point. Information can be present in a signal without being visually obvious in the time waveform. The remaining analyses therefore transform or process the same underlying information to make particular characteristics easier to observe.
+The complete signal is shown as amplitude against time (time domain). Although the waveform confirms the presence and continued production of acoustic energy, most of the useful mechanical tonals are hard to spot. Information can be present in a signal without being visually obvious in the time waveform. LOFAR, DEMON and Cepstrum analyses transform or process the same underlying data to make particular characteristics easier to observe.
 
 \subsubsection{The LOFAR Spectrogram}
 
-The second image introduces frequency as a major analytical dimension.
+In Figure 23 LOFAR has transformed the data from the time domain to the frequency domain.
 
 \begin{figure}[h]
 	\centering
@@ -264,11 +262,11 @@ The second image introduces frequency as a major analytical dimension.
 	\caption{LOFAR Waterfall}
 \end{figure}
 
-The LOFAR-style display shows frequency against time, with intensity indicating the relative strength of spectral components. Persistent tonal components consequently appear differently from broadband energy or components that vary with time.
+The LOFAR-style display shows frequency against time, with intensity indicating the relative strength of spectral components. Persistent tonal components consequently appear differently from broadband energy or components that vary with time. In Figure 23 the machinery carriers at 150, 310, 620 and 900 Hz are shown
 
 LOFAR asks: What frequency components are present, and how persistent are they?
 
-This is the first move from observing a complex acoustic waveform towards identifying structure within it. The synthetic signal contains machinery-related frequencies and modulated carrier energy. LOFAR therefore provides evidence of the signal's spectral organisation. It can show tonals, harmonics and potentially the effects of modulation around stronger components. However, the presence of a frequency line does not by itself establish what produced it. The MACS review specifically identifies this distinction as important: a tonal peak is not automatically machinery. LOFAR therefore supplies the spectral evidence, but interpretation requires further corroboration.
+This is the first step in observing structures within a complex waveform. The synthetic signal contains machinery-related frequencies and modulated carrier energy and LOFAR provides evidence of this. It can show tonals, harmonics and potentially the effects of modulation around stronger components. However, the presence of a frequency line does not by itself establish what produced it, a tonal peak is not automatically machinery. LOFAR therefore supplies the spectral evidence, but interpretation requires further corroboration.
 
 \subsubsection{The Mean LOFAR Spectrum}
 
