@@ -120,9 +120,51 @@ Same controls as above; Fmin / Fmax instead control the quefrency display range 
 
 \subsubsection{Power Spectral Density (PSD)}
 \textcolor{commentGreen}{*** WIP ***}
+Power Spectral Density (PSD) analysis is a signal-processing technique used to show how the power (or energy) of a signal is distributed across frequency.
+
+In simple terms:
+\begin{compactitem}
+    \item A time-domain signal shows how a measurement changes with time.
+    \item A PSD shows which frequencies contain the most power.
+\end{compactitem}
+
+This makes PSD one of the most useful tools for analysing sounds, vibrations, machinery, sonar recordings, and electrical signals.
+
 \subsubsection{ZoomFft}
 \textcolor{commentGreen}{*** WIP ***}
 
+ZoomFFT is particularly useful for:
+\begin{compactitem}
+    \item Resolving closely spaced shaft-rate harmonics
+    \item Measuring small frequency shifts due to vessel speed changes
+    \item Separating propeller blade-rate sidebands
+    \item Examining a narrow cavitation band with much higher resolution than a full-band FFT
+\end{compactitem}
+
+\begin{tabularx}{\linewidth}{l X X}
+    \toprule
+    \textbf{Feature} & \textbf{FFT} & \textbf{ZoomFFT}\\
+    \midrule
+    Frequency Range & Entire spectrum & Narrow selected band \\
+    Computational cost & Higher for fine resolution & Lower \\
+    Resolution in region of interest & Requires very long FFT & Very High\\
+    Real-time operation & More demanding & Efficient \\
+    Requires frequency translation & No & Yes \\
+    \bottomrule
+\end{tabularx}
+
+Imagine looking at a ship on the horizon. A normal FFT is like viewing the whole sea with your naked eye but a ZoomFFT is like pointing a telescope at just the ship. You do not gain extra information about the rest of the sea, but you see much finer detail where you're looking. For LOFAR analysis, ZoomFFT is often the preferred way to examine a narrow harmonic family (for example around a shaft rate harmonic or blade-pass frequency) without needing an enormous FFT length.
+
+If you are analysing a signal and already have reason to believe that a narrowband component of interest lies near 42 Hz, you could centre a ZoomFFT at 42 Hz to examine that region at finer frequency resolution.
+
+\begin{compactitem}
+    \item Harmonic splitting,
+    \item Modulation sidebands,
+    \item Slight RPM fluctuations,
+    \item Blade-pass sidebands.
+\end{compactitem}
+
+This often produces much cleaner results than performing an enormous FFT over the entire acoustic band. For machinery diagnostics and marine acoustics, ZoomFFT is essentially a software implementation of a narrowband spectrum analyser.
 
 \subsection{Settings Panel}
 
@@ -148,13 +190,29 @@ Clicking the settings button in the title bar opens a panel with the following c
 The right sidebar has two main functions. Capturing and managing contact's sound profiles and matching an unknown sound profile with previously captured ones. It is also used to set up a background sound file which can be used for noise subtraction. Because the use of the contact database and the recording feature is an important part of MACS it has its own section (Section 4).
 
 The right sidebar has a third function, the live monitor. This is a simple audio output of the current capture device. It is useful for checking that the capture device is working and for listening to the sound being captured. The live monitor can be muted or set to a different output device than the capture device.
-
+\pagebreak
 \subsection{Noise Subtraction}
-\textcolor{commentGreen}{*** WIP ***}
+
+In a noisy environment it is often difficult to distinguish potential target tonals from the background. This is often the case in shallow waters. MACS Noise Subtraction allows the user to diminish the effect of this environmental noise. This is achieved by utilizing a pre-recorded sound file of the local environment and then mathematically subtracting it from the live sound. Obviously, this requires that you make a recording of the environment which only has ambient background noise. The mathematical process used is described in detail in Appendix B.
+
+The following steps the user through the process
+
+\begin{compactenum}
+    \item Make a recording of the ambient environmental noise and store that for later use. The file must be at least \textbf{15 seconds long} (enforced by validation). Short files produce unstable spectral averages.
+    \item When the time comes to use the file select the WAV file that contains \textbf{only ambient/background noise} --- no contact of interest.
+    \item Check the \textbf{\enquote{Use as noise reference}} checkbox next to that recording. Only one reference can be active at a time (exclusive selection --- checking one unchecks any previous reference).
+    \item Click \textbf{\enquote{Noise sub}} checkbox on the LOFAR panel toolbar to compute and store the reference spectrum.
+\end{compactenum}
+
+MACS then attempts to reduce the effect of environment noise which you should observe as the time window progresses.
+
+\begin{advisory}
+    \textbf{Note: }The result of noise subtraction can vary due to many confounding factors however it is worth trying if the environment you are operating is particularly noisy. Also noise subtraction will not be effective against some natural sound which have an unpredictable pattern, e.g. whale sounds. More stable natural frequencies such as shrimp may be reduced. That magmatic anomaly will still stand out though. Also noise subtraction may have the unintended effect of hiding the very tonals you are looking for.
+\end{advisory}
 
 \subsection{The Cursor System}
 
-The cursor system allows the user to mark individual tonals, identify harmonics and asses sidebands. Select a cursor mode from the toolbar before clicking on the waterfall then click on the tonal you wish to mark.
+The cursor system allows the user to mark individual tonals, identify harmonics and assess sidebands. Select a cursor mode from the toolbar before clicking on the waterfall then click on the tonal you wish to mark.
 
 \begin{compactitem}
 \item \textbf{Single:} Places one frequency marker at the clicked frequency $f$.

@@ -6,7 +6,7 @@ One of the principal challenges in SONAR processing is that the underwater acous
 
 \subsubsection{What MACS does}
 
-\textbf{The Process:} raw acoustic information is fed from MNW into MACS which then applies a Fast Fourier Transform (FFT) to convert the data from the time domain to the frequency domain. Sliding-window z-scores can then be computed for each frequency bin or beam direction. Each FFT value is compared with its local neighbourhood and converted into a z-score that measures how many standard deviations it lies above or below the local background level. If a particular frequency band suddenly exhibits energy that is significantly higher than its recent average, the resulting z-score will be increased relatively. Such behaviour may indicate the presence of a target, such as a submarine, underwater vehicle, or marine mammal. It is the relative differences that are then colour mapped to the LOFAR display. The process is summarized in Figure 22.
+\textbf{The Process:} raw acoustic information is fed from MNW into MACS which then applies a Fast Fourier Transform (FFT) to convert the data from the time domain to the frequency domain. Sliding-window z-scores can then be computed for each frequency bin or beam direction. Each FFT value is compared with its local neighbourhood and converted into a z-score that measures how many standard deviations it lies above or below the local background level. If a particular frequency band suddenly exhibits energy that is significantly higher than its recent average, the resulting z-score will be increased relatively. Such behaviour may indicate the presence of a target, such as a submarine, underwater vehicle, or marine mammal. It is the relative differences that are then colour mapped to the LOFAR display. The process is summarized in Figure 29.
 
 \begin{figure}[ht]
 	\centering
@@ -233,7 +233,7 @@ Two terms that commonly appear are \enquote{Time Domain} and \enquote{Frequency 
 \begin{compactitem}
     \item The Time Domain is the smoothie itself — the raw, combined signal as it exists in the real world over time.
     \item The Fourier Transform is the magic machine that takes the finished smoothie and separates it back into individual piles of fruit.
-    \item The Frequency Domain is the recipe — the broken-down smoothie showing exactly how much of each ingredient (frequency) makes up the whole (Figure 23).
+    \item The Frequency Domain is the recipe — the broken-down smoothie showing exactly how much of each ingredient (frequency) makes up the whole (Figure 30).
 \end{compactitem}
 
 \begin{figure}[ht]
@@ -342,7 +342,7 @@ The final output, $\hat{f}(\xi)$, is a complex number where the magnitude repres
 
 Suppose a signal contains:
 \[
-    x(t) = 3 \sin( 2 \pi 50 t) + 2 \sin(2 \pi 120 t) \quad \text{(Figure 24)}
+    x(t) = 3 \sin( 2 \pi 50 t) + 2 \sin(2 \pi 120 t) \quad \text{(Figure 31)}
 \]
 
  \begin{figure}[ht]
@@ -479,7 +479,12 @@ What it is: A standard acoustic spectrogram displayed as a waterfall. Each new F
 \subsection{DEMON}
 \textcolor{commentGreen}{*** WIP ***}
 
-\textbf{What it is:} DEMON (Detection of Envelope Modulation ON Noise) extracts the low-frequency modulation imposed on broadband acoustic noise by a vessel's rotating machinery (primarily propeller shaft and blade-rate harmonics). The result is a second spectrogram whose frequency axis covers 0 - $F_{max}$ Hz (typically 0 - 50 Hz), revealing shaft rotation rates and blade rates that are far too low to appear in the LOFARgram.
+\textbf{What it is:} DEMON (Detection of Envelope Modulation ON Noise) extracts the low-frequency modulation imposed on broadband acoustic noise by a vessel's rotating machinery (Figure 32) (primarily propeller shaft and blade-rate harmonics). The result is a second spectrogram whose frequency axis covers 0 - $F_{max}$ Hz (typically 0 - 50 Hz), revealing shaft rotation rates and blade rates that are far too low to appear in the LOFARgram.
+ \begin{figure}[ht]
+	\centering
+	\includegraphics[width=300px]{../img/actuals/DEMONchart.pdf}
+	\caption{DEMON process}
+\end{figure}
 
 \textbf{Signal path:}
 
@@ -491,11 +496,7 @@ What it is: A standard acoustic spectrogram displayed as a waterfall. Each new F
     \item The result is displayed as a waterfall, with the same Floor / Dynamic Range colour scale.
 \end{compactenum}
 
- \begin{figure}[ht]
-	\centering
-	\includegraphics[width=300px]{../img/actuals/DEMONchart.pdf}
-	\caption{DEMON process}
-\end{figure}
+
 
 \textbf{Why this works:} Rotating machinery amplitude-modulates the broadband acoustic noise it generates. For propeller-driven vessels, propeller blades periodically interrupt the cavitation noise; for diesel-engined vessels, piston firing events modulate the radiated noise at crankshaft rate and its harmonics. DEMON demodulates this carrier to make those low frequencies directly visible. It is effective for both propeller shaft / blade-rate detection (surface ships, submarines underway) and diesel engine firing rate detection (diesel-electric submarines at low speed).
 
