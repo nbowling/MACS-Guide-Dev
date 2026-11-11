@@ -266,11 +266,11 @@ The LOFAR-style display shows frequency against time, with intensity indicating 
 
 LOFAR asks: What frequency components are present, and how persistent are they?
 
-This is the first step in observing structures within a complex waveform. The synthetic signal contains machinery-related frequencies and modulated carrier energy and LOFAR provides evidence of this. It can show tonals, harmonics and potentially the effects of modulation around stronger components. However, the presence of a frequency line does not by itself establish what produced it, a tonal peak is not automatically machinery. LOFAR therefore supplies the spectral evidence, but interpretation requires further corroboration.
+This is the first step in observing structures within a complex waveform. The signal contains machinery-related frequencies and modulated carrier energy, LOFAR provides evidence of this. It can show tonals, harmonics and potentially the effects of modulation around stronger components. However, the presence of a frequency line does not by itself establish what produced it, a tonal peak is not automatically machinery. LOFAR therefore supplies the spectral evidence, but interpretation requires further corroboration.
 
 \subsubsection{The Mean LOFAR Spectrum}
 
-The third image collapses the time dimension by averaging the LOFAR spectra.
+Figure 24 shows the collapsing the time dimension by averaging the LOFAR spectra.
 
 \begin{figure}[h]
 	\centering
@@ -278,21 +278,22 @@ The third image collapses the time dimension by averaging the LOFAR spectra.
 	\caption{Mean LOFAR Spectrum}
 \end{figure}
 
-The result makes persistent frequencies easier to inspect quantitatively. The distinction between Images 2 and 3 is useful:
+The result makes persistent frequencies easier to inspect quantitatively. Compare Figures 22 and 23 with Figure 24, the tonals now stand out above the background.
 
+So:
  \begin{compactitem}
     \item The LOFAR spectrogram answers when and where spectral energy occurs;
     \item The mean spectrum emphasises which spectral components persist strongly across the observation.
  \end{compactitem}
 
 
-A peak in the mean spectrum is consequently an analytical clue rather than an automatic identification. Relationships between peaks matter considerably more. If components show harmonic spacing, sideband relationships or other regular structure, the analyst has a basis for asking whether they share a common mechanical origin.
+A peak in the mean spectrum should be viewed as an analytical clue rather than an automatic identification. Relationships between peaks matter considerably more. If components show harmonic spacing, sideband relationships or other regular structure, the analyst has a basis for asking whether they share a common mechanical origin.
 
 This naturally leads to DEMON analysis.
 
 \subsubsection{The DEMONgram}
 
-DEMON provides a fundamentally different view of the signal.
+DEMON provides a fundamentally different view of the signal (Figure 25). Rather than simply asking which acoustic frequencies are present, DEMON examines periodic amplitude modulation within a selected acoustic band. This distinction is fundamental; DEMON extracts modulation frequencies, which are subsequently interpreted through shaft and blade relationships.
 
 \begin{figure}[h]
 	\centering
@@ -300,11 +301,7 @@ DEMON provides a fundamentally different view of the signal.
 	\caption{DEMON Waterfall}
 \end{figure}
 
-Rather than simply asking which acoustic frequencies are present, DEMON examines periodic amplitude modulation within a selected acoustic band. This distinction is fundamental and was specifically highlighted as a strength in the review of the MACS material: DEMON extracts modulation frequencies, which are subsequently interpreted through shaft and blade relationships.
-
-The DEMONgram therefore asks: At what rates is the acoustic energy being modulated, and how do those rates behave with time?
-
-That question is particularly relevant to rotating machinery.
+The DEMONgram therefore asks: At what rates is the acoustic energy being modulated, and how do those rates behave with time? This is particularly relevant to rotating machinery.
 
 In the synthetic example there is a known Shaft Rate:
 
@@ -314,32 +311,17 @@ and a five-bladed propeller.
 
 The corresponding Blade Rate is therefore:
 
-$BR=B\times SR$
-
-where BB is the number of blades.
-
-Thus:
-
-$BR=5\times1.30=6.50\text{ Hz}$
+$BR = B\times SR = 5\times1.30=6.50\text{ Hz}$
 
 The DEMON display allows those low-frequency modulation relationships to become much more apparent than they may have been in the original waveform or conventional spectral display.
 
 \subsubsection{The Mean DEMON Spectrum}
 
-The fifth image is particularly useful for interpretation because it converts the DEMONgram into an averaged modulation spectrum. The principal frequencies of interest are:
+Figure 26 is particularly useful for interpretation because it converts the DEMONgram into an averaged modulation spectrum. The principal frequencies of interest are:
 
 $1.30\text{ Hz},\quad6.50\text{ Hz},\quad13.00\text{ Hz}$
 
 These are not three arbitrary numbers, they form a mathematically related family.
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=350px]{../img/actuals/05_mean_demon_spectrum.pdf}
-	\caption{Mean DEMON spectrum}
-\end{figure}
-
-\begin{advisory}
-\textbf{Why the 13 Hz line is unclear: }The second Blade Rate harmonic is not convincingly visible in the supplied DEMONgram. That is a limitation of the synthetic signal rather than something that should be explained away in the guide.
-\end{advisory}
 
 The 1.30 Hz component corresponds to the known Shaft Rate, while:
 
@@ -358,6 +340,17 @@ The value of the DEMON spectrum therefore lies not merely in finding a strong pe
 $SR\rightarrow BR\rightarrow2BR$
 
 That provides substantially more meaningful evidence than interpreting any one component alone.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=350px]{../img/actuals/05_mean_demon_spectrum.pdf}
+	\caption{Mean DEMON spectrum}
+\end{figure}
+
+\begin{advisory}
+\textbf{Why the 13 Hz line is unclear: }The second Blade Rate harmonic is not convincingly visible in the supplied DEMONgram. That is a limitation of the synthetic signal rather than something that should be explained away in the guide. It is however clearly visible in the MACS versions of these images produce by analysing the sound file in MACS. These images and explanatory notes are available in the download package for Illustrated Example 2.
+\end{advisory}
+
+
 
 \subsubsection{The Real Cepstrum}
 
