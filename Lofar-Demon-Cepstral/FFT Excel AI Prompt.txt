@@ -1,0 +1,12 @@
+Using the following function: x(t)=3sin(2π50t)+2sin(2π120t)
+
+Create an illustrated Excel spreadsheet demonstrating the Fourier Transform.
+
+The spreadsheet should include, demonstration data, suitable charts and explanatory notes. 
+
+
+
+
+In the same vein, can you create a convincing Excel spreadsheet demonstrating Cepstrum
+
+The spreadsheet should include, demonstration data, suitable charts and explanatory notes.
