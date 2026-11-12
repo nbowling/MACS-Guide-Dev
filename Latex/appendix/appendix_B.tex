@@ -459,22 +459,69 @@ The Fourier Transform is a cornerstone of modern science and engineering. By con
 \subsection{LOFAR}
 \textcolor{commentGreen}{*** WIP ***}
 
-What it is: A standard acoustic spectrogram displayed as a waterfall. Each new FFT frame is added as a horizontal line of pixels scrolling bottom to top; the horizontal axis is frequency; colour encodes amplitude in dB. Persistent vertical lines marching across the display indicate tonal components — discrete narrowband signals that stand out from the broadband noise background.
+\subsubsection{What LOFAR analysis is}
 
-\textbf{Signal path:}
+LOFAR (Low Frequency Analysis and Recording) is a passive-sonar spectral-analysis technique used to reveal how the low-frequency content of received underwater sound changes with time. In its familiar form, sequential short-time spectra are arranged as a time–frequency display called a LOFARgram. Narrowband tonal lines that may be difficult to distinguish in the raw waveform can then become visually persistent tracks. Each new FFT frame is added as a horizontal line of pixels scrolling bottom to top; the horizontal axis is frequency; colour encodes amplitude in dB. Persistent vertical lines marching across the display indicate tonal components — discrete narrowband signals that stand out from the broadband noise background.
 
+For marine acoustic analysis, the important point is that LOFAR operates on the received acoustic signal itself. The frequencies displayed are acoustic frequencies. They may arise from rotating or reciprocating machinery, electrical systems, pumps, gears, propeller/shaft phenomena and other periodic sources. Broadband energy from flow, cavitation, sea noise and shipping forms the background against which discrete lines must be detected.
+
+\subsubsection{Why LOFAR is useful in the marine environment}
+
+Passive sensors do not need the target to return an active transmitted pulse: they analyse sound already present at the receiver. Research literature uses processed multi-beam LOFAR data for passive underwater-target tracking, and current work continues to treat ship-radiated line-spectrum features and their continuity as important passive-sonar information. The practical value for an analyst is that persistent line structure can be followed over time rather than assessed from a single spectrum.
+
+\textbf{Surface ships: }A surface ship can contribute machinery tonals, propeller/shaft-related components and broadband hydrodynamic or cavitation noise. A LOFARgram helps separate stable or smoothly varying narrowband tracks from the broadband background and makes harmonic or sideband relationships easier to measure.
+
+\textbf{Submarines: }For a submerged submarine, the same signal-processing principles apply. Quiet operating states can make discrete components weak relative to ambient and self-noise, so long-duration continuity and coherent relationships between lines are especially valuable. A detected line alone should not be treated as unique identification; bearing behaviour, multiple frequencies, DEMON/cepstral evidence and operational context should be combined.
+
+\subsubsection{Signal processing path in MACS:}
 \begin{compactenum}
-    \item Audio samples arrive from the engine (live or file playback).
-    \item An optional bandpass filter is applied.
-    \item An optional noise reference is subtracted.
-    \item Samples are accumulated in an overlap buffer.
-    \item An FFT is computed with zero-padding to match the display pixel width.
-    \item Magnitudes are converted to dB.
-    \item Optional normalisation is applied.
-    \item The result is mapped through the Floor / Dynamic Range colour scale and painted as one column.
+    \item \textbf{Acoustic reception: }A hydrophone or array converts pressure fluctuations into an electrical signal. MACS contains the target sound together with ocean ambient noise, other vessels and sensor/platform contributions.
+    \item \textbf{Analogue conditioning: }The signal is amplified as required and an optional bandpass filter is applied. An anti-alias filter limits content above the usable digital bandwidth before sampling.
+    \item \textbf{Optional noise reference: }Is subtracted.
+    \item \textbf{Sampling: }The conditioned analogue signal is digitised at sampling frequency $F_{s}$. For a retained highest frequency $F_{max}$, the sampling rate must exceed twice that frequency in the ideal Nyquist sense, with practical anti-alias filtering providing transition margin.
+    \item \textbf{Divide into analysis frames: }The continuous sample stream is split into finite-duration frames. Samples are accumulated in an overlap buffer normally overlapping when a smooth time history is required.
+    \item \textbf{Apply a window: }A taper such as Hann is applied to reduce spectral leakage.
+    \item \textbf{FFT each frame: }For each frame, the discrete Fourier Transform, normally computed using an FFT algorithm, is computed with zero-padding to match the display pixel width.
+    \item \textbf{Form magnitude or power: }The bins are converted to magnitude, power, power spectral density or a calibrated level as appropriate. Logarithmic dB presentation greatly expands useful display dynamic range.
+    \item \textbf{Stack spectra in time: }The result is mapped through the Floor / Dynamic Range colour scale and painted as one column of a time-frequency image. Frequency the z-axis, time the y-axis, and colour/intensity represents spectral level. This image is the \textbf{LOFARgram}.
 \end{compactenum}
 
-\textbf{Key parameters:} FFT Size, Overlap, Floor, Dynamic Range, Normalisation, $F_{min}$ / $F_{max}$ display limits.
+\begin{advisory}
+    \textbf{MACS User adjustable key parameters:} FFT Size, Overlap, Floor, Dynamic Range, Normalisation, $F_{min}$ / $F_{max}$ display limits.
+\end{advisory}
+
+ \begin{figure}[ht]
+	\centering
+	\includegraphics[width=400px]{../img/actuals/LOFAR_process.pdf}
+	\caption{LOFAR Process}
+\end{figure}
+
+\subsubsection{Core processing formulae}
+
+For a frame containing N samples acquired at sampling frequency $F_s$, the DFT (see page 67) frequencies are
+\[
+    f_{ₖ} = \frac{F_{s}}{N} \quad \text{k = 0, 1, …, N - 1}    
+\]
+
+The frequency-bin spacing is
+\[
+    \Delta f = \frac{F_{s}}{N}
+\]
+
+Because a frame of N samples lasts $T = N\divF_s$ seconds, this can also be written
+\[
+    \Delta f = \frac{1}{T}
+\]
+
+This is the fundamental time/frequency trade-off: a longer analysis frame gives finer bin spacing, but it averages the signal over a longer interval and therefore reduces responsiveness to rapid changes.
+A common windowed DFT expression is
+
+\[
+ X[k]=\sum_{n=0}^{N-1}x [n] e^{-j2\pi kn/N}
+\]
+
+where x[n] is the sampled signal and w[n] is the analysis window. A displayed spectrum is derived from |X[k]| or |X[k]|², with the exact scaling depending on whether magnitude, power, PSD or calibrated sound level is required.
+
 
 \subsection{DEMON}
 \textcolor{commentGreen}{*** WIP ***}
@@ -483,7 +530,7 @@ What it is: A standard acoustic spectrogram displayed as a waterfall. Each new F
  \begin{figure}[ht]
 	\centering
 	\includegraphics[width=300px]{../img/actuals/DEMONchart.pdf}
-	\caption{DEMON process}
+	\caption{DEMON Process}
 \end{figure}
 
 \textbf{Signal path:}
