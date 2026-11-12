@@ -1,0 +1,8 @@
+Explain DEMON analysis.
+Relate to the marine environment specifically for the detection of submarines and surface ships
+Explain what modulation is and how it is created, what are the sources of modulation
+Explain how modulation creates the signal visualised by demon, i.e. what is the relationship between modulation and the original sound
+Explain how to interpret the DEMON display
+Give a concrete example with formulas and explanation
+Include suitable diagrams in .png format if appropriate
+Produce the final text as a downloadable Word .docx for review
