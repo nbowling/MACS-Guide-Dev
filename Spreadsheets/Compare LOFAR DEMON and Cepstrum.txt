@@ -1,0 +1,263 @@
+The cleanest way to distinguish them is by the question each technique asks of the signal. That distinction is also explicit in your 0_2_5 AI Review Synthesis.txt: LOFAR asks what persistent spectral structures exist, DEMON asks what periodic modulation exists, and cepstrum asks whether there is hidden periodic spacing.
+
+Technique	Main question	Primary domain	Typical evidenceLOFAR	What frequencies/tonals are present and persistent?	Frequency over time	Tonals, harmonics, sidebands, broadband structure
+DEMON	What periodic modulation is present?	Modulation frequency	Modulation-rate peaks
+Cepstrum	Is there regular spacing between spectral features?	Quefrency	Harmonic/sideband spacing
+
+Your review also makes an important distinction for DEMON: it extracts modulation frequencies, which can then be interpreted using relationships such as shaft and blade rates. It is misleading simply to say DEMON “finds blade frequencies”.
+
+1. LOFAR
+
+Think of LOFAR as your spectral map.
+
+Starting with acoustic data:
+
+x(t)x(t)
+
+you perform spectral analysis such as an FFT:
+
+x(t)→X(f)x(t)\rightarrow X(f)
+
+A sequence of spectra displayed against time gives you the familiar LOFARgram.
+
+What you look for
+
+For example, suppose the spectrum contains:
+
+29.7,31.0,32.3,33.6 Hz.29.7,\quad 31.0,\quad32.3,\quad33.6\text{ Hz}.
+
+LOFAR tells you:
+
+These spectral structures exist.
+
+You can then investigate:
+
+individual tonals
+harmonic relationships
+sidebands
+persistent versus transient features
+spectral changes over time
+
+But the presence of a tonal is not automatically proof of a particular machinery source, a caution specifically made in your review.
+
+2. DEMON
+
+DEMON asks a quite different question:
+
+Does the received acoustic energy contain periodic amplitude modulation?
+
+Conceptually:
+
+Acoustic signal
+      │
+      ▼
+Select appropriate band
+      │
+      ▼
+Envelope / demodulation
+      │
+      ▼
+Analyse envelope spectrum
+      │
+      ▼
+Modulation frequencies
+
+
+So if DEMON shows a strong peak at:
+
+11.7 Hz,11.7\text{ Hz},
+
+the careful interpretation is:
+
+There is significant periodic modulation at approximately 11.7 Hz.
+
+It isn't automatically:
+
+“There is an acoustic tonal at 11.7 Hz.”
+
+And it isn't automatically:
+
+“The propeller blade rate is 11.7 Hz.”
+
+You subsequently compare that modulation frequency with the physical hypotheses.
+
+For example, if independently established shaft rate is SRSR and the propeller has BB blades:
+
+BR=B×SR.BR=B\times SR.
+
+Your review specifically recommends exactly this kind of physics-based cross-checking.
+
+3. Cepstrum
+
+Cepstrum asks something different again:
+
+Is there periodic spacing among features in the spectrum?
+
+The simplified processing chain we've just explored is:
+
+x(t)x(t)
+
+↓
+
+Fourier transform
+
+X(f)X(f)
+
+↓
+
+Magnitude
+
+∣X(f)∣|X(f)|
+
+↓
+
+Log magnitude
+
+ln⁡∣X(f)∣\ln |X(f)|
+
+↓
+
+Inverse transform
+
+c(q)c(q)
+
+The result is the cepstrum, whose horizontal coordinate is quefrency.
+
+The important relationship is:
+
+Δfspacing≈1q\boxed{ \Delta f_{\mathrm{spacing}}\approx\frac{1}{q} }
+
+with qq expressed in seconds.
+
+4. A combined example
+
+Imagine LOFAR shows a family:
+
+50.0,51.3,52.6,53.9,55.2 Hz.50.0,\quad51.3,\quad52.6,\quad53.9,\quad55.2\text{ Hz}.
+
+The spacing appears to be:
+
+1.3 Hz.\boxed{1.3\text{ Hz}}.
+LOFAR tells us
+
+There is a family of persistent spectral features with approximately 1.3 Hz separation.
+
+Cepstrum tests that relationship
+
+The predicted quefrency is:
+
+q=11.3≈0.769 s.q=\frac{1}{1.3} \approx0.769\text{ s}.
+
+So a cepstral feature around:
+
+769 ms\boxed{769\text{ ms}}
+
+would independently support the existence of approximately 1.3 Hz periodic spectral spacing.
+
+DEMON asks something else
+
+DEMON might then reveal periodic modulation at 1.3 Hz, 6.5 Hz or another physically meaningful rate.
+
+That gives us a different piece of evidence:
+
+The received acoustic energy is being periodically modulated at that rate.
+
+This is considerably stronger than simply saying “There's a line at 51.3 Hz, therefore we've identified the machinery.”
+
+5. Their outputs should not be confused
+
+This is probably the most important comparison.
+
+Suppose you see:
+
+LOFAR peak at 8 Hz
+
+It means:
+
+spectral energy/tonal structure near 8 Hz\boxed{\text{spectral energy/tonal structure near 8 Hz}}
+DEMON peak at 8 Hz
+
+It means:
+
+periodic modulation near 8 Hz\boxed{\text{periodic modulation near 8 Hz}}
+Cepstral evidence corresponding to 8 Hz
+
+The quefrency would be:
+
+q=18=0.125 s=125 ms.q=\frac18=0.125\text{ s}=125\text{ ms}.
+
+That means:
+
+spectral features recur at roughly 8 Hz intervals\boxed{\text{spectral features recur at roughly 8 Hz intervals}}
+
+Those are three different observations.
+
+They could be related to the same underlying machinery, but the processing itself doesn't establish that.
+
+6. Why they are powerful together
+
+This is where your MACS methodology becomes particularly useful.
+
+You can think of the analysis as a chain of independent questions:
+
+                  ACOUSTIC SIGNAL
+                        │
+          ┌─────────────┼─────────────┐
+          │             │             │
+          ▼             ▼             ▼
+        LOFAR          DEMON        CEPSTRUM
+          │             │             │
+          ▼             ▼             ▼
+      What spectral   What periodic   What regular
+      structures      modulation      spectral
+      exist?          exists?         spacing exists?
+          │             │             │
+          └─────────────┼─────────────┘
+                        ▼
+                Compare hypotheses
+                        │
+                        ▼
+             shaft / blade / machinery
+                    relationships
+                        │
+                        ▼
+               PHYSICAL INTERPRETATION
+
+
+The advantage is independent evidence.
+
+Your 0_2_5 AI Review Synthesis.txt explicitly characterises this layered confirmation approach as a way of avoiding over-interpreting one attractive spectral peak.
+
+A useful shorthand
+
+I'd reduce the distinction to three questions:
+
+LOFAR: “Where are the lines?”
+
+DEMON: “What is modulating?”
+
+Cepstrum: “What spacing repeats?”
+
+Then bring those three answers together with the physical relationships you already use:
+
+RPM=60 SRRPM=60\,SR BR=B×SRBR=B\times SR
+
+plus harmonics and sideband relationships. Those DSP sanity checks and the need for physics-based interpretation are also specifically identified in your 0_2_5 AI Review Synthesis.txt.
+
+That is really the strength of using LOFAR + DEMON + cepstrum together. They aren't three competing ways of finding the same answer. They give you different views of the same acoustic signal, and agreement between those views makes a physical interpretation much more convincing.
+
+
+Certainly. The most useful distinction is that the three techniques answer different questions about the same acoustic signal, rather than being competing methods. Your 0_2_5 AI Review Synthesis.txt explicitly supports this layered approach.
+
+Technique	Core question	What it reveals	Typical interpretation
+LOFAR	What persistent spectral structures exist?	Tonals and other spectral structures	Look for candidate machinery frequencies, harmonics, sidebands and other persistent features.
+DEMON	What periodic modulation exists?	Modulation frequencies	Compare detected modulation rates with physically plausible relationships such as shaft and blade rates. A DEMON peak is not automatically an acoustic tonal.
+Cepstrum	Is there hidden periodic spectral spacing?	Repeated spacing between spectral features	Convert a quefrency qq to spectral spacing using Δf≈1/q\Delta f\approx1/q, then look for that spacing in the spectrum.
+
+In one sentence each
+
+LOFAR: Where are the spectral structures?
+ DEMON: What periodic modulation is present?
+ Cepstrum: What spectral spacing repeats?
+
+The important principle is cross-confirmation: a LOFAR tonal, DEMON peak or cepstral peak alone should not automatically be identified with machinery. Your material specifically advocates finding the feature first, then seeking independent evidence and checking whether the physics supports the interpretation.

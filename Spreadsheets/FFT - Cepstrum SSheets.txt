@@ -1,0 +1,2238 @@
+Could you please explain the excel formulas used in Fourier demonstration spreadsheet?
+
+Certainly. I’ll explain the formulas in the original Fourier demonstration spreadsheet, using the signal
+
+x(t)=3sin⁡(2π50t)+2sin⁡(2π120t)\boxed{x(t)=3\sin(2\pi50t)+2\sin(2\pi120t)}
+
+and follow the calculation in the same order that Excel does. This approach also fits the emphasis in your 0_2_5 AI Review Synthesis.txt on explaining the actual DSP rather than simply presenting an FFT as a black box.
+
+1. The input values
+
+At the top of the worksheet we have approximately:
+
+Cell	Meaning	ValueB3	Sampling frequency FsF_s	1000 Hz
+B4	Number of samples NN	1000
+B5	Sample interval Δt\Delta t	formula
+B6	Frequency resolution Δf\Delta f	formula
+B7	Nyquist frequency	formula
+E3	Amplitude A1A_1	3
+E4	Frequency f1f_1	50 Hz
+E5	Amplitude A2A_2	2
+E6	Frequency f2f_2	120 Hz
+
+The blue values are the things we've chosen. The black formula cells derive everything else from them.
+
+2. Sample interval
+
+Cell B5:
+
+=1/B3
+
+
+This implements
+
+Δt=1Fs.\Delta t=\frac{1}{F_s}.
+
+Since:
+
+Fs=1000 samples/s,F_s=1000\text{ samples/s},
+
+we have:
+
+Δt=11000=0.001 s.\Delta t=\frac{1}{1000}=0.001\text{ s}.
+
+Therefore:
+
+Δt=1 ms\boxed{\Delta t=1\text{ ms}}
+
+Each signal sample is separated from the next by 1 ms.
+
+3. Frequency resolution
+
+Cell B6:
+
+=B3/B4
+
+
+implements:
+
+Δf=FsN\boxed{\Delta f=\frac{F_s}{N}}
+
+so:
+
+Δf=10001000=1 Hz.\Delta f=\frac{1000}{1000} =1\text{ Hz}.
+
+This means our DFT bins are:
+
+0, 1, 2, 3,…Hz.0,\ 1,\ 2,\ 3,\ldots\text{Hz}.
+
+That's particularly convenient because our two components, 50 Hz and 120 Hz, fall exactly on DFT bins.
+
+4. Nyquist frequency
+
+Cell B7:
+
+=B3/2
+
+
+implements:
+
+FN=Fs2.F_N=\frac{F_s}{2}.
+
+Hence:
+
+FN=10002=500 Hz.F_N=\frac{1000}{2} =\boxed{500\text{ Hz}}.
+
+So our 50 Hz and 120 Hz signals are both comfortably below Nyquist.
+
+5. Sample number
+
+The data starts at row 11.
+
+Column A contains:
+
+A11 = 0
+A12 = 1
+A13 = 2
+A14 = 3
+...
+
+
+This is our sample index:
+
+n=0,1,2,3,…,999.n=0,1,2,3,\ldots,999.
+
+It is important to distinguish this from time.
+
+Sample number n=100n=100 does not mean 100 seconds. It means the 101st sample, because numbering begins at zero.
+
+6. Turning sample number into time
+
+Cell B11:
+
+=A11/$B$3
+
+
+implements:
+
+tn=nFs.\boxed{t_n=\frac{n}{F_s}}.
+
+At n=0n=0:
+
+t0=01000=0.t_0=\frac{0}{1000}=0.
+
+At n=1n=1:
+
+t1=11000=0.001 s.t_1=\frac{1}{1000}=0.001\text{ s}.
+
+At n=2n=2:
+
+t2=0.002 s.t_2=0.002\text{ s}.
+
+Therefore the column becomes:
+
+n        t
+0      0.000
+1      0.001
+2      0.002
+3      0.003
+...
+999    0.999
+
+Why $B$3?
+
+The dollar signs make it an absolute reference.
+
+When Excel copies the formula from B11 to B12:
+
+=A11/$B$3
+
+
+becomes:
+
+=A12/$B$3
+
+
+B3 stays fixed.
+
+7. Generating the 50 Hz sinusoid
+
+Cell C11 contains essentially:
+
+=$E$3*SIN(2*PI()*$E$4*B11)
+
+
+This corresponds precisely to:
+
+A1sin⁡(2πf1t).A_1\sin(2\pi f_1t).
+
+Substitute our values:
+
+A1=3A_1=3
+
+and:
+
+f1=50.f_1=50.
+
+So Excel calculates:
+
+x1(t)=3sin⁡(2π50t).\boxed{x_1(t)=3\sin(2\pi50t)}.
+
+Let's break the Excel expression down:
+
+$E$3
+
+
+means:
+
+33
+
+SIN() performs the sine operation.
+
+PI() supplies:
+
+π.\pi.
+
+$E$4 supplies:
+
+50.50.
+
+B11 supplies the current time.
+
+So Excel is literally evaluating:
+
+3×sin⁡(2×π×50×t).3\times \sin( 2\times\pi\times50\times t ).
+8. Generating the 120 Hz sinusoid
+
+Cell D11 is essentially:
+
+=$E$5*SIN(2*PI()*$E$6*B11)
+
+
+which represents:
+
+A2sin⁡(2πf2t).A_2\sin(2\pi f_2t).
+
+Since:
+
+A2=2A_2=2
+
+and:
+
+f2=120,f_2=120,
+
+we obtain:
+
+x2(t)=2sin⁡(2π120t).\boxed{x_2(t)=2\sin(2\pi120t)}.
+9. Constructing the complete signal
+
+Cell E11:
+
+=C11+D11
+
+
+does something extremely simple but important:
+
+x[n]=x1[n]+x2[n].x[n]=x_1[n]+x_2[n].
+
+Therefore:
+
+x(t)=3sin⁡(2π50t)+2sin⁡(2π120t)\boxed{ x(t)= 3\sin(2\pi50t) + 2\sin(2\pi120t) }
+
+Column E is consequently our simulated measured signal.
+
+The time-domain chart plots this column.
+
+So at this point we've effectively forgotten that we created the signal. Imagine that column E came from a sensor or hydrophone instead.
+
+The problem now becomes:
+
+Can we determine which frequencies are hidden inside column E?
+
+That's where the DFT starts.
+
+10. Frequency-bin number
+
+Column F contains:
+
+k=0,1,2,3,…k=0,1,2,3,\ldots
+
+This is analogous to our sample index nn, but now it refers to frequency bins.
+
+Remember the distinction:
+
+n=time sample index\boxed{n=\text{time sample index}} k=frequency bin index\boxed{k=\text{frequency bin index}}
+11. Converting kk into frequency
+
+Column G uses:
+
+=F11*$B$3/$B$4
+
+
+This implements:
+
+fk=kFsN\boxed{f_k=\frac{kF_s}{N}}
+
+or equivalently:
+
+fk=kΔf.f_k=k\Delta f.
+
+Because:
+
+Fs=1000F_s=1000
+
+and:
+
+N=1000,N=1000,
+
+we have:
+
+fk=k.f_k=k.
+
+So:
+
+k       Frequency
+
+0          0 Hz
+1          1 Hz
+2          2 Hz
+...
+50        50 Hz
+...
+120      120 Hz
+...
+500      500 Hz
+
+
+This gives the horizontal axis of our Fourier spectrum.
+
+12. The intimidating formula
+
+Column H contains the big DFT magnitude formula.
+
+Conceptually, it's doing this:
+
+=scale *
+ SQRT(
+   SUMPRODUCT(signal,COS(reference))^2
+   +
+   SUMPRODUCT(signal,SIN(reference))^2
+ )
+
+
+That looks terrible when written as one enormous Excel formula.
+
+But there are really only four operations:
+
+Generate cosine and sine reference patterns.
+Multiply them by the measured signal and sum.
+Combine the two resulting values.
+Scale the answer.
+
+Let's take them one at a time.
+
+13. The cosine calculation
+
+The first major component is effectively:
+
+SUMPRODUCT(
+ $E$11:$E$1010,
+ COS(2*PI()*F11*$A$11:$A$1010/$B$4)
+)
+
+
+Mathematically:
+
+R[k]=∑n=0N−1x[n]cos⁡(2πknN).R[k]= \sum_{n=0}^{N-1} x[n] \cos\left(\frac{2\pi kn}{N}\right).
+What does this actually mean?
+
+Suppose Excel is calculating bin:
+
+k=50.k=50.
+
+It creates a 50 Hz cosine reference pattern.
+
+It then does:
+
+x[0]×cos⁡(θ0)x[0]\times\cos(\theta_0)
+
+plus:
+
+x[1]×cos⁡(θ1)x[1]\times\cos(\theta_1)
+
+plus:
+
+x[2]×cos⁡(θ2)x[2]\times\cos(\theta_2)
+
+and continues all the way to:
+
+x[999]×cos⁡(θ999).x[999]\times\cos(\theta_{999}).
+
+SUMPRODUCT conveniently performs all 1,000 multiplications and additions for us.
+
+14. What SUMPRODUCT really means
+
+Imagine:
+
+Signal       Reference       Product
+
+x[0]    ×     cos[0]    =     result 0
+x[1]    ×     cos[1]    =     result 1
+x[2]    ×     cos[2]    =     result 2
+x[3]    ×     cos[3]    =     result 3
+   ...
+x[999]  ×     cos[999]  =     result 999
+                                │
+                                ▼
+                         add everything
+                                │
+                                ▼
+                              R[k]
+
+
+That's SUMPRODUCT.
+
+There isn't anything more mysterious happening inside it.
+
+15. Why does this detect a frequency?
+
+Suppose we're testing:
+
+49 Hz.49\text{ Hz}.
+
+The actual signal contains 50 and 120 Hz.
+
+The 49 Hz reference does not consistently line up with either.
+
+Across the one-second observation interval, positive and negative products mostly cancel.
+
+So:
+
+R[49]≈0.R[49]\approx0.
+
+Now test:
+
+50 Hz.50\text{ Hz}.
+
+The 50 Hz reference aligns with the 50 Hz component in our measured signal.
+
+The products now reinforce one another.
+
+So:
+
+R[50]R[50]
+
+becomes significant.
+
+This is the heart of Fourier analysis.
+
+16. The sine calculation
+
+The formula performs a second SUMPRODUCT:
+
+SUMPRODUCT(
+ $E$11:$E$1010,
+ SIN(2*PI()*F11*$A$11:$A$1010/$B$4)
+)
+
+
+Mathematically:
+
+I[k]=∑n=0N−1x[n]sin⁡(2πknN).I[k]= \sum_{n=0}^{N-1} x[n] \sin\left(\frac{2\pi kn}{N}\right).
+
+It performs the same sort of comparison, but against a sine reference.
+
+Why both?
+
+Because our unknown frequency component may have an arbitrary phase.
+
+A pure cosine and a pure sine at the same frequency are 90° apart in phase.
+
+By examining both, the DFT can detect the frequency regardless of that initial phase.
+
+17. Squaring the components
+
+The formula next contains:
+
+(Real)^2
+
+
+and:
+
+(Imaginary)^2
+
+
+giving:
+
+R[k]2R[k]^2
+
+and:
+
+I[k]2.I[k]^2.
+
+Then it adds them:
+
+R[k]2+I[k]2.R[k]^2+I[k]^2.
+18. SQRT()
+
+Excel then performs:
+
+SQRT(R^2+I^2)
+
+
+giving:
+
+∣X[k]∣=R[k]2+I[k]2\boxed{ |X[k]|= \sqrt{R[k]^2+I[k]^2} }
+
+This is simply Pythagoras.
+
+Think of:
+
+R[k]R[k]
+
+and:
+
+I[k]I[k]
+
+as coordinates of the Fourier coefficient:
+
+          Imaginary
+              ↑
+              |
+              |        ● X[k]
+              |       /|
+              |      / |
+              |     /  |
+              |    /   |
+              |   /    |
+──────────────┼──────────────→ Real
+
+
+The vector length is:
+
+R2+I2.\sqrt{R^2+I^2}.
+
+That's the Fourier magnitude.
+
+19. Why we need normalisation
+
+The raw DFT magnitude depends upon NN.
+
+A bin-centred sinusoid with amplitude AA has, for the ordinary positive-frequency bin, a raw DFT magnitude of approximately:
+
+NA2.\frac{NA}{2}.
+
+Our 50 Hz sinusoid has:
+
+A=3A=3
+
+and:
+
+N=1000.N=1000.
+
+Therefore its raw magnitude is approximately:
+
+1000×32=1500.\frac{1000\times3}{2} =1500.
+
+But that's not a very intuitive answer.
+
+We know we generated a sinusoid with amplitude:
+
+3.3.
+
+So the workbook applies:
+
+2N\boxed{\frac{2}{N}}
+
+to ordinary positive-frequency bins.
+
+Therefore:
+
+1500×21000=3.1500\times\frac{2}{1000} =3.
+
+Our Fourier spectrum now reports an amplitude of:
+
+3\boxed{3}
+
+at 50 Hz.
+
+Likewise the 120 Hz component becomes:
+
+2.\boxed{2}.
+20. Why IF(OR(...)) appears
+
+The scaling factor is essentially:
+
+IF(
+   OR(k=0,k=N/2),
+   1/N,
+   2/N
+)
+
+
+This handles two special frequency bins.
+
+DC
+k=0k=0
+
+corresponds to:
+
+f=0 Hz.f=0\text{ Hz}.
+Nyquist
+k=N/2k=N/2
+
+corresponds to:
+
+f=Fs/2.f=F_s/2.
+
+These special bins aren't doubled when making the usual one-sided spectrum.
+
+Therefore Excel applies:
+
+1N\frac{1}{N}
+
+to them, but:
+
+2N\frac{2}{N}
+
+to the ordinary positive-frequency bins.
+
+21. Reading the complete Excel formula from the inside out
+
+So when you see the enormous expression in column H, don't try to understand it from left to right.
+
+Start at the centre.
+
+Stage 1: reference waves
+COS(2*PI()*k*n/N)
+
+
+and:
+
+SIN(2*PI()*k*n/N)
+
+
+generate the test patterns.
+
+↓
+
+Stage 2: compare with the signal
+SUMPRODUCT(signal,COS(...))
+
+
+and:
+
+SUMPRODUCT(signal,SIN(...))
+
+
+calculate the two Fourier components.
+
+↓
+
+Stage 3: combine them
+SQRT(Real^2+Imaginary^2)
+
+
+produces:
+
+∣X[k]∣.|X[k]|.
+
+↓
+
+Stage 4: normalise
+2/N
+
+
+usually converts this into our one-sided sinusoidal amplitude.
+
+↓
+
+Result
+Amplitude at frequency fk\boxed{\text{Amplitude at frequency }f_k}
+22. The whole spreadsheet in one picture
+                    INPUT PARAMETERS
+                 Fs = 1000     N = 1000
+                       │
+                       ▼
+                    Δt = 1/Fs
+                       │
+                       ▼
+                TIME SAMPLE INDEX n
+                       │
+                       ▼
+                    t = n/Fs
+                       │
+          ┌────────────┴─────────────┐
+          ▼                          ▼
+  3 sin(2π50t)              2 sin(2π120t)
+          │                          │
+          └────────────┬─────────────┘
+                       ▼
+                ADD THE SIGNALS
+                       │
+                       ▼
+                     x[n]
+                       │
+                       │
+                ┌──────┴──────┐
+                ▼             ▼
+             COS test       SIN test
+                │             │
+                ▼             ▼
+           SUMPRODUCT     SUMPRODUCT
+                │             │
+                ▼             ▼
+               R[k]          I[k]
+                │             │
+                └──────┬──────┘
+                       ▼
+                 SQRT(R² + I²)
+                       │
+                       ▼
+                   magnitude
+                       │
+                       ▼
+                  × 2/N scaling
+                       │
+                       ▼
+                FOURIER SPECTRUM
+                       │
+             ┌─────────┴─────────┐
+             ▼                   ▼
+          50 Hz                 120 Hz
+       amplitude 3           amplitude 2
+
+The key insight
+
+If you remember only one thing about the formulas, make it this:
+
+For each candidate frequency, the DFT generates sine and cosine references at that frequency, compares every signal sample against them, sums the results, and combines those sums into a magnitude.
+
+So the spectrum is effectively the result of asking:
+
+0 Hz, how much of you is present?
+ 1 Hz, how much of you is present?
+ 2 Hz, how much of you is present?
+ ⋮
+ 50 Hz? Lots.
+ ⋮
+ 120 Hz? Lots.
+ ⋮
+
+That is why those two peaks emerge even though the original time-domain waveform looks considerably more complicated.
+
+And once this mechanism is clear, FFT becomes much less mysterious: fundamentally it obtains the same DFT result, but uses a vastly more efficient computational algorithm to get there.
+
+
+You're very welcome. I'm glad that explanation made the spreadsheet easier to follow.
+
+I particularly like using the explicit SUMPRODUCT approach here because it exposes what the DFT is actually doing, rather than hiding everything behind an FFT routine. That fits nicely with the approach in your 0_2_5 AI Review Synthesis.txt, where the emphasis is on understanding the signal-processing reasoning rather than simply operating the software.
+
+The progression we've now built is quite useful:
+
+sampled waveform→DFT→spectrum→log⁡∣X(f)∣→cepstrum→periodic spectral spacing\text{sampled waveform} \rightarrow \text{DFT} \rightarrow \text{spectrum} \rightarrow \log |X(f)| \rightarrow \text{cepstrum} \rightarrow \text{periodic spectral spacing}
+
+That's a solid mathematical foundation for understanding what LOFAR and cepstral analysis are actually telling you.
+
+Explain the DFT formula cell by cell
+
+Absolutely. Let's slow the DFT right down and treat the formula almost as if we were calculating one Excel cell by hand. That is the best way to see what the apparently intimidating expression is actually doing.
+
+Your 0_2_5 AI Review Synthesis.txt specifically notes that the FFT/DFT explanation in your material is internally coherent, and it places this mathematics in the wider chain of LOFAR, DEMON and cepstral interpretation.
+
+I'll use the Fourier workbook calculation first, because once this is completely clear, the inverse-DFT operation in the cepstrum becomes much easier to understand.
+
+1. The DFT equation
+
+The mathematical DFT is:
+
+X[k]=∑n=0N−1x[n]e−j2πkn/N\boxed{ X[k]= \sum_{n=0}^{N-1} x[n]e^{-j2\pi kn/N} }
+
+That looks much worse than what it actually means.
+
+The most important idea is:
+
+For one output frequency bin kk, take every sample x[n]x[n], multiply it by an appropriate sine/cosine value, and add all those results together.
+
+Then repeat the process for the next frequency bin.
+
+So the DFT is essentially a large collection of tests:
+
+Is 0 Hz present?
+ Is 1 Hz present?
+ Is 2 Hz present?
+ ...
+ Is 35 Hz present?
+ ...
+ Is 80 Hz present?
+
+2. What nn and kk mean
+
+This distinction is crucial.
+
+nn means sample number
+n=0,1,2,…,N−1n=0,1,2,\ldots,N-1
+
+It moves through the time-domain samples.
+
+kk means frequency-bin number
+k=0,1,2,…,N−1k=0,1,2,\ldots,N-1
+
+It moves through the frequency-domain bins.
+
+So:
+
+n=input sample\boxed{n=\text{input sample}}
+
+while:
+
+k=output frequency bin\boxed{k=\text{output frequency bin}}
+
+Don't let the fact that both are integers confuse you. They have completely different jobs.
+
+3. Translating kk into frequency
+
+The frequency represented by bin kk is:
+
+fk=kFsN.f_k=\frac{kF_s}{N}.
+
+In our original Fourier spreadsheet:
+
+Fs=1000 HzF_s=1000\text{ Hz}
+
+and:
+
+N=1000.N=1000.
+
+Therefore:
+
+Δf=FsN=10001000=1 Hz.\Delta f=\frac{F_s}{N} =\frac{1000}{1000} =1\text{ Hz}.
+
+That makes the example particularly easy:
+
+k=1→1 Hzk=1\rightarrow1\text{ Hz} k=35→35 Hzk=35\rightarrow35\text{ Hz} k=50→50 Hzk=50\rightarrow50\text{ Hz} k=120→120 Hz.k=120\rightarrow120\text{ Hz}.
+4. How Excel generates nn
+
+Consider the first data row of the original spreadsheet.
+
+Column A is simply:
+
+A11 = 0
+
+
+The next row contains:
+
+A12 = 1
+
+
+then:
+
+A13 = 2
+
+
+and so on.
+
+Therefore column A represents:
+
+n.n.
+5. Turning nn into time
+
+Column B contains:
+
+=A11/$B$3
+
+
+B3 contains:
+
+Fs=1000.F_s=1000.
+
+So Excel is calculating:
+
+tn=nFs.t_n=\frac{n}{F_s}.
+
+For row 11:
+
+n=0n=0
+
+therefore:
+
+t0=01000=0.t_0=\frac{0}{1000}=0.
+
+Next row:
+
+t1=11000=0.001 s.t_1=\frac{1}{1000}=0.001\text{ s}.
+
+Next:
+
+t2=0.002 s.t_2=0.002\text{ s}.
+
+Therefore Excel constructs:
+
+n       time
+0       0.000
+1       0.001
+2       0.002
+3       0.003
+...
+
+6. Generating the actual signal
+
+For the original example,
+
+x(t)=3sin⁡(2π50t)+2sin⁡(2π120t).x(t)=3\sin(2\pi50t)+2\sin(2\pi120t).
+
+The 50 Hz part was generated with a formula equivalent to:
+
+=$E$3*SIN(2*PI()*$E$4*B11)
+
+
+which is:
+
+3sin⁡(2π50t).3\sin(2\pi50t).
+
+The 120 Hz component similarly calculates:
+
+2sin⁡(2π120t).2\sin(2\pi120t).
+
+Column E then contains:
+
+=C11+D11
+
+
+so:
+
+x[n]=x50[n]+x120[n]\boxed{x[n]=x_{50}[n]+x_{120}[n]}
+
+Column E is therefore the signal we give to the DFT.
+
+Everything after this point pretends we no longer know that the signal contains 50 Hz and 120 Hz.
+
+7. Now suppose Excel is testing 50 Hz
+
+This is where the DFT begins to make intuitive sense.
+
+If:
+
+k=50k=50
+
+then Excel calculates the equivalent of:
+
+COS(2*PI()*50*n/1000)
+
+
+for every sample.
+
+It also calculates:
+
+SIN(2*PI()*50*n/1000)
+
+
+for every sample.
+
+It is generating reference sine/cosine patterns corresponding to 50 Hz.
+
+Effectively, Excel asks:
+
+How well does my unknown waveform match a 50 Hz periodic pattern?
+
+8. What happens with the first sample?
+
+At:
+
+n=0n=0
+
+the angle is:
+
+θ=2πknN.\theta= \frac{2\pi kn}{N}.
+
+For k=50k=50:
+
+θ=2π(50)(0)1000=0.\theta= \frac{2\pi(50)(0)}{1000} =0.
+
+Therefore:
+
+cos⁡(0)=1\cos(0)=1
+
+and:
+
+sin⁡(0)=0.\sin(0)=0.
+
+The first signal sample is therefore multiplied by these reference values.
+
+9. Move to sample 1
+
+Now:
+
+n=1.n=1.
+
+The angle becomes:
+
+θ=2π(50)(1)1000.\theta= \frac{2\pi(50)(1)}{1000}.
+
+Then Excel calculates:
+
+x[1]cos⁡(θ)x[1]\cos(\theta)
+
+and:
+
+x[1]sin⁡(θ).x[1]\sin(\theta).
+10. Move to sample 2
+
+Now:
+
+n=2.n=2.
+
+Excel calculates:
+
+x[2]cos⁡(2π(50)(2)1000)x[2]\cos \left( \frac{2\pi(50)(2)}{1000} \right)
+
+and:
+
+x[2]sin⁡(2π(50)(2)1000).x[2]\sin \left( \frac{2\pi(50)(2)}{1000} \right).
+
+Then sample 3.
+
+Then sample 4.
+
+And eventually:
+
+n=999.n=999.
+
+Every one of the 1,000 signal samples participates in calculating the 50 Hz result.
+
+That's an important point.
+
+11. The Excel SUMPRODUCT
+
+Rather than creating 1,000 separate helper cells for all those multiplications, Excel's SUMPRODUCT performs the whole operation in one expression.
+
+Conceptually:
+
+=SUMPRODUCT(
+ signal,
+ COS(reference wave)
+)
+
+
+means:
+
+signal[0] × cos[0]
+       +
+signal[1] × cos[1]
+       +
+signal[2] × cos[2]
+       +
+...
+       +
+signal[999] × cos[999]
+
+
+Therefore:
+
+R[k]=∑n=0N−1x[n]cos⁡(2πknN)\boxed{ R[k]= \sum_{n=0}^{N-1} x[n]\cos\left(\frac{2\pi kn}{N}\right) }
+
+This gives the real component.
+
+12. The sine SUMPRODUCT
+
+Excel performs another calculation:
+
+=SUMPRODUCT(
+ signal,
+ SIN(reference wave)
+)
+
+
+giving:
+
+I[k]=∑n=0N−1x[n]sin⁡(2πknN)\boxed{ I[k]= \sum_{n=0}^{N-1} x[n]\sin\left(\frac{2\pi kn}{N}\right) }
+
+This gives the other component needed to describe the Fourier coefficient.
+
+The sign convention for the imaginary part depends upon whether the forward transform is written with e−jθe^{-j\theta} or e+jθe^{+j\theta}, but the magnitude calculation below is unaffected by that sign.
+
+13. Why do we need both sine and cosine?
+
+Because an unknown sinusoid may have an arbitrary phase.
+
+Suppose we only tested against a sine.
+
+A signal:
+
+Asin⁡(2πft)A\sin(2\pi ft)
+
+would correlate strongly.
+
+But a 90° shifted version behaves like:
+
+Acos⁡(2πft).A\cos(2\pi ft).
+
+Testing with both sine and cosine means the DFT can detect the frequency regardless of its phase.
+
+This is extremely important.
+
+14. Think of the two results as coordinates
+
+After those two SUMPRODUCTs we have:
+
+R[k]R[k]
+
+and:
+
+I[k].I[k].
+
+Think of them as coordinates:
+
+                    Imaginary
+                        ↑
+                        |
+                        |       ● X[k]
+                        |      /|
+                        |     / |
+                        |    /  |
+                        |   /   |
+                        |  /    |
+────────────────────────┼──────────→ Real
+                        |
+
+
+The Fourier coefficient X[k]X[k] is effectively a vector.
+
+So now we want its length.
+
+15. The Excel SQRT
+
+The spreadsheet therefore contains:
+
+=SQRT((Real)^2+(Imaginary)^2)
+
+
+Mathematically:
+
+∣X[k]∣=R[k]2+I[k]2\boxed{ |X[k]|=\sqrt{R[k]^2+I[k]^2} }
+
+This is simply Pythagoras.
+
+If:
+
+R=3R=3
+
+and:
+
+I=4I=4
+
+then:
+
+∣X∣=32+42|X|=\sqrt{3^2+4^2} =25=\sqrt{25} =5.=5.
+
+So SQRT() converts the real/imaginary Fourier components into a magnitude.
+
+16. Why does 50 Hz become large?
+
+Now imagine performing that multiplication for a signal that really does contain 50 Hz.
+
+When Excel generates its 50 Hz reference pattern, that reference lines up consistently with the 50 Hz component in the signal.
+
+The products therefore reinforce one another rather than cancelling.
+
+Consequently:
+
+∣X[50]∣|X[50]|
+
+becomes large.
+
+17. What happens at 49 Hz?
+
+Now Excel repeats exactly the same procedure with:
+
+k=49.k=49.
+
+Its reference pattern is now 49 Hz.
+
+But our signal contains 50 Hz and 120 Hz, not 49 Hz.
+
+Across the complete analysis interval, some products are positive and some negative.
+
+They mostly cancel.
+
+Therefore:
+
+∣X[49]∣≈0.|X[49]|\approx0.
+18. At 50 Hz
+
+The reference matches the signal.
+
+Therefore:
+
+∣X[50]∣≫0.|X[50]|\gg0.
+
+We obtain a spectral peak.
+
+19. At 51 Hz
+
+Again the reference no longer matches.
+
+So:
+
+∣X[51]∣≈0.|X[51]|\approx0.
+
+Consequently the spectrum looks conceptually like:
+
+Amplitude
+   │
+3  │                 │
+   │                 │
+   │                 │
+   │                 │
+0  └─────────────────┼──────────────────→
+                    50 Hz
+
+
+The DFT has discovered the 50 Hz component.
+
+20. Then Excel repeats the entire job for 120 Hz
+
+When:
+
+k=120k=120
+
+the reference is:
+
+cos⁡(2π120n1000)\cos\left(\frac{2\pi120n}{1000}\right)
+
+and:
+
+sin⁡(2π120n1000).\sin\left(\frac{2\pi120n}{1000}\right).
+
+Because the signal contains a 120 Hz component, the sums reinforce.
+
+A second spectral peak appears.
+
+So the complicated waveform:
+
+3sin⁡(2π50t)+2sin⁡(2π120t)3\sin(2\pi50t)+2\sin(2\pi120t)
+
+becomes:
+
+Amplitude
+
+3 │          │
+  │          │
+2 │          │              │
+  │          │              │
+0 └──────────┼──────────────┼────→ Frequency
+            50             120
+
+
+That's the fundamental operation you're seeing in the workbook.
+
+21. The normalisation factor
+
+But there is another part of the Excel formula:
+
+2/N
+
+
+or in our spreadsheet:
+
+2/$B$4
+
+
+depending on where NN is stored.
+
+Why?
+
+Because the unnormalised DFT magnitude grows with the number of samples.
+
+For a sinusoid of amplitude AA that lands exactly on a DFT bin, the positive-frequency coefficient is approximately:
+
+NA2.\frac{NA}{2}.
+
+If A=3A=3 and:
+
+N=1000,N=1000,
+
+the raw magnitude is therefore approximately:
+
+1000×32=1500.\frac{1000\times3}{2}=1500.
+
+But we don't want the spectrum to report:
+
+1500.1500.
+
+The actual sinusoidal amplitude was:
+
+3.3.
+
+So we scale by:
+
+2N.\frac{2}{N}.
+
+Hence:
+
+1500×21000=3.1500\times\frac{2}{1000}=3.
+
+Excellent.
+
+Our amplitude spectrum now corresponds to the amplitudes we used to generate the signal.
+
+22. Why the Excel formula contains IF(OR(...))
+
+The workbook uses essentially:
+
+IF(
+    OR(k=0,k=N/2),
+    1/N,
+    2/N
+)
+
+
+This deals with two special bins.
+
+DC
+k=0k=0
+
+represents:
+
+0 Hz.0\text{ Hz}.
+Nyquist
+k=N/2k=N/2
+
+represents:
+
+Fs/2.F_s/2.
+
+Those special components are not doubled when converting the complete DFT into the usual one-sided spectrum.
+
+So Excel says:
+
+scaling={1/Nk=0 or N/22/Notherwise.\text{scaling}= \begin{cases} 1/N & k=0\text{ or }N/2 \\[4pt] 2/N & \text{otherwise}. \end{cases}
+23. Now let's dismantle the enormous Excel formula
+
+The amplitude-cell formula is conceptually of the form:
+
+=IF(
+ OR(k=0,k=N/2),
+ 1/N,
+ 2/N
+)
+*
+SQRT(
+   SUMPRODUCT(signal,COS(...))^2
+   +
+   SUMPRODUCT(signal,SIN(...))^2
+)
+
+
+Read it from the inside outward.
+
+Innermost
+COS(...)
+
+
+Create a cosine test pattern at frequency bin kk.
+
+And:
+
+SIN(...)
+
+
+creates the corresponding sine test pattern.
+
+Next
+SUMPRODUCT(signal,COS(...))
+
+
+tests how strongly the signal matches the cosine component.
+
+Similarly:
+
+SUMPRODUCT(signal,SIN(...))
+
+
+tests the sine component.
+
+Next
+Real^2 + Imaginary^2
+
+
+combines them.
+
+Next
+SQRT(...)
+
+
+calculates the magnitude:
+
+∣X[k]∣.|X[k]|.
+Finally
+2/N
+
+
+normalises the ordinary positive-frequency bins to sinusoidal amplitude.
+
+That's it.
+
+The apparently monstrous Excel equation is really only about five small operations nested together.
+
+24. Cell-by-cell view of one output frequency
+
+Let's imagine an expanded teaching version in which every stage occupied its own cell.
+
+For frequency bin:
+
+k=50k=50
+
+we might have:
+
+A100 = 50             ← frequency bin k
+
+B100 = 50 Hz          ← physical frequency
+
+C100 = SUMPRODUCT(...) cosine test
+                        ↓
+                     Real part
+
+D100 = SUMPRODUCT(...) sine test
+                        ↓
+                   Imaginary part
+
+E100 = C100^2
+
+F100 = D100^2
+
+G100 = E100+F100
+
+H100 = SQRT(G100)
+                        ↓
+                 raw DFT magnitude
+
+I100 = 2/N
+
+J100 = H100*I100
+                        ↓
+                 amplitude = 3
+
+
+That would produce the same result as combining everything into one large cell formula.
+
+25. Why SUMPRODUCT is such a good teaching tool
+
+The FFT algorithm is much faster computationally, but it can hide what's going on.
+
+SUMPRODUCT exposes the underlying DFT idea beautifully:
+
+multiply every sample by a reference pattern and sum the results\boxed{ \text{multiply every sample by a reference pattern and sum the results} }
+
+Then:
+
+repeat for each frequency\boxed{ \text{repeat for each frequency} }
+
+That is the conceptual heart of the Fourier analysis.
+
+26. How this connects to the Cepstrum workbook
+
+Now we can make the important connection.
+
+For the ordinary DFT you start with:
+
+x[n].x[n].
+
+You transform it and obtain:
+
+X[k].X[k].
+
+For the real cepstrum demonstration, we instead start from the log magnitude spectrum:
+
+L[k]=ln⁡∣X[k]∣.L[k]=\ln|X[k]|.
+
+Then perform the inverse Fourier-type operation:
+
+c[n]=1N∑k=0N−1L[k]cos⁡(2πknN).c[n] = \frac{1}{N} \sum_{k=0}^{N-1} L[k] \cos\left(\frac{2\pi kn}{N}\right).
+
+Compare them:
+
+DFT
+x[n]→Fourier transformX[k]x[n] \quad\xrightarrow{\text{Fourier transform}}\quad X[k]
+Cepstrum
+ln⁡∣X[k]∣→inverse transformc[q]\ln|X[k]| \quad\xrightarrow{\text{inverse transform}}\quad c[q]
+
+So you've already learned most of the mathematics necessary for understanding the cepstrum.
+
+The big conceptual difference is what we're feeding into the transform and what we're looking for.
+
+27. Why the cepstrum finds spacing
+
+In our Cepstrum workbook, the spectrum contains features at:
+
+60, 72, 84, 96,…60,\ 72,\ 84,\ 96,\ldots
+
+The structure repeats every:
+
+12 Hz.12\text{ Hz}.
+
+The inverse transform sees that periodic structure in the spectrum and produces a cepstral feature corresponding to the reciprocal periodicity:
+
+q=112=0.08333 s.q=\frac{1}{12}=0.08333\text{ s}.
+
+With our discrete quefrency interval:
+
+Δq=1256=3.90625 ms,\Delta q=\frac{1}{256}=3.90625\text{ ms},
+
+83.33 ms does not land exactly on a quefrency sample. The nearest sample is n=21n=21:
+
+q21=21(3.90625)=82.03125 ms.q_{21}=21(3.90625)=82.03125\text{ ms}.
+
+So in a discrete plot, I'd expect the feature near 83.3 ms, rather than insisting that it must occur at exactly 83.333 ms.
+
+That distinction between the theoretical location and the available discrete bins is exactly analogous to FFT frequency-bin resolution.
+
+28. The mental model I'd recommend
+
+Rather than memorising
+
+X[k]=∑x[n]e−j2πkn/N,X[k]=\sum x[n]e^{-j2\pi kn/N},
+
+translate it mentally into:
+
+Choose a frequency. Generate sine and cosine reference waves at that frequency. Multiply them sample-by-sample by the measured signal. Sum the results. Combine the sine and cosine results to obtain magnitude. Then repeat for the next frequency.
+
+So:
+
+                  ┌── cosine test ── SUM ── Real ─────┐
+                  │                                    │
+Signal x[n] ──────┤                                    ├─ SQRT(R²+I²)
+                  │                                    │
+                  └── sine test ──── SUM ── Imag ─────┘
+                                                        │
+                                                        ▼
+                                                   magnitude
+                                                        │
+                                                        ▼
+                                                    normalise
+                                                        │
+                                                        ▼
+                                               amplitude at fₖ
+
+
+Once you see the DFT that way, the equation becomes far less mysterious.
+
+And it leads naturally into the analysis chain described in 0_2_5 AI Review Synthesis.txt: LOFAR/spectral analysis establishes persistent spectral structure, while cepstral analysis asks whether there is hidden periodic spacing within that structure.
+
+
+Could you please explain the excel formulas used in Cepstrum demonstration spreadsheet?
+
+Certainly. The Cepstrum workbook is a little different from the Fourier workbook because it begins with a frequency spectrum, rather than directly with a time waveform. The essential chain is:
+
+Spectrum→log⁡∣X(f)∣→inverse transform→Cepstrum\boxed{\text{Spectrum}\rightarrow\log|X(f)|\rightarrow\text{inverse transform}\rightarrow\text{Cepstrum}}
+
+The purpose is also different. As your 0_2_5 AI Review Synthesis.txt nicely puts it, the cepstrum asks “is there hidden periodic spacing?”
+
+1. The demonstration we constructed
+
+The synthetic spectrum has a family of peaks separated by:
+
+12 Hz\boxed{12\text{ Hz}}
+
+starting at 60 Hz:
+
+60, 72, 84, 96, 108, 120,…60,\ 72,\ 84,\ 96,\ 108,\ 120,\ldots
+
+There are also unrelated spectral features and a varying envelope to make the example less artificial.
+
+The cepstrum is intended to recover the 12 Hz spacing, rather than merely identify the individual lines.
+
+Because frequency spacing and quefrency are reciprocal:
+
+q=1Δfspacingq=\frac{1}{\Delta f_{\rm spacing}}
+
+we expect:
+
+q=112=0.08333 sq=\frac{1}{12}=0.08333\text{ s}
+
+or:
+
+q≈83.33 ms\boxed{q\approx83.33\text{ ms}}
+
+Let's now go through the Excel formulas.
+
+2. Input cells
+
+The important input values are:
+
+Cell	Meaning	ValueB4	Frequency-bin spacing Δf\Delta f	1 Hz
+B5	Number of frequency bins NN	256
+B6	Hidden tonal spacing	12 Hz
+B7	First tonal	60 Hz
+B8	Number of regularly spaced tonals	12
+
+These describe the demonstration.
+
+3. Quefrency increment: E4
+
+The formula is:
+
+=1/($B$4*$B$5)
+
+
+This calculates:
+
+Δq=1NΔf\boxed{\Delta q=\frac{1}{N\Delta f}}
+
+where:
+
+N=256N=256
+
+and:
+
+Δf=1 Hz.\Delta f=1\text{ Hz}.
+
+Therefore:
+
+Δq=1256×1\Delta q = \frac{1}{256\times1} =0.00390625 s.=0.00390625\text{ s}.
+
+Or:
+
+Δq=3.90625 ms.\boxed{\Delta q=3.90625\text{ ms}}.
+
+This is analogous to frequency resolution in an ordinary DFT.
+
+In a spectrum we have discrete frequencies:
+
+0, 1, 2, 3,…0,\ 1,\ 2,\ 3,\ldots
+
+In our cepstrum we have discrete quefrencies:
+
+0, 3.90625, 7.8125, 11.71875,…ms.0,\ 3.90625,\ 7.8125,\ 11.71875,\ldots\text{ms}.
+4. Expected cepstral peak: E5
+
+The formula:
+
+=1/$B$6
+
+
+calculates:
+
+q=1Δfspacing.\boxed{q=\frac{1}{\Delta f_{\rm spacing}}}.
+
+B6 contains:
+
+12 Hz.12\text{ Hz}.
+
+Therefore:
+
+q=112q=\frac{1}{12} q=0.0833333 s.q=0.0833333\text{ s}.
+
+That's our expected cepstral feature.
+
+5. Expected quefrency in milliseconds: E6
+
+The formula:
+
+=1000/$B$6
+
+
+does exactly the same calculation but expresses the result in milliseconds:
+
+qms=1000112.q_{\rm ms} = 1000\frac{1}{12}.
+
+So:
+
+qms=83.33 ms.\boxed{q_{\rm ms}=83.33\text{ ms}}.
+
+That is easier to read on the cepstrum chart than 0.08333 seconds.
+
+6. Recover frequency spacing: E7
+
+The formula:
+
+=1/E5
+
+
+performs the calculation backwards.
+
+If:
+
+q=0.08333 s,q=0.08333\text{ s},
+
+then:
+
+Δfspacing=1q.\Delta f_{\rm spacing}=\frac1q.
+
+Therefore:
+
+10.08333≈12 Hz.\frac{1}{0.08333}\approx12\text{ Hz}.
+
+This gives the relationship that is particularly useful in practical analysis:
+
+Δfspacing≈1q\boxed{\Delta f_{\rm spacing}\approx\frac1q}
+
+provided qq is expressed in seconds.
+
+7. Frequency-bin number: column A
+
+Column A contains:
+
+k=0,1,2,3,…,255.k=0,1,2,3,\ldots,255.
+
+This is the frequency-bin index.
+
+It's conceptually the same kk we met in the Fourier workbook.
+
+8. Frequency axis: column B
+
+The formula is:
+
+=A12*$B$4
+
+
+This implements:
+
+fk=kΔf.\boxed{f_k=k\Delta f}.
+
+Since:
+
+Δf=1 Hz,\Delta f=1\text{ Hz},
+
+we obtain:
+
+k       f
+
+0       0 Hz
+1       1 Hz
+2       2 Hz
+...
+60      60 Hz
+...
+72      72 Hz
+...
+255     255 Hz
+
+
+So column B gives us the horizontal axis for the ordinary spectrum.
+
+9. Spectrum magnitude: column C
+
+Column C contains the demonstration spectrum:
+
+∣X[k]∣.|X[k]|.
+
+This differs from the previous Fourier spreadsheet.
+
+Previously, we started with:
+
+x(t)x(t)
+
+and calculated:
+
+∣X(f)∣.|X(f)|.
+
+Here we're deliberately starting with a constructed spectrum because we want to make the cepstrum principle especially easy to see.
+
+The important features are around:
+
+60, 72, 84, 96,…60,\ 72,\ 84,\ 96,\ldots
+
+so the hidden structure is:
+
+          12 Hz     12 Hz     12 Hz
+        <------>   <------>   <------>
+
+          |          |          |          |
+          |          |          |          |
+──────────┼──────────┼──────────┼──────────┼──→ frequency
+         60         72         84         96
+
+
+Column C is therefore analogous to something that could have come from the magnitude of an FFT.
+
+10. Log magnitude: column D
+
+This contains one of the most important Excel formulas:
+
+=LN(MAX(C12,1E-12))
+
+
+There are two separate things happening.
+
+First:
+
+LN(C12)
+
+
+means calculate the natural logarithm of the spectrum magnitude.
+
+Mathematically:
+
+L[k]=ln⁡∣X[k]∣.\boxed{L[k]=\ln|X[k]|}.
+
+Therefore our processing chain has gone from:
+
+∣X[k]∣|X[k]|
+
+to:
+
+ln⁡∣X[k]∣.\ln|X[k]|.
+11. Why use LN()?
+
+The logarithm is fundamental to conventional real-cepstrum processing.
+
+Our chain is:
+
+X(f)X(f)
+
+then:
+
+∣X(f)∣|X(f)|
+
+then:
+
+ln⁡∣X(f)∣.\boxed{\ln|X(f)|}.
+
+One useful property of logarithms is:
+
+ln⁡(ab)=ln⁡(a)+ln⁡(b).\ln(ab)=\ln(a)+\ln(b).
+
+So multiplicative spectral effects become additive in the log domain.
+
+The logarithm also compresses the range of spectral magnitudes. A very large spectral peak becomes less overwhelmingly dominant compared with smaller structure.
+
+12. Why MAX()?
+
+Why didn't I simply write:
+
+=LN(C12)
+
+
+?
+
+Because:
+
+ln⁡(0)\ln(0)
+
+is undefined.
+
+So the spreadsheet actually says:
+
+MAX(C12,1E-12)
+
+
+In words:
+
+Use the value in C12, unless it is less than 10−1210^{-12}. In that case use 10−1210^{-12}.
+
+Thus:
+
+L[k]=ln⁡(max⁡(∣X[k]∣,10−12))\boxed{ L[k]= \ln\left( \max\left(|X[k]|,10^{-12}\right) \right) }
+
+The 10−1210^{-12} value is simply a very small positive numerical floor.
+
+It prevents Excel trying to calculate something like:
+
+=LN(0)
+
+
+and producing an error.
+
+13. Quefrency-bin number: column E
+
+Column E contains:
+
+n=0,1,2,3,…,255.n=0,1,2,3,\ldots,255.
+
+Don't confuse this with the original time-sample nn from our Fourier example.
+
+Here it indexes the cepstral output.
+
+We are going to convert this index into quefrency.
+
+14. Quefrency in seconds: column F
+
+The formula is:
+
+=E12*$E$4
+
+
+E12 contains the quefrency-bin number nn.
+
+E4 contains:
+
+Δq=0.00390625 s.\Delta q=0.00390625\text{ s}.
+
+Therefore:
+
+qn=nΔq.\boxed{q_n=n\Delta q}.
+
+So:
+
+n=0→0n=0\rightarrow0 n=1→0.00390625 sn=1\rightarrow0.00390625\text{ s} n=2→0.0078125 sn=2\rightarrow0.0078125\text{ s}
+
+etc.
+
+15. Quefrency in milliseconds: column G
+
+The formula:
+
+=1000*F12
+
+
+simply converts:
+
+seconds→milliseconds.\text{seconds}\rightarrow\text{milliseconds}.
+
+Therefore:
+
+qms=1000q.\boxed{q_{\rm ms}=1000q}.
+
+For example:
+
+0.05 s=50 ms.0.05\text{ s}=50\text{ ms}.
+
+Nothing DSP-specific is happening there. It's purely a convenient unit conversion.
+
+16. What exactly is “quefrency”?
+
+This strange word is deliberate.
+
+The ordinary spectrum has:
+
+frequency\boxed{\text{frequency}}
+
+on its horizontal axis.
+
+The cepstrum has:
+
+quefrency\boxed{\text{quefrency}}
+
+on its horizontal axis.
+
+Quefrency has units of time, but it should not be interpreted simply as “time into the original recording”.
+
+It's identifying periodicity within the spectrum.
+
+That distinction is extremely important.
+
+17. Now the actual cepstrum
+
+The mathematical operation used for the demonstration is:
+
+c[n]=1N∑k=0N−1ln⁡∣X[k]∣cos⁡(2πknN)\boxed{ c[n]= \frac1N \sum_{k=0}^{N-1} \ln|X[k]| \cos\left(\frac{2\pi kn}{N}\right) }
+
+This is essentially the real inverse-transform operation applied to our log-magnitude spectrum.
+
+Let's dismantle it exactly as we did with the DFT.
+
+18. Start with one cepstral bin
+
+Suppose we're calculating one value:
+
+c[n].c[n].
+
+Excel has access to all 256 values:
+
+L[0],L[1],L[2],…,L[255]L[0],L[1],L[2],\ldots,L[255]
+
+where:
+
+L[k]=ln⁡∣X[k]∣.L[k]=\ln|X[k]|.
+
+For this particular nn, we calculate:
+
+L[k]cos⁡(2πknN)L[k]\cos\left(\frac{2\pi kn}{N}\right)
+
+for every frequency bin kk.
+
+19. Bin k=0k=0
+
+The first contribution is:
+
+L[0]cos⁡(2π(0)n256).L[0] \cos\left( \frac{2\pi(0)n}{256} \right).
+
+Since:
+
+cos⁡(0)=1,\cos(0)=1,
+
+this becomes:
+
+L[0].L[0].
+20. Bin k=1k=1
+
+The next contribution is:
+
+L[1]cos⁡(2π(1)n256).L[1] \cos\left( \frac{2\pi(1)n}{256} \right).
+21. Bin k=2k=2
+
+Next:
+
+L[2]cos⁡(2π(2)n256).L[2] \cos\left( \frac{2\pi(2)n}{256} \right).
+
+And so forth.
+
+Eventually we reach:
+
+L[255]cos⁡(2π(255)n256).L[255] \cos\left( \frac{2\pi(255)n}{256} \right).
+22. Add all 256 contributions
+
+That's what:
+
+∑k=0N−1\sum_{k=0}^{N-1}
+
+means.
+
+Conceptually:
+
+L[0]   × COS(...) ─┐
+L[1]   × COS(...) ─┤
+L[2]   × COS(...) ─┤
+L[3]   × COS(...) ─┤
+        ...         ├── SUM ──÷ N──► c[n]
+L[254] × COS(...) ─┤
+L[255] × COS(...) ─┘
+
+
+So once again, the intimidating sigma notation really means:
+
+multiply a lot of values and add the results together.
+
+Exactly the same fundamental idea we saw with SUMPRODUCT in the Fourier workbook.
+
+23. Why divide by 256?
+
+The equation begins with:
+
+1N.\frac1N.
+
+Here:
+
+N=256.N=256.
+
+Therefore:
+
+c[n]=1256∑k=0255L[k]cos⁡(...)c[n] = \frac1{256} \sum_{k=0}^{255} L[k]\cos(...)
+
+The 1/N1/N factor provides the normalisation associated with this inverse-transform convention.
+
+24. A subtle point about column H
+
+Column H contains the resulting real cepstrum values.
+
+Unlike the straightforward helper formulas in columns B, D, F and G, I precomputed these numerical inverse-DFT values when generating the teaching workbook.
+
+That was intentional. It keeps Excel responsive and lets the sheet concentrate on demonstrating the processing chain clearly.
+
+But every value in H follows the displayed equation:
+
+c[n]=1256∑k=0255ln⁡∣X[k]∣cos⁡(2πkn256).c[n] = \frac1{256} \sum_{k=0}^{255} \ln|X[k]| \cos\left( \frac{2\pi kn}{256} \right).
+
+So column H is not arbitrary demonstration data. It is the numerical cepstrum of the log-magnitude data shown in column D.
+
+25. Why do regular frequency peaks create a cepstral peak?
+
+Now we get to the lovely part.
+
+Our spectrum contains:
+
+60      72      84      96      108 ...
+ |       |       |       |       |
+ |       |       |       |       |
+
+   12 Hz   12 Hz   12 Hz   12 Hz
+
+
+It therefore has periodicity along the frequency axis.
+
+The inverse transform detects that periodic structure.
+
+The reciprocal of the spacing is:
+
+q=112.q=\frac1{12}.
+
+So:
+
+q=0.083333 s.q=0.083333\text{ s}.
+
+Or:
+
+83.33 ms.\boxed{83.33\text{ ms}}.
+
+Therefore we expect a cepstral feature close to 83 ms.
+
+26. Why might the spreadsheet not show exactly 83.333 ms?
+
+This is an important DSP subtlety.
+
+Our quefrency resolution is:
+
+Δq=3.90625 ms.\Delta q=3.90625\text{ ms}.
+
+Therefore available bins include:
+
+78.125 ms,78.125\text{ ms}, 82.03125 ms,82.03125\text{ ms}, 85.9375 ms,85.9375\text{ ms},
+
+etc.
+
+There isn't a bin at exactly:
+
+83.3333 ms.83.3333\text{ ms}.
+
+The nearest available one is around:
+
+82.03 ms.\boxed{82.03\text{ ms}}.
+
+This is precisely analogous to FFT frequency resolution.
+
+The theoretical result might lie between discrete bins.
+
+That is why it's better to say:
+
+cepstral feature near 83 ms
+
+rather than insisting that the largest sampled value must occur at precisely 83.333333 ms.
+
+27. Suppose the spectral spacing were only 5 Hz
+
+The same formulas would give:
+
+q=15q=\frac15
+
+so:
+
+q=0.2 s.q=0.2\text{ s}.
+
+Therefore:
+
+q=200 ms.\boxed{q=200\text{ ms}}.
+
+Notice what happened.
+
+Spacing became smaller:
+
+12→5 Hz12\rightarrow5\text{ Hz}
+
+but quefrency became larger:
+
+83.3→200 ms.83.3\rightarrow200\text{ ms}.
+28. Suppose the spacing were 25 Hz
+
+Then:
+
+q=125q=\frac1{25}
+
+giving:
+
+q=0.04 sq=0.04\text{ s}
+
+or:
+
+40 ms.\boxed{40\text{ ms}}.
+
+So:
+
+larger spectral spacing⇒smaller quefrency\boxed{ \text{larger spectral spacing} \Rightarrow \text{smaller quefrency} }
+
+and:
+
+smaller spectral spacing⇒larger quefrency\boxed{ \text{smaller spectral spacing} \Rightarrow \text{larger quefrency} }
+
+That's worth committing to memory.
+
+29. A practical acoustic example
+
+Imagine you observed spectral lines at:
+
+40.0,41.3,42.6,43.9,45.2 Hz.40.0,\quad41.3,\quad42.6,\quad43.9,\quad45.2\text{ Hz}.
+
+The common spacing is:
+
+Δf=1.3 Hz.\Delta f=1.3\text{ Hz}.
+
+The expected cepstral quefrency would be:
+
+q=11.3q=\frac1{1.3}
+
+which is approximately:
+
+q=0.769 s.q=0.769\text{ s}.
+
+Thus:
+
+q≈769 ms.\boxed{q\approx769\text{ ms}}.
+
+If the cepstrum independently showed a feature near 769 ms, that would be evidence supporting a roughly 1.3 Hz repeating spacing in the spectrum.
+
+It would not, by itself, prove what physical mechanism caused that spacing. That's consistent with the layered interpretation approach in 0_2_5 AI Review Synthesis.txt: detect a feature, then seek independent support rather than immediately assigning it to machinery.
+
+30. Putting every spreadsheet formula together
+
+The workbook is essentially performing this:
+
+             SYNTHETIC SPECTRUM
+                    |X[k]|
+                       │
+                       ▼
+             =LN(MAX(|X|,ε))
+                       │
+                       ▼
+                LOG MAGNITUDE
+                  ln|X[k]|
+                       │
+                       │
+          inverse Fourier operation
+                       │
+                       ▼
+               REAL CEPSTRUM
+                    c[n]
+                       │
+                       ▼
+          QUEFRENCY AXIS q = nΔq
+                       │
+                       ▼
+             Look for a peak
+                       │
+                       ▼
+                 q ≈ 83 ms
+                       │
+                       │ reciprocal
+                       ▼
+               Δf ≈ 1/q
+                       │
+                       ▼
+                 ≈ 12 Hz
+                       │
+                       ▼
+       Look back at the original spectrum
+                       │
+                       ▼
+         60, 72, 84, 96, 108...
+                       │
+                       ▼
+              12 Hz spacing
+
+The formulas I'd remember
+
+There are really only four essential relationships:
+
+Spectrum to log spectrum
+L[k]=ln⁡∣X[k]∣\boxed{L[k]=\ln|X[k]|}
+
+Excel:
+
+=LN(MAX(C12,1E-12))
+
+Quefrency resolution
+Δq=1NΔf\boxed{\Delta q=\frac1{N\Delta f}}
+
+Excel:
+
+=1/($B$4*$B$5)
+
+Cepstrum
+c[n]=1N∑k=0N−1L[k]cos⁡(2πknN)\boxed{ c[n]=\frac1N \sum_{k=0}^{N-1} L[k]\cos\left(\frac{2\pi kn}{N}\right) }
+Convert a cepstral feature back into spectral spacing
+Δfspacing≈1q\boxed{ \Delta f_{\rm spacing}\approx\frac1q }
+
+So if you find a cepstral peak at q=0.25q=0.25 s, immediately think:
+
+Δf=10.25=4 Hz.\Delta f=\frac1{0.25} =\boxed{4\text{ Hz}}.
+
+That final reciprocal relationship is probably the most practically useful part of the spreadsheet for your LOFAR/cepstral work.
