@@ -500,7 +500,7 @@ Passive sensors do not need the target to return an active transmitted pulse: th
 
 For a frame containing N samples acquired at sampling frequency $F_s$, the DFT (see page 67) frequencies are
 \[
-    f_{ₖ} = \frac{F_{s}}{N} \quad \text{k = 0, 1, …, N - 1}    
+    f_{k} = \frac{F_{s}}{N} \quad k \in \{0, 1, \dots, N - 1\} 
 \]
 
 The frequency-bin spacing is
@@ -508,7 +508,7 @@ The frequency-bin spacing is
     \Delta f = \frac{F_{s}}{N}
 \]
 
-Because a frame of N samples lasts $T = N\divF_s$ seconds, this can also be written
+Because a frame of N samples lasts $T = N \div F_{s}$ seconds, this can also be written
 \[
     \Delta f = \frac{1}{T}
 \]
@@ -520,7 +520,78 @@ A common windowed DFT expression is
  X[k]=\sum_{n=0}^{N-1}x [n] e^{-j2\pi kn/N}
 \]
 
-where x[n] is the sampled signal and w[n] is the analysis window. A displayed spectrum is derived from |X[k]| or |X[k]|², with the exact scaling depending on whether magnitude, power, PSD or calibrated sound level is required.
+where $x[n]$ is the sampled signal and $w[n]$ is the analysis window. A displayed spectrum is derived from $|X[k]|$ or $|X[k]|^2$, with the exact scaling depending on whether magnitude, power, PSD or calibrated sound level is required.
+
+\subsubsection{How to interpret a LOFAR display}
+
+First establish the orientation. In MACS, frequency increases horizontally and time runs vertically (most recent at the bottom). Some sonar systems rotate these axes, so always read the labels rather than relying on appearance. Colour or brightness represents spectral level.
+
+\begin{compactitem}
+    \item \textbf{Persistent narrow line: }Evidence of a stable acoustic tonal. Its physical source is a hypothesis to be tested, not established by frequency alone.
+    \item \textbf{Harmonic family: }Lines near $f_0$, $2f_0$, $3f_0$, $\dots$ support a common periodic source. Missing members do not automatically invalidate the family.
+    \item \textbf{Symmetric sidebands: }Lines at $f_c \pm f_m,$ and sometimes further orders, suggest modulation of a carrier $f_c$ at rate $f_m$. Measure spacing, not merely absolute sideband frequencies.
+    \item \textbf{Slow frequency drift: }May reflect a changing source frequency and/or relative motion. Correlate changes across several lines before attributing the cause.
+    \item \textbf{Broadband elevation: }A wide frequency region becomes stronger. Candidate causes include hydrodynamic/cavitation noise, sea-state changes, biological sound, shipping or receiver/platform effects.
+    \item \textbf{Transient feature: }Short-duration energy can cross many frequencies. Treat it separately from long-lived machinery tracks.
+\end{compactitem}
+
+ \begin{figure}[ht]
+	\centering
+	\includegraphics[width=400px]{../img/actuals/LOFAR_interpret.pdf}
+	\caption{LOFAR Interpretation}
+\end{figure}
+
+\subsubsection{Important frequency relationships}
+
+If a tonal family has fundamental $f_0$, its ideal harmonic positions are
+\[
+    f_n = n \cdot f_0 \quad n \in  \{1, 2, 3, \dots \}
+\]
+
+If a rotating shaft turns at RPM revolutions per minute, its rotational frequency is
+\[
+    f_s = \frac{RPM}{60}
+\]
+
+A simple N-bladed propeller relationship is
+\[
+    f_{\beta} = N \cdot f_s
+\]
+
+where $f_{\beta}$ is blade-passing rate. These mechanical rates may appear directly in acoustic data in some circumstances, or may modulate another acoustic component; the analyst must establish which interpretation fits the observations.
+
+For amplitude modulation of a tonal carrier $f_c $ by a periodic rate $f_m$, first-order sidebands occur at $f_{sideband} = f_c \pm f_m$
+
+Therefore, symmetric LOFAR sidebands spaced $\pm 1.3$ Hz around a tonal carry a candidate modulation rate of 1.3 Hz. DEMON can be used independently to ask whether an acoustic-noise band contains envelope modulation at approximately the same rate.
+
+\subsubsection{Concrete worked example}
+
+Assume a 60-second analysis frame is sampled at $F_s = \text{2,000}$ Hz. The number of samples is
+\[
+N = F_s \cdot T = 2,000 \times 60 = \text{120,000} \text{samples}
+\]
+
+The FFT bin spacing is therefore
+\[
+    \Delta f = \frac{F_s}{N} = 2,000 \div 120,000 = 0.01667 \text{Hz}
+\]
+
+Equivalently, $\Delta f = 1 \div T = 1 \div 60 = 0.01667$ Hz. Now suppose a persistent LOFAR tonal is measured at 30.00 Hz, with weaker lines close to 60.00 and 90.00 Hz. The integer relationships are
+\[
+    \frac{60}{30} = 2, \quad \frac{90}{30} = 3
+\]
+
+This supports a harmonic-family hypothesis with a 30 Hz fundamental. It does not by itself identify the machine. Suppose the 30 Hz line also has symmetric sidebands at 28.70 Hz and 31.30 Hz. Their spacing from the carrier is
+\[
+    30.00 - 28.70 = 1.30 \text{Hz},  \quad   31.30 - 30.00 = 1.30 \text{Hz}
+\]
+
+The LOFAR evidence therefore supports a candidate modulation frequency $f_m = 1.30$ Hz. The corresponding period is
+\[
+    T_m = \frac{1}{f_m} = \frac{1}{1.30} \approx 0.769 \text{s}
+\]
+
+If a physically plausible once-per-revolution mechanism is suspected, 1.30 Hz would correspond to 78 RPM because $1.30 \times 60 = 78$ RPM. That is a hypothesis to be cross-checked. A matching DEMON line near 1.30 Hz would strengthen the interpretation that the selected noise band is amplitude-modulated at this rate, while a cepstral feature near 0.769 s can independently highlight the regular 1.30 Hz spectral spacing.
 
 
 \subsection{DEMON}
