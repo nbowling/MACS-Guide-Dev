@@ -181,16 +181,16 @@ This tends to make narrowband machinery tones and transient features more visibl
 
 As a general rule of thumb the following table gives basic usage:
 
-\begin{tabular}{ll}
-    Window size	& Effect \\
+\begin{tabularx}{\linewidth}{l X}
+    \textbf{Window size} & \textbf{Effect} \\
     \hline
-    Very small & Highly adaptive, noisy normalisation \\
+    \rowcolor[gray]{.8}Very small & Highly adaptive, noisy normalisation \\
     Moderate & Good compromise \\
-    Very large & Stable statistics, less adaptive \\
+    \rowcolor[gray]{.8}Very large & Stable statistics, less adaptive \\
     Mean window \verb|<| Std-dev window & Common and often desirable \\
-    Mean window $\approx$ Std-dev window & Standard sliding z-score \\
+    \rowcolor[gray]{.8}Mean window $\approx$ Std-dev window & Standard sliding z-score \\
     Std-dev window too small & Can suppress strong events
-\end{tabular}
+\end{tabularx}
 
 A useful way to think about it is:
 \begin{compactitem}
@@ -434,15 +434,15 @@ Both steps can be combined in one formula:
 
 \textbf{Summary of Results}
 
-\begin{tabular}{lll}
+\begin{tabularx}{\linewidth}{lll}
     Parameter & Formula & Calculated Value \\
     \hline
-    Shaft Frequency (SF) & Primary DEMON peak & 5.0 Hz \\
+    \rowcolor[gray]{.8}Shaft Frequency (SF) & Primary DEMON peak & 5.0 Hz \\
     Shaft Rate & $SF \times 60$ & 300 RPM \\
-    Blade Pass Frequency (BPF)	& $SF \times N_{blades}$ & 35 Hz \\
+    \rowcolor[gray]{.8}Blade Pass Frequency (BPF)	& $SF \times N_{blades}$ & 35 Hz \\
     Machinery Gear Ratio & $f_{tonal}/SF$ & 24:1 \\
-    Speed through water & $\text{Speed (Knots)} = \frac{SR \times P \times (1 - S)}{6076}$ & 20.1 Kts/hr
-\end{tabular}
+    \rowcolor[gray]{.8}Speed through water & $\text{Speed (Knots)} = \frac{SR \times P \times (1 - S)}{6076}$ & 20.1 Kts/hr
+\end{tabularx}
 
 By performing these steps, a passive sonar operator confirms not only the target's operating speed, but also verifies the contact's identity against known propeller and engine drive signatures.
 
@@ -597,14 +597,136 @@ If a physically plausible once-per-revolution mechanism is suspected, 1.30 Hz wo
 \subsection{DEMON}
 \textcolor{commentGreen}{*** WIP ***}
 
-\textbf{What it is:} DEMON (Detection of Envelope Modulation ON Noise) extracts the low-frequency modulation imposed on broadband acoustic noise by a vessel's rotating machinery (Figure 32) (primarily propeller shaft and blade-rate harmonics). The result is a second spectrogram whose frequency axis covers 0 - $F_{max}$ Hz (typically 0 - 50 Hz), revealing shaft rotation rates and blade rates that are far too low to appear in the LOFARgram.
+\subsubsection{What DEMON analysis is}
+
+DEMON (Detection of Envelope Modulation ON Noise) extracts the low-frequency modulation imposed on broadband acoustic noise by a vessel's rotating machinery (Figure 32) (primarily propeller shaft and blade-rate harmonics). The result is a second spectrogram whose frequency axis covers 0 - $F_{max}$ Hz, revealing shaft rotation rates and blade rates that are far too low to appear in the LOFARgram. The result is an envelope spectrum: instead of asking which acoustic carrier frequencies contain energy, DEMON asks how rapidly that energy is being modulated.
+
+Rotating machinery amplitude-modulates the broadband acoustic noise it generates. For propeller-driven vessels, propeller blades periodically interrupt the cavitation noise; for diesel-engined vessels, piston firing events modulate the radiated noise at crankshaft rate and its harmonics. DEMON demodulates this carrier to make those low frequencies directly visible. It is effective for both propeller shaft / blade-rate detection (surface ships, submarines underway) and diesel engine firing rate detection (diesel-electric submarines at low speed).
+
+A conventional LOFAR spectrum can reveal discrete machinery tonals directly, DEMON is useful when the periodic information is carried as modulation of broadband noise. Propeller-generated broadband energy may therefore look comparatively featureless in an ordinary narrowband spectrum while its envelope contains strong periodic structure.
+
+\begin{tabularx}{\linewidth}{l X}
+    \toprule
+    \textbf{Quantity} & \textbf{Meaning in DEMON} \\
+    \midrule
+    \rowcolor[gray]{0.8}Carrier / noise band & The higher frequency acoustic energy whose amplitude is varying. \\
+    Modulating frequency & The slow mechanical or hydrodynamic periodicity that changes the carrier amplitude.\\
+    \rowcolor[gray]{0.8}Envelope & The time-varying outline of the carrier amplitude. \\
+    DEMON spectrum & The frequency spectrum of that envelope, showing modulation rates and harmonics \\
+\end{tabularx}
+
+\subsubsection{Modulation: what it means physically}
+
+Modulation occurs when one process changes a property of another signal. For DEMON the property of greatest interest is amplitude. A slowly repeating mechanical process changes the strength of a broad acoustic source, so the received noise grows and falls in a periodic fashion.
+
+A useful mathematical model is a carrier c(t) multiplied by a modulation function m(t):
+\[
+    x(t) = m(t)c(t)
+\]
+
+For simple sinusoidal amplitude modulation,
+
+\begin{gather*}
+    m(t) = 1 + \mu \cdot cos(2\pi f_m t) \\[1ex]
+    x(t) = [1 + \mu \cdot cos(2\pi f_m t)] \cdot c(t)
+\end{gather*}
+
+
+Here $f_m$ is the modulation frequency and $\mu$ is the modulation index. In a real ship or submarine the carrier need not be a pure sinusoid; it is commonly broadband noise. The multiplication is the key idea: the faster acoustic process carries a slower periodic signature in its amplitude.
+
+\subsubsection{Marine sources of modulation}
+
+\begin{compactitem}
+    \item \textbf{Propeller rotation and blade passage: }As the propeller rotates, blade loading, wake non-uniformity and cavitation can vary around the revolution. Repetition at shaft rate, blade-passing rate and related harmonics can amplitude-modulate broadband propeller noise.
+    \item \textbf{Cavitation: }Bubble formation and collapse produce broadband noise. If cavitation intensity varies systematically with propeller angle or blade passage, this broadband energy acquires a periodic envelope well suited to DEMON processing.
+    \item \textbf{Wake and inflow non-uniformity: }A propeller works in a spatially non-uniform wake. Each blade repeatedly encounters different inflow and loading conditions, which can create cyclic variation in radiated noise.
+    \item \textbf{Machinery and transmission paths: }Rotating or reciprocating machinery can impose cyclic forces. Structural transmission, shafting and mounts can make broadband or tonal energy vary periodically. These components may contribute to the observed envelope, although an analyst should not automatically label every DEMON line as a propeller line.
+    \item \textbf{Environmental and propagation effects: }Multipath, platform motion, changing aspect and unrelated sources can also vary received level. Such effects can generate or distort low-frequency envelope components, so DEMON interpretation should be corroborated with LOFAR, bearing, kinematic and temporal evidence.
+\end{compactitem}
+
  \begin{figure}[ht]
 	\centering
-	\includegraphics[width=300px]{../img/actuals/DEMONchart.pdf}
-	\caption{DEMON Process}
+	\includegraphics[width=400px]{../img/actuals/DEMON_modulation.pdf}
+	\caption{Amplitude Modulation in DEMON}
 \end{figure}
 
-\textbf{Signal path:}
+\subsubsection{How the original sound becomes a DEMON signal}
+
+The received hydrophone signal contains the original acoustic energy plus ambient noise and propagation effects. DEMON does not create a new physical frequency at the target. Instead, demodulation estimates the slow envelope already impressed on the received acoustic energy.
+
+\begin{compactenum}
+    \item \textbf{Select a carrier band: }Band-pass filtering isolates a frequency region in which modulated broadband target noise is prominent and rejects unrelated energy.
+    \item \textbf{Recover amplitude: }Envelope detection may be implemented using rectification and smoothing or an analytic-signal/Hilbert envelope. The objective is to estimate instantaneous amplitude.
+    \item \textbf{Remove the carrier: }Low-pass filtering retains the slow envelope variations and suppresses residual high-frequency carrier content.
+    \item \textbf{Transform the envelope: }An FFT of the envelope converts periodic amplitude variations into spectral lines at their modulation frequencies and harmonics.
+    \item \textbf{Display over time: }Repeated spectra may be stacked to form a DEMONgram, analogous in concept to a spectrogram, allowing stability, drift and transient behaviour to be assessed.
+\end{compactenum}
+
+ \begin{figure}[ht]
+	\centering
+	\includegraphics[width=400px]{../img/actuals/DEMON_propeller.pdf}
+	\caption{DEMON propeller detection}
+\end{figure}
+
+\subsubsection{How to interpret a DEMON display}
+
+In MACS the horizontal axis is modulation frequency in hertz. Time is the vertical axis with oldest at the top and colour representing magnitude. Interpretation should focus on families and relationships rather than isolated peaks.
+
+\begin{compactitem}
+    \item \textbf{Shaft rate candidate: }A low-frequency line that is stable and consistent with plausible propeller rotation. If shaft speed is RPM, $f_s = RPM\div60$.
+    \item \textbf{Blade rate / blade-passing frequency: }For N blades on a single propeller, $f_\beta = N \times f_s$. A strong line at $f_\beta$, its harmonics, and a compatible lower-frequency shaft family is strong evidence of propeller-related modulation.
+    \item \textbf{Harmonics: }Lines at 2f, 3f, … indicate a non-sinusoidal repeating envelope or repeated events within a cycle.
+    \item \textbf{Sideband spacing: }In related LOFAR or spectral data, symmetrical spacing around a tonal or band can indicate modulation. The spacing corresponds to the modulating frequency. DEMON seeks the corresponding envelope periodicity.
+    \item \textbf{Persistence and coherence: }True rotating-machinery relationships tend to persist or evolve smoothly with speed. Short-lived or incoherent peaks require caution.
+    \item \textbf{Multiple shafts or sources: }More than one shaft, propeller, machinery train or nearby vessel can create overlapping families. Numerical relationships alone are not unique identification.
+\end{compactitem}
+
+\subsubsection{Concrete worked example}
+
+Assume a surface ship has a 5-bladed propeller turning at 120 RPM and that propeller cavitation supplies a broadband acoustic carrier. The shaft rate is:
+\[
+    f_s = RPM / 60 = 120 / 60 = 2 Hz
+\]
+
+With N = 5 blades, the blade rate is
+\[
+    f_{b} = N \cdot f_s = 5 \times 2 = 10 \text{ Hz}
+\]
+
+Suppose the amplitude envelope of a selected cavitation-noise band contains a strong 10 Hz blade-passage modulation. Envelope detection suppresses the rapid carrier fluctuations and recovers the slower amplitude variation. An FFT of this envelope therefore shows a component at 10 Hz. If the envelope is not perfectly sinusoidal, components may also appear at 20, 30 Hz and higher harmonics.
+
+An important point is that the strongest DEMON peak need not necessarily be the fundamental blade rate. Depending on blade loading, cavitation behaviour, propagation and the selected demodulation band, a harmonic can sometimes be more prominent.
+
+A 2 Hz component may also appear when there is once-per-revolution asymmetry, for example a non-uniform wake or unequal blade loading. The analyst can test the relationship $10\div2 = 5$, giving a blade-count hypothesis of five. This is a hypothesis, not a stand-alone classification: corroboration should include consistency over time, LOFAR observations, target speed/aspect and other acoustic evidence.
+
+\begin{tabularx}{\linewidth}{l X X}
+    \toprule
+    \textbf{Observed DEMON feature} & \textbf{Candidate interpretation} & \textbf{Cross-check} \\
+    \midrule
+    \rowcolor[gray]{0.8}2 Hz & Shaft rate candidate & Does 2 Hz persist and change with target dynamics?\\
+    10 Hz & 5-Blade BR candidate & $10 \text{ Hz} \div 2 \text{ Hz} = 5$; check harmonic family. \\
+    \rowcolor[gray]{0.8}20, 30 Hz & Harmonics of 10 Hz modulation & Look for integer spacing and common evolution.\\
+    Irregular isolated peak & Unknown / interference possible & Do not classify from an isolated line. \\
+\end{tabularx}
+
+\subsubsection{Submarines versus surface ships}
+
+The physics of modulation is the same for both. The practical balance of sources can differ markedly with operating condition. A surface ship may present strong propeller and cavitation modulation, particularly when loading promotes cavitation. A submerged submarine operating quietly may suppress cavitation and radiated machinery noise, making DEMON components weaker and increasing the value of long integration, array gain and correlation with other passive-sonar evidence. Conversely, a submarine propeller operating under conditions that produce detectable broadband modulation can still yield shaft/blade relationships in DEMON.
+
+DEMON should therefore be treated as one member of a passive-acoustic evidence set rather than a universal ship-identification display. LOFAR tonals, broadband level, bearing behaviour, spectral sidebands, transient events and DEMON modulation families can reinforce one another.
+
+\subsubsection{Common interpretation traps}
+
+\begin{compactitem}
+    \item Assuming the strongest DEMON line must be shaft rate. Blade rate or a harmonic may dominate.
+    \item Inferring blade count from a single ratio without establishing which line is truly shaft rate.
+    \item Confusing a LOFAR tonal frequency with a DEMON modulation frequency. They describe different aspects of the received signal.
+    \item Treating every integer multiple as a separate machine. Harmonics can arise from one non-sinusoidal modulation process.
+    \item Ignoring changes in operating state, aspect, cavitation regime, propagation and nearby traffic.
+    \item Choosing a carrier band without checking its signal-to-noise and modulation content; DEMON performance depends strongly on the band being demodulated.
+\end{compactitem}
+
+\subsubsection{MACS Signal path:}
 
 \begin{compactenum}
     \item Samples are bandpass-filtered to the selected DEMON band.
@@ -614,13 +736,17 @@ If a physically plausible once-per-revolution mechanism is suspected, 1.30 Hz wo
     \item The result is displayed as a waterfall, with the same Floor / Dynamic Range colour scale.
 \end{compactenum}
 
-
-
-\textbf{Why this works:} Rotating machinery amplitude-modulates the broadband acoustic noise it generates. For propeller-driven vessels, propeller blades periodically interrupt the cavitation noise; for diesel-engined vessels, piston firing events modulate the radiated noise at crankshaft rate and its harmonics. DEMON demodulates this carrier to make those low frequencies directly visible. It is effective for both propeller shaft / blade-rate detection (surface ships, submarines underway) and diesel engine firing rate detection (diesel-electric submarines at low speed).
-
-
-
 \textbf{Key parameters:} DEMON band sets the acoustic carrier band to demodulate, DEMON Display Max ($F_{max}$ of the DEMON output display axis), DEMON FFT Size, Overlap, Floor, Dynamic Range.
+
+\subsubsection{Summary}
+
+DEMON converts periodic changes in the amplitude of underwater acoustic noise into a low-frequency envelope spectrum. Marine propellers are a particularly important source because shaft rotation, blade passage, wake interaction and cavitation can repeatedly modulate broadband noise.
+
+A useful conceptual chain is therefore:
+
+Rotating mechanism → periodic change in radiated noise amplitude → modulated received waveform → envelope extraction → FFT of envelope → shaft/blade/harmonic candidates
+
+The strongest analysis comes from recognising families of physically consistent frequencies and validating them against independent acoustic and kinematic evidence.
 
 \subsection{Cepstrum}
 \textcolor{commentGreen}{*** WIP ***}
