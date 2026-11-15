@@ -189,7 +189,8 @@ As a general rule of thumb the following table gives basic usage:
     \rowcolor[gray]{.8}Very large & Stable statistics, less adaptive \\
     Mean window \verb|<| Std-dev window & Common and often desirable \\
     \rowcolor[gray]{.8}Mean window $\approx$ Std-dev window & Standard sliding z-score \\
-    Std-dev window too small & Can suppress strong events
+    Std-dev window too small & Can suppress strong events \\
+    \bottomrule
 \end{tabularx}
 
 A useful way to think about it is:
@@ -441,7 +442,8 @@ Both steps can be combined in one formula:
     Shaft Rate & $SF \times 60$ & 300 RPM \\
     \rowcolor[gray]{.8}Blade Pass Frequency (BPF)	& $SF \times N_{blades}$ & 35 Hz \\
     Machinery Gear Ratio & $f_{tonal}/SF$ & 24:1 \\
-    \rowcolor[gray]{.8}Speed through water & $\text{Speed (Knots)} = \frac{SR \times P \times (1 - S)}{6076}$ & 20.1 Kts/hr
+    \rowcolor[gray]{.8}Speed through water & $\text{Speed (Knots)} = \frac{SR \times P \times (1 - S)}{6076}$ & 20.1 Kts/hr \\
+    \bottomrule
 \end{tabularx}
 
 By performing these steps, a passive sonar operator confirms not only the target's operating speed, but also verifies the contact's identity against known propeller and engine drive signatures.
@@ -617,6 +619,7 @@ A conventional LOFAR spectrum can reveal discrete machinery tonals directly, DEM
     Modulating frequency & The slow mechanical or hydrodynamic periodicity that changes the carrier amplitude.\\
     \rowcolor[gray]{0.8}Envelope & The time-varying outline of the carrier amplitude. \\
     DEMON spectrum & The frequency spectrum of that envelope, showing modulation rates and harmonics \\
+    \bottomrule
 \end{tabularx}
 
 \subsubsection{Modulation: what it means physically}
@@ -714,6 +717,7 @@ A 2 Hz component may also appear when there is once-per-revolution asymmetry, fo
     10 Hz & 5-Blade BR candidate & $10 \text{ Hz} \div 2 \text{ Hz} = 5$; check harmonic family. \\
     \rowcolor[gray]{0.8}20, 30 Hz & Harmonics of 10 Hz modulation & Look for integer spacing and common evolution.\\
     Irregular isolated peak & Unknown / interference possible & Do not classify from an isolated line. \\
+    \bottomrule
 \end{tabularx}
 
 \subsubsection{Submarines versus surface ships}
@@ -755,7 +759,6 @@ Rotating mechanism → periodic change in radiated noise amplitude → modulated
 The strongest analysis comes from recognising families of physically consistent frequencies and validating them against independent acoustic and kinematic evidence.
 
 \subsection{Cepstrum}
-\textcolor{commentGreen}{*** WIP ***}
 
 \subsubsection{What cepstrum analysis is}
 
@@ -771,7 +774,8 @@ The terminology is deliberately unusual: quefrency has units of seconds, but it 
     Spectral spacing $\Delta f$ &  Repeated separation between harmonic lines, sidebands or other regularly spaced spectral components. \\
     \rowcolor[gray]{0.8}Quefrency & Reciprocal of spectral spacing: $q = 1/\Delta f$, in seconds.\\
     Real cepstrum & Inverse transform of the log magnitude spectrum. \\
-    \rowcolor[gray]{0.8}Cepstrogram & Successive cepstra displayed versus observation time.
+    \rowcolor[gray]{0.8}Cepstrogram & Successive cepstra displayed versus observation time. \\
+    \bottomrule
 \end{tabularx}
 
 \subsubsection{Why it matters for marine acoustics}
@@ -835,6 +839,7 @@ The LOFARgram remains the primary view of acoustic frequency versus observation 
     Carrier with symmetric $\pm f_m$ sidebands & Is there a feature near $\tau = 1/f_m$? & Supports repeated spacing associated with modulation rate $f_m$. \\
     \rowcolor[gray]{0.8}Several weak but evenly spaced lines & Does a stable cepstral ridge persist? & Can strengthen evidence that the spacing is real rather than random.\\
     Line spacing changes with time & Does the cepstral ridge move in $\tau$? & Reciprocal spacing is changing, potentially consistent with changing periodic source rate. \\
+    \bottomrule
 \end{tabularx}
 
 \subsubsection{How to interpret a cepstrogram}
@@ -853,13 +858,72 @@ The LOFARgram remains the primary view of acoustic frequency versus observation 
 	\caption{MACS-style cepstrogram: quefrency on the horizontal axis and observation on the vertical axis.}
 \end{figure}
 
+\subsubsection{Concrete worked example}
 
+Suppose a LOFAR spectrum contains a strong carrier at 30.00 Hz with symmetric sidebands at 28.70 Hz and 31.30 Hz. The sideband spacing is
+\[
+    \Delta f = 30.00 - 28.70 = 31.30 - 30.00 = 1.30 \text{ Hz}
+\]
 
+The corresponding cepstral quefrency is
+\[
+    \tau = \frac{1}{\Delta f} = \frac{1}{1.30} = 0.769 \text{s}
+\]
+
+\begin{advisory}
+    \textbf{Important Note: }MACS uses milliseconds so in the above example 0.769 seconds = $769 \mu s$
+\end{advisory}
+
+A persistent cepstral ridge near $\tau = 0.769$ s therefore supports the existence of regular 1.30 Hz spacing in the spectrum. If independent evidence suggests that 1.30 Hz is a once-per-revolution shaft rate, the equivalent rotational speed would be:
+\[
+    RPM = 60 \cdot f_{sr} = 60 \times 1.30 = 78 \text{ RPM}
+\]
+
+That mechanical assignment is a hypothesis, not a consequence of cepstrum alone. Cepstrum establishes the repeated spacing; LOFAR shows where the acoustic lines occur; DEMON can independently test whether an acoustic band is amplitude-modulated at 1.30 Hz.
+
+As a second example, consider a 5-bladed propeller rotating at 120 RPM:
+
+\begin{gather*}
+    f_{sr} = 120 \div 60 = 2 \text{ Hz} \\[1em]
+    f_{br} = N \cdot f_{sr} = 5 \times 2 = 10 \text{ Hz}
+\end{gather*}
+
+A 2 Hz repeated spectral spacing would correspond to $\tau = 0.5$ s; a 10 Hz repeated spacing would correspond to $\tau = 0.1$ s. Which feature actually appears depends on the physical acoustic mechanism and the spectral structure present in the received data.
+
+\subsubsection{LOFAR, DEMON and cepstrum: a concise comparison}
+
+\begin{tabularx}{\linewidth}{X X X}
+    \toprule
+    \textbf{Method} & \textbf{Domain emphasised} & Core interpretation \\
+    \midrule
+    \rowcolor[gray]{0.8}LOFAR & Acoustic frequency versus observation time & Where are the acoustic tonals, broadband regions, harmonics and sidebands? \\
+    DEMON & Envelope modulation frequency & At what low-frequency rates is acoustic energy amplitude-modulated? \\
+    \rowcolor[gray]{0.8}Cepstrum & Quefrency / spectral periodicity & What regular frequency spacings exist in the spectrum?\\
+    \bottomrule
+\end{tabularx}
+
+\begin{learnpoint}
+    The most convincing interpretation occurs when independent views agree. In the worked example, LOFAR gives $\pm1.30$ Hz sideband spacing, cepstrum gives $\tau \approx 0.769s (769\mu s)$, and a DEMON component near 1.30 Hz would provide additional evidence of envelope modulation at the same periodic rate.
+\end{learnpoint}
+
+\subsubsection{Marine-specific cautions}
+
+\begin{compactitem}
+    \item Do not interpret every cepstral peak as a shaft or blade rate. Regular machinery harmonics, electrical systems, propagation and multipath can also create structure.
+    \item Multipath itself can generate cepstral features. Published underwater ship-noise research has explicitly used cepstrum to extract interference structure caused by direct, sea-surface-reflected and bottom-reflected arrivals.
+    \item Quefrency is not ordinary observation time, despite being measured in seconds.
+    \item A reciprocal conversion $\tau = 1 \div \Delta f$ is only meaningful when $\Delta f$ represents a real repeated spectral spacing.
+    \item Validate candidate periodicities over time and against LOFAR, DEMON, bearing and operational context.
+\end{compactitem}
+
+\subsubsection{Summary}
+
+Cepstrum analysis converts regular spacing in an acoustic spectrum into peaks on a reciprocal quefrency axis. For passive marine acoustics, this can consolidate weak harmonic or sideband families into a clearer periodicity cue. The processing chain is: receive sound → frame/window → FFT → magnitude spectrum → logarithm → inverse transform → real cepstrum → quefrency interpretation. A cepstrogram extends this through time. In the MACS-style display used here, quefrency runs horizontally and observation time vertically downward, so stable periodic spectral spacing appears as a persistent vertical ridge.
 
 \subsection{ACF}
 \textcolor{commentGreen}{*** WIP ***}
 
-\textbf{What it is:} The running autocorrelation function, computed via the Wiener–Khinchin theorem:
+\textbf{What it is:} The running autocorrelation function, computed via the Wiener-Khinchin theorem:
 
 \[
 R_{xx}(\tau) = \mathrm{IFFT}\{ |X(f)|^2\}
