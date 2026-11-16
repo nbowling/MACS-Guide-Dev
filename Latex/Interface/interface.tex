@@ -1,7 +1,7 @@
 \section{Application Interface}
 
 \subsection{Overview}
-The application window, Figure 1, is divided into a tool bar and two main regions: a central analysis area with two panels A and B, and a right sidebar with the database and recordings management tools.
+The application window (Figure 1) is divided into a tool bar and two main regions: a central analysis area with two panels A and B, and a right sidebar with the database and recordings management tools.
 
 \begin{figure}[h]
 	\centering
@@ -15,7 +15,7 @@ The title bar (Figure 2) has options to control the audio source, to start audio
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=450px]{../img/actuals/topbar.pdf}
+    \includegraphics[width=\linewidth]{../img/actuals/topbar.pdf}
 	\caption{The Title Bar}
 \end{figure}
 
@@ -59,7 +59,7 @@ Each panel has a dropdown at the top-left selecting its content type:
 \begin{compactitem}
     \item LOFARgram Frequency-time waterfall (acoustic spectrogram)
     \item DEMON Envelope modulation waterfall (shaft rate detection)
-    \item Cepstrum Quefrency-domain (see Appendix B) view for periodic structure
+    \item Cepstrum Quefrency-domain (see \hyperref[sec:Appendix_B]{Appendix B}) view for periodic structure
     \item ACF Running autocorrelation function
     \item PSD Live Power Spectral Density display (FFT size, sample rate, resolution, etc.)
 \end{compactitem}
@@ -79,7 +79,6 @@ Each panel has a dropdown at the top-left selecting its content type:
 Each display type has a toolbar with controls specific to its content type. These appear above the panel's display area.
 
 \subsubsection{LOFARgram / DEMON toolbar}
-\textcolor{commentGreen}{*** WIP ***}
 
 \textbf{LOFARgram:}
 
@@ -94,7 +93,7 @@ Each display type has a toolbar with controls specific to its content type. Thes
     \item Dyn slider: Coarse adjustment for Dynamic Range.
     \item Normalisation: Adjusts the waterfall display to compensate for the frequency response of the capture device. See Appendix B for more information.
     \item Integrate: Integration across the live frames improves Signal to Noise Ratio (SNR). Best used for loitering or slow moving targets as moving targets will smear rather than sharpen.
-    \item Noise Subtraction: Subtracts a reference noise profile from the waterfall. \textcolor{commentGreen}{*** WIP ***}
+    \item Noise Subtraction: Subtracts a reference noise profile from the waterfall.
 \end{compactitem}
 
 \textbf{DEMON:}
@@ -114,12 +113,12 @@ Each display type has a toolbar with controls specific to its content type. Thes
 \end{compactitem}
 
 \subsubsection{Cepstrum / ACF toolbar}
-\textcolor{commentGreen}{*** WIP ***}
 
-Same controls as above; Fmin / Fmax instead control the quefrency display range in ms.
+Same controls as above; Fmin / Fmax instead control the quefrency display range in ms. See \hyperref[sec:Appendix_B]{Appendix B} for detailed description of the implementation and use of cepstral analysis.
 
 \subsubsection{Power Spectral Density (PSD)}
 \textcolor{commentGreen}{*** WIP ***}
+
 Power Spectral Density (PSD) analysis is a signal-processing technique used to show how the power (or energy) of a signal is distributed across frequency.
 
 In simple terms:
@@ -151,11 +150,11 @@ ZoomFFT is particularly useful for:
     Real-time operation & More demanding & Efficient \\
     Requires frequency translation & No & Yes \\
     \bottomrule
-\end{tabularx}
+\end{tabularx}\par\vspace{0.5em}
 
 Imagine looking at a ship on the horizon. A normal FFT is like viewing the whole sea with your naked eye but a ZoomFFT is like pointing a telescope at just the ship. You do not gain extra information about the rest of the sea, but you see much finer detail where you're looking. For LOFAR analysis, ZoomFFT is often the preferred way to examine a narrow harmonic family (for example around a shaft rate harmonic or blade-pass frequency) without needing an enormous FFT length.
 
-If you are analysing a signal and already have reason to believe that a narrowband component of interest lies near 42 Hz, you could centre a ZoomFFT at 42 Hz to examine that region at finer frequency resolution.
+If you are analysing a signal and already have reason to believe that a narrowband component of interest lies near 42 Hz, you could centre a ZoomFFT at 42 Hz with $F_c$ to examine that region at finer frequency resolution.
 
 \begin{compactitem}
     \item Harmonic splitting,
@@ -167,6 +166,7 @@ If you are analysing a signal and already have reason to believe that a narrowba
 This often produces much cleaner results than performing an enormous FFT over the entire acoustic band. For machinery diagnostics and marine acoustics, ZoomFFT is essentially a software implementation of a narrowband spectrum analyser.
 
 \subsection{Settings Panel}
+\textcolor{commentGreen}{*** WIP ***}
 
 \begin{figure}[ht]
 	\centering
@@ -177,7 +177,7 @@ This often produces much cleaner results than performing an enormous FFT over th
 Clicking the settings button in the title bar opens a panel with the following control subpages:
 
 \begin{compactitem}
-    \item \textbf{General} Allows setting the location of the user recordings folder, defaults to the user's Documents folder.
+    \item \textbf{General} Allows setting the location of the user recordings folder, defaults to the user's Documents folder and configuring dual PC set up. Also for setting up link to MNW and deploying MACS Link.
     \item \textbf{Devices} Sets the sound capture device, the live monitor output device and the recording playback device.
     \item \textbf{Analysis Defaults} Sets FFT / DEMON overlap, panels A/B overlap and integration features (see Figure 5).
     \item \textbf{Presets }Allows user to set up to 5 presets for the analysis parameters (FFT size, overlap, Fmin / Fmax, Floor, Dynamic range, DEMON parameters). Presets are saved to the settings file and restored on next launch.
@@ -187,10 +187,10 @@ Clicking the settings button in the title bar opens a panel with the following c
 
 \subsection{Right sidebar - Contact Recording and Management}
 
-The right sidebar has two main functions. Capturing and managing contact's sound profiles and matching an unknown sound profile with previously captured ones. It is also used to set up a background sound file which can be used for noise subtraction. Because the use of the contact database and the recording feature is an important part of MACS it has its own section (Section 4).
+The right sidebar has two main functions. Capturing and managing contact's sound profiles and matching an unknown sound profile with previously captured ones. It is also used to set up a background sound file which can be used for noise subtraction. Because the use of the contact database and the recording feature is an important part of MACS it has its own section ((see \hyperref[sec:Database]{Section 4})).
 
-The right sidebar has a third function, the live monitor. This is a simple audio output of the current capture device. It is useful for checking that the capture device is working and for listening to the sound being captured. The live monitor can be muted or set to a different output device than the capture device.
-\pagebreak
+The right sidebar has a third function, the \textbf{live monitor}. This is a simple audio output of the current capture device. It is useful for checking that the capture device is working and for listening to the sound being captured. The live monitor can be muted or set to a different output device than the capture device.
+
 \subsection{Noise Subtraction}
 
 In a noisy environment it is often difficult to distinguish potential target tonals from the background. This is often the case in shallow waters. MACS Noise Subtraction allows the user to diminish the effect of this environmental noise. This is achieved by utilizing a pre-recorded sound file of the local environment and then mathematically subtracting it from the live sound. Obviously, this requires that you make a recording of the environment which only has ambient background noise. The mathematical process used is described in detail in Appendix B.
@@ -199,16 +199,16 @@ The following steps the user through the process
 
 \begin{compactenum}
     \item Make a recording of the ambient environmental noise and store that for later use. The file must be at least \textbf{15 seconds long} (enforced by validation). Short files produce unstable spectral averages.
-    \item When the time comes to use the file select the WAV file that contains \textbf{only ambient/background noise} --- no contact of interest.
+    \item When using the file, select the WAV containing \textbf{ambient/background noise only} --- no contact of interest.
     \item Check the \textbf{\enquote{Use as noise reference}} checkbox next to that recording. Only one reference can be active at a time (exclusive selection --- checking one unchecks any previous reference).
     \item Click \textbf{\enquote{Noise sub}} checkbox on the LOFAR panel toolbar to compute and store the reference spectrum.
 \end{compactenum}
 
 MACS then attempts to reduce the effect of environment noise which you should observe as the time window progresses.
 
-\begin{advisory}
+\begin{learnpoint}
     \textbf{Note: }The result of noise subtraction can vary due to many confounding factors however it is worth trying if the environment you are operating is particularly noisy. Also noise subtraction will not be effective against some natural sound which have an unpredictable pattern, e.g. whale sounds. More stable natural frequencies such as shrimp may be reduced. That magmatic anomaly will still stand out though. Also noise subtraction may have the unintended effect of hiding the very tonals you are looking for.
-\end{advisory}
+\end{learnpoint}
 
 \subsection{The Cursor System}
 
@@ -221,6 +221,10 @@ The cursor system allows the user to mark individual tonals, identify harmonics 
 \end{compactitem}
 
 \subsection{Settings Persistence}
+
+\begin{advisory}
+    This subsection is under review as some file locations may have or will change.
+\end{advisory}
 
 In Windows parameters are saved automatically to \path{C:\Users\%user%\AppData\Roaming\MACS\settings.json}. On Linux and macOS the settings file is located in \path{~/.config/MACS/settings.json}.
 

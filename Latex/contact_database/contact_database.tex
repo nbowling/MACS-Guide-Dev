@@ -1,4 +1,5 @@
 \section{Contact Database and User Recordings}
+\label{sec:Database}
 \subsection{Overview}
 The contact database stores known acoustic signatures allowing you to build a library of known contacts, and to compare current contacts with those in the database. The database is stored in a single file called \path{sonar.db} in the MACS application data folder. The database is created automatically when MACS is first run, and is empty until you add your own contacts. Further details about the fields and structure of the database are discussed in Appendix C. MACS also allows you to record contacts and store them in the database. The recordings are stored in a separate folder, which is set in the \textbf{Settings} panel.
 
@@ -13,7 +14,7 @@ If you wish you can install a pre-populated database of known contacts. At the t
     \item Download the \href{https://github.com/Mahzel/MACS}{MNW Defaults} database file from the MACS website.
     \item \verb|MNW_Defaults.db| will download to users Download folder
     \item Open MACS
-    \item In the right panel select Import from the Contacts subpanel
+    \item In the right panel select Import from the Contacts sub-panel
     \item Follow on screen direction to install the prepopulated database
 \end{compactenum}
 
@@ -37,7 +38,9 @@ The database and recordings management panels are on the right side of the appli
 
 The recordings panel shows a list of all recordings in the recordings folder, and allows you to add, rename and delete recordings.
 
-To add a recording to the database first make sure that the in-game sound is being captured by MACS. Then click the \enquote{\textbf{REC}} button on the applications Top Tool Bar. You should capture a recording of sufficient length to ensure that you have captured a full range of sounds. On playback the recording can be looped so that it appears continuous when you are performing an analysis. The panel allows an adjustment of playback speed which is very useful when you are trying to count regular sounds like propeller blades. It also allows you to apply a bandpass filter to the playback, which is useful for listening to specific frequency ranges.
+\textbf{Adding a user recording to MACS}
+
+To add a recording to the database first make sure that the in-game sound is being captured by MACS. Then click the \enquote{\textbf{REC}} button on the applications top tool bar. You should capture a recording of sufficient length to ensure that you have captured a full range of sounds. On playback the recording can be looped so that it appears continuous when you are performing an analysis. The panel allows an adjustment of playback speed which is very useful when you are trying to count regular sounds like propeller blades. It also allows you to apply a bandpass filter to the playback, which is useful for listening to specific frequency ranges.
 
 \begin{compactitem}
     \item To rename a recording, double click the name and enter a new name.
@@ -126,7 +129,7 @@ This gives shaft turns per knot of vessel speed, which is a vessel-class charact
 
 The \enquote{\textbf{Measurements (n measurements)}}, \enquote{\textbf{Propulsion}} and \enquote{\textbf{Tonal library}} give access to visual representations of the contacts measurements.
 
-To complete the process scroll to the bottom of the measurements panel and click the \enquote{\textbf{"+ Save this measurement"}} button before saving and closing the panel.
+To complete the process scroll to the bottom of the measurements panel and click the \enquote{\textbf{+ Save this measurement}} button before saving and closing the panel.
 
 To add a measurement to an existing contact, navigate to the measurements panel (page 18) and select the \enquote{\textbf{+ Add measurement}} tab. Enter the details and then click the \enquote{\textbf{+ Save this measurement}} button before saving and closing.
 
@@ -134,7 +137,7 @@ To add a measurement to an existing contact, navigate to the measurements panel 
 \textcolor{commentGreen}{*** WIP ***}
 
 \subsubsection{Overlays}
-\textcolor{commentGreen}{*** WIP May Not Be Needed ***}
+\textcolor{commentGreen}{*** WIP ***}
 
 Overlays let you annotate the LOFARgram with frequency markers that are saved to the contact database.
 
