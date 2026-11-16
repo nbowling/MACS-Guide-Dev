@@ -20,9 +20,9 @@ Although it is tempting to dive in to the powerful tools available in MACS you s
 
 A LOFARgram is a visual representation of the LOFAR analysis, it is generally not something an inexperienced user can interpret just by looking at it. Sonar analysts are not simply spotting lines, they are using their knowledge of how machinery generates frequencies, how they relate mathematically to one another and to specific machinery. When you are trying to understand what you are hearing think of yourself as a detective. Observe patterns, form hypotheses, test them mathematically and look for evidence that supports or disproves them.
 
-\begin{faintquote}
+\begin{learnpoint}
     As with any good hypothesis the best is usually the one that explains the greatest number of outcomes with the fewest assumptions (Occam).
-\end{faintquote}
+\end{learnpoint}
 
 The LOFARgram is your primary tool. The display is a waterfall of the sound spectrum, with brightness indicating signal strength. In MACS, time flows from bottom to top and frequency runs left to right on the horizontal (\textit{x}) axis; often called the frequency domain.
 
@@ -62,7 +62,7 @@ First though we need to understand a couple of important terms.
 
 \subsection{What are Harmonics?}
 
-Harmonics occur because real machinery does not produce perfectly smooth vibrations. A perfect rotating shaft would generate a pure tone at one frequency (sinusoidal) but real machinery isn't perfect it produces pulses, impacts, and uneven forces (Figure 13). Diesel engines don't apply torque smoothly, each combustion event is a pulse. A 15 Hz engine-related frequency might produce harmonics at 15, 30, 45, 60 and 75 Hz. Harmonics are always a fixed distance apart and always an integer multiplication of the fundamental, in this case 15 Hz multiplied by 2, 3, 4 etc. SONAR analysts love harmonics because whilst a single line on a LOFARgram is weak evidence, a harmonic family is powerful evidence. Sometimes the fundamental line may not be visible but can be inferred by back-counting the harmonics. MACS provides tools to do this automatically and to confirm the periodicity of suspected harmonics. The sources of the variation could be one or more of:
+Harmonics occur because real machinery does not produce perfectly smooth vibrations. A perfect rotating shaft would generate a pure tone at one frequency (sinusoidal) but real machinery isn't perfect it produces pulses, impacts, and uneven forces (Figure 13) or periodic non-linear excitation. Diesel engines don't apply torque smoothly, each combustion event is a pulse. A 15 Hz engine-related frequency might produce harmonics at 15, 30, 45, 60 and 75 Hz. Harmonics are always a fixed distance apart and always an integer multiplication of the fundamental, in this case 15 Hz multiplied by 2, 3, 4 etc. SONAR analysts love harmonics because whilst a single line on a LOFARgram is weak evidence, a harmonic family is powerful evidence. Sometimes the fundamental line may not be visible but can be inferred by back-counting the harmonics. MACS provides tools to do this automatically and to confirm the periodicity of suspected harmonics. The sources of the variation could be one or more of:
 
 \begin{compactitem} 
     \item Uneven forces
@@ -73,9 +73,9 @@ Harmonics occur because real machinery does not produce perfectly smooth vibrati
     \item Blade loading variations
 \end{compactitem}
 
-\begin{faintquote}
+\begin{learnpoint}
     \textbf{Why is this important}: because in our diesel engine the harmonics point back to the fundamental value (15 Hz). Even if the fundamental is weak, the harmonics may reveal it.
-\end{faintquote}
+\end{learnpoint}
 
 
 \begin{figure}[ht]
@@ -86,9 +86,9 @@ Harmonics occur because real machinery does not produce perfectly smooth vibrati
 
 \subsection{What are Sidebands?}
 
-In radio, a carrier frequency is modified by amplitude (AM) or frequency (FM), the carrier doesn't disappear, instead, additional frequencies appear on either side of it. The same occurs with machinery. An AM sideband, caused by a damaged bearing clicking once per revolution, creates a periodic rise and fall in the amplitude of the high-frequency machinery noise. AM produces exactly one pair of symmetrical sidebands $(f_c + f_m \mathrm{ \ and\ } f_c - f_m)$. In FM modulation the frequency is shifted up and down. A rotating propeller shaft might vibrate causing the carrier frequency to speed up or slow down. FM produces an infinite series of sidebands (Figure 14 Page 24) spaced at intervals of $f_m \quad (f_c \pm f_m, f_c \pm 2f_m, f_c \pm 3f_m ...)$. Suppose a gearbox produces a strong tone at 150 Hz and a propeller shaft rotates at 2.5 Hz. If the shaft causes the gearbox load to increase and decrease once per revolution, the 150 Hz gear tone is being modulated at 2.5 Hz. Instead of 150 Hz you get 145, 147.5, 150, 152.5 and 155 Hz.
+In radio, a carrier frequency is modified by amplitude (AM) or frequency (FM), the carrier doesn't disappear, instead, additional symmetric frequencies appear on either side of it. The sideband spacing is equal to the modulation frequency. The same occurs with machinery. An AM sideband, caused by a damaged bearing clicking once per revolution, creates a periodic rise and fall in the amplitude of the high-frequency machinery noise. AM produces exactly one pair of symmetrical sidebands $(f_c + f_m \mathrm{ \ and\ } f_c - f_m)$. In FM modulation the frequency is shifted up and down. A rotating propeller shaft might vibrate causing the carrier frequency to speed up or slow down. FM produces an infinite series of sidebands (Figure 14) spaced at intervals of $f_m \quad (f_c \pm f_m, f_c \pm 2f_m, f_c \pm 3f_m ...)$. Suppose a gearbox produces a strong tone at 150 Hz and a propeller shaft rotates at 2.5 Hz. If the shaft causes the gearbox load to increase and decrease once per revolution, the 150 Hz gear tone is being modulated at 2.5 Hz. Instead of 150 Hz you get 145, 147.5, 150, 152.5 and 155 Hz.
 
-In reality, targets rarely exhibit pure AM or pure FM. A propeller blade passing close to a ship's hull undergoes dynamic pressure changes simultaneously altering the amplitude of the acoustic wave (AM) and slightly shifting the phase/frequency (FM). Sonar analysts use specialized tools like DEMON processing to isolate these combined sidebands and identify the specific machinery signatures of a vessel.
+In reality, targets rarely exhibit pure AM or pure FM. A propeller blade passing close to a ship's hull undergoes dynamic pressure changes simultaneously altering the amplitude of the acoustic wave (AM) and slightly shifting the phase/frequency (FM). Sonar analysts use specialized tools like DEMON processing to isolate these combined sidebands and indicate the periodic modulation which can help confirm the specific machinery signatures of a vessel.
 
 \textbf{Sideband Recognition Rule:} when you spot a strong tonal:
 
@@ -107,9 +107,9 @@ In reality, targets rarely exhibit pure AM or pure FM. A propeller blade passing
 	\caption{Sidebands caused by modulation}
 \end{figure}
 
-\begin{faintquote}
+\begin{learnpoint}
     The sideband spacing is often the real clue frequently telling you more about the machinery than the large central line itself.
-\end{faintquote}
+\end{learnpoint}
 
 \subsection{LOFARgrams - what to look for}
 
@@ -121,6 +121,10 @@ In reality, targets rarely exhibit pure AM or pure FM. A propeller blade passing
     \item \textbf{Broadband noise level} A vessel moving fast will show a raised broadband floor (cavitation); the entire display is brighter. A slow or quiet vessel may show almost no broadband increase, with only discrete tonals against a dark background.
     \item \textbf{Frequency drift} A tonal that slowly shifts upward or downward in frequency is Doppler-shifted, meaning the contact's radial velocity (range rate) is changing. It is accelerating, decelerating, or turning. A line that stays at a fixed frequency means the radial velocity is constant, but this says nothing about absolute range; the contact could be closing, opening, or crossing at a steady speed.
 \end{compactitem}
+
+\begin{learnpoint}
+    Stable machinery tonals remain narrow in frequency whereas flow noise broadens. A common error is to mistake broadband streaks for tonals.
+\end{learnpoint}
 
 \textbf{Practical tips:}
 \begin{compactitem}
@@ -140,6 +144,10 @@ In reality, targets rarely exhibit pure AM or pure FM. A propeller blade passing
     \item \textbf{Harmonic series:} Both shaft and engine signals produce harmonic combs at fundamental, 2x, 3x. Look for evenly spaced peaks using the harmonic cursor mode to confirm the family.
 \end{compactitem}
 
+\begin{learnpoint}
+    When several harmonic families overlap, the fundamental is not necessarily the lowest visible frequency.
+\end{learnpoint}
+
 \textbf{Practical tips:}
 
 \begin{compactitem}
@@ -149,9 +157,9 @@ In reality, targets rarely exhibit pure AM or pure FM. A propeller blade passing
     \item Once you identify a candidate SR peak, use the database to record it and compute TPK.
 \end{compactitem}
 
-\begin{faintquote}
+\begin{learnpoint}
     The most visible peak on DEMON is quite often that of the BR and not the SR particularly when DEMON is dominated by propeller-generated broadband noise. The physical reason is the broadband noise is often modulated once per blade passage, rather than just once per complete shaft revolution. If all five blades were absolutely identical and each experienced exactly the same conditions, the pattern would repeat perfectly every blade passage. But real propellers aren't perfectly symmetrical acoustically. Perhaps one blade is slightly damaged or fouled or individual blade cavitation differ or blades encounter asymmetric wake conditions. This may introduce a distinctive pattern for that blade which repeats every rotation. This can come to dominate the tonals. Don't assume the biggest peak on DEMON = SR. Very often a prominent line could be blade rate or one of its harmonics so instead, look at the whole line family and spacing.
-\end{faintquote}
+\end{learnpoint}
 
 \textbf{Effect of adjusting the input band}
 
@@ -233,7 +241,7 @@ Explanation
 \textbf{Practical tips:}
 
 \begin{compactitem}
-\item Zoom the quefrency axis (Fmin / Fmax in ms) around expected ranges: 10 - 50 ms for high-frequency machinery, 200 - 1000 ms for slow shaft rates.
+\item Zoom the quefrency axis ($F_{min}$ / $F_{max}$ in ms) around expected ranges: 10 - 50 ms for high-frequency machinery, 200 - 1000 ms for slow shaft rates.
 \item The cepstrum is insensitive to the absolute level of the signal so normalisation usually makes it clearer.
 \end{compactitem}
 
@@ -265,7 +273,7 @@ An experienced sonar tech may identify the plant type from the sound they are he
     \item Electrical
 \end{compactitem}
 
-\textbf{Diesel engines} produce energy through discrete combustion events; we would expect to see in the LOFARgram
+\textbf{Diesel engines} produce energy through discrete combustion events and engine rotational frequencies; we would expect to see in the LOFARgram
 
 \begin{compactitem}
     \item Strong engine firing frequencies
@@ -294,7 +302,7 @@ On a LOFARgram from a vessel with an electric propulsion motor, you should see b
 
 \subsection{Electrical Mains}
 
-In addition to motor related tonals any vessel that has an electrical supply will have tonals related to that. Depending on the country of origin the mains frequency will be either 50 Hz or 60 Hz with their fundamentals at their respective frequency. There may be harmonics at 100, 150, 200 Hz ... (50 Hz system) or 120, 180, 240 Hz ... (60 Hz system). These appear because generators, transformers, converters, and motors produce magnetic and mechanical forces at the supply frequency and its harmonics. These frequencies are important for classification because they are fixed, they do not shift due to speed or course changes.
+In addition to motor related tonals any vessel that has an electrical supply will have tonals related to that. Depending on the country of origin the mains frequency will be either 50 Hz or 60 Hz with their fundamentals at their respective frequency. There may be harmonics at 100, 150, 200 Hz ... (50 Hz system) or 120, 180, 240 Hz ... (60 Hz system). These harmonics are often stronger than the fundamental 50 / 60 Hz tonal. They appear because generators, transformers, converters, and motors produce magnetic and mechanical forces at the supply frequency and its harmonics. These frequencies are important for classification because they are fixed, they do not shift due to speed or course changes.
 
 For naval ships and submarines, there is no perfect one-to-one mapping between a country's shore electrical grid frequency and its shipboard electrical frequency. However, 60 Hz is the dominant standard in modern Western naval fleets, particularly among NATO navies. NATO's naval electrical standard (ANEP-100) is based on 60 Hz shipboard power systems.
 
@@ -322,7 +330,6 @@ Countries whose naval vessels are more commonly associated with 50 Hz shipboard 
 
 A useful distinction is that while civilian ships can be either 50 Hz or 60 Hz, 60 Hz has become very common for naval vessels because it reduces the size and weight of motors, transformers, and generators, an important advantage in warships and submarines Modern submarines often have extensive power-electronics conversion systems, so the onboard distribution frequency may differ from what individual equipment ultimately uses. However the above information is all useful information for classifying vessels.
 
-\pagebreak
 \subsection{Ship Propeller and Shaft Rates}
 
 \textbf{Reminder:} Numbers used do not reflect a real example.
@@ -337,13 +344,19 @@ A SR of 2.5 Hz means the propeller shaft is turning 2.5 times per second or 2.5 
     Be aware that the description of the SR comb is for an ideal case. Often the comb is difficult to spot both in MNW and with MACS. This is when you would use the MACS' harmonic ruler to test different ideas.
 \end{faintquote}
 
-Now we have to make some educated guesses to walk forward. We initially hypothesise that the vessel has a 4 bladed propeller. The blade rate (BR) is the number of times a propeller blade passes a fixed point in one second. It is calculated by multiplying the shaft rate by the number of blades. In this case, 2.5 Hz * 4 blades = 10 Hz. Now look for a tonal at 10 Hz and its harmonics at 20, 30, 40 Hz etc. If you see these lines, it supports your hypothesis of a blade count (BC) of 4. The BR will most often fall on a SR harmonic because of the mathematical relationship so you may see reinforced (brighter) lines in the harmonic structure. This is not always the case as modulation can shift lines.
+Now we have to make some educated guesses to walk forward. We initially hypothesise that the vessel has a 4 bladed propeller (B). The blade rate (BR) is the number of times a propeller blade passes a fixed point in one second. It is calculated by multiplying the shaft rate by the number of blades.
+
+\[
+    BR = B \times SR
+\]
+
+In this case, 2.5 Hz * 4 blades = 10 Hz. Now look for a tonal at 10 Hz and its harmonics at 20, 30, 40 Hz etc. If you see these lines, it supports your hypothesis of a blade count (BC) of 4. The BR will most often fall on a SR harmonic because of the mathematical relationship so you may see reinforced (brighter) lines in the harmonic structure. This is not always the case as modulation can shift lines.
 
 Indeed we do have harmonics at those positions so our confidence in our hypothesis is boosted. If we had not seen the 10 Hz line, we would have to consider other possibilities such as a 3-bladed propeller (7.5 Hz) or a 5-bladed propeller (12.5 Hz). The BR / SR = BC is 4, more evidence for our hypothesis. Counting the shaft fundamental and the lines between it and its harmonic line is another way of getting the BC although this is often difficult to do.
 
-\begin{faintquote}
+\begin{learnpoint}
     As with all hypotheses, confirmation is a trap, you must instead try to disprove your hypothesis. The logic behind this is that you can prove something many times, but you only need to disprove it once.
-\end{faintquote}
+\end{learnpoint}
 
 You can also look for sidebands around the shaft rate and blade rate. The propeller creates / modulates broadband noise at BR. If the strength of that BR modulation itself varies periodically, say wake variation or propeller condition, you can get sidebands around BR. They can provide additional information about the vessel's speed and propeller condition.
 
@@ -355,7 +368,7 @@ So, we have established with a high probability the following:
     \item Blade Rate (BR) = 10 Hz = 600
 \end{compactitem}
 
-\subsection{Key Engine Measurements the Engine Firing Rate (EFR), Cylinder Firing Rate (CFR) and Gear Mesh Frequency (GMF)}
+\subsection{Key Engine Measurements}
 
 \textbf{Reminder:} Numbers used do not reflect a real example.
 
@@ -532,9 +545,9 @@ LOFAR analysis is not looking at pre-prepared LOFARgrams and spotting lines. It 
 \end{compactenum}
 but the key is diligence, persistence and the ability to hypothesise without falling into the trap of confirmation bias. Objectivity is paramount. The skill is not in spotting a line at 2.5 Hz.
 
-\begin{faintquote}
+\begin{learnpoint}
     The skill is noticing that \textbf{2.5 Hz explains dozens of other lines}, sidebands, and harmonics simultaneously. When that happens, your confidence that you've found the correct values becomes very high.
-\end{faintquote}
+\end{learnpoint}
 
 \begin{figure}[ht]
 	\centering
@@ -585,6 +598,8 @@ Below is a recommended sequence for classifying an unknown contact. It applies e
 \end{compactenum}
 
 \setcounter{myenum}{\value{enumi}}
+
+\textbf{Sanity check: }Cross-check all independent measurements for consistency. For example does $BR \approx B \times SR$. Does $EFR \approx SR \times GMF$?
 
 \subsubsection{Step 5 Record in database}
 \begin{compactenum}

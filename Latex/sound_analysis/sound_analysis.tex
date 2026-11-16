@@ -18,13 +18,13 @@ The process of capturing, analysing, and final classification of a target is sho
 
 When MACS is used in conjunction with MNW as designed, the sound has undergone some processing in game so it can be argued that pre-processing is shared between MNW and MACS in this case.
 
-\begin{faintquote}
+\begin{learnpoint}
     Sound analysis is the process of examining acoustic signals to extract useful information about their source, characteristics, and behaviour. Sound signals are often complex, containing multiple frequency components, background noise, and transient events. To understand these signals effectively, a range of signal processing techniques is used.
-\end{faintquote}
+\end{learnpoint}
 
 \subsection{Broadband and Narrowband}
 
-Broadband and narrowband analysis are complementary ways of processing the acoustic energy received by a submarine's sensors. A submarine hunting a target will typically use both methods because each provides different information. In MNW, your principal receivers of sound energy are the bow array (LAB), the flank arrays (WAA), and the two towed arrays (TA), TB34 and TB29A. Broadband analysis examines sound energy across a wide range of frequencies. It focuses on overall acoustic energy rather than specific discrete tones. Broadband is where you will often first see a contact, although this is not always the case. Narrowband analysis, on the other hand, uses finer frequency resolution to reveal detailed spectral features such as harmonics and tonal components produced by machinery, propeller blade rates, or engine harmonics. It does this by applying a Fourier Transform (FT) transforming the sound from a time based domain to a frequency domain (\hyperref[sec:Appendix_B]{Appendix B}). These frequencies are displayed as discrete tonal lines which can often be an identifying fingerprint for the contact.
+Broadband and narrowband analysis are complementary ways of processing the acoustic energy received by a submarine's sensors. A submarine hunting a target will typically use both methods because each provides different information. In MNW, your principal receivers of sound energy are the bow array (LAB), the flank arrays (WAA), and the two towed arrays (TA), TB34 and TB29A. Broadband analysis examines sound energy across a wide range of frequencies. It focuses on overall acoustic energy rather than specific discrete tones. Broadband is where you will often first see a contact, although this is not always the case. Narrowband analysis, on the other hand, uses longer analysis windows which produce finer FFT bins to reveal detailed spectral features such as harmonics and tonal components produced by machinery, propeller blade rates, or engine harmonics. It does this by applying a Fourier Transform (FT) transforming the sound from a time based domain to a frequency domain (\hyperref[sec:Appendix_B]{Appendix B}). These frequencies are displayed as discrete tonal lines which can often be an identifying fingerprint for the contact.
 
 \textbf{Broadband Strengths}
 \begin{compactitem}
@@ -45,43 +45,43 @@ Broadband and narrowband analysis are complementary ways of processing the acous
 \begin{compactitem}
     \item \textbf{Excellent classification and identification:} Tonal patterns can reveal target type and sometimes specific class.
     \item \textbf{Supports tracking:} Stable tones allow accurate bearing tracking over time.
-    \item \textbf{Useful against quiet contacts:} Even very quiet submarines may produce detectable tonal signatures.
+    \item \textbf{Useful against quiet contacts:} Even quiet submarines may exhibit persistent narrowband tonals under some operating conditions.
     \item \textbf{Provides target motion clues:} Changes in tonal frequencies can support Doppler analysis and target speed estimation.
 \end{compactitem}
 
 \textbf{Narrowband Weaknesses}
 \begin{compactitem}
     \item \textbf{Requires strong, resolvable tonal lines:} If the target is extremely quiet or its tonals are masked, analysis becomes difficult.
-    \item \textbf{More susceptible to frequency instability:} Manoeuvering, environmental effects, and machinery changes can complicate interpretation.
+    \item \textbf{More susceptible to frequency instability:} Manoeuvring, environmental effects, and machinery changes can complicate interpretation.
     \item \textbf{Generally less effective as an initial search tool:} It often requires an already-established contact bearing.
 \end{compactitem}
 
 Imagine a submarine is listening for another submarine transiting at moderate speed. The target's propeller, machinery, flow noise, and other sources create a broad spectrum of noise. Broadband processing may detect a rise in acoustic energy from a particular bearing, suggesting a contact, the operator might see a contact emerge from the background noise even before any specific identifying features are apparent. After broadband analysis detects a contact, operators switch attention to narrowband displays. They may observe a set of stable tones at particular frequencies. Those frequencies can be compared to intelligence databases, acoustic signatures, notebooks and experience.
 
-A weak broadband signal does not always mean weak spectral features. From a broadband point of view a very faint vessel at 50Hz broadband is merged with contributions from a much wider frequency band. This means that BB is dealing with background noise from all of that frequency range. So the signal to noise ration (SNR) is very low or indiscernible on the broadband screen. Narrow band on the other hand looks at how much energy is available at each frequency band (Fourier Transform) and bins them in bands. So in the frequency domain the 50hz signal will stand out and this is reinforced by persistence of the signal over time.
+A weak broadband signal does not always mean weak spectral features. From a broadband point of view a very faint vessel at 50Hz broadband is merged with contributions from a much wider frequency band. This means that BB is dealing with background noise from all of that frequency range. So the signal to noise ration (SNR) is very low or indiscernible on the broadband screen. Narrow band on the other hand looks at how much energy is available at each frequency band (Fourier Transform) estimates energy within discrete frequency bins. So in the frequency domain the 50hz signal will stand out and this is reinforced by persistence of the signal over time.
 
 Where broadband may give an early detection is for a good SNR and when enough energy is being pumped into the water. In this case broadband is very effective. A source with strong broadband noise might appear BB-first. A comparatively quiet source with prominent persistent machinery/propulsion tonals can potentially become apparent in NB/LOFAR without an obvious BB signature.
 
-\begin{faintquote}
-    In modern anti-submarine warfare, classifiers do not choose one over the other; they use them together. Narrowband data is used to classify the specific ship type via its engine noise, while broadband data (both passive flow noise and active echoes) is used to map the target's size, speed, and exact spatial position.
-\end{faintquote}
+\begin{learnpoint}
+    In modern anti-submarine warfare, classifiers do not choose one over the other; they use them together. Narrowband data is used to classify the specific ship type via its engine noise, while broadband data (both passive flow noise and active echoes) contributes to estimating target characteristics including apparent source strength.
+\end{learnpoint}
 
 \subsection{Normalization}
 
-Before advanced analysis is performed, signals are often subjected to normalisation. Normalisation is a statistical technique that scales the signal amplitude to a consistent range. A well-known and commonly used method is the Z-score however there are many other strategies available. The effect is to reduce the influence of recording-level variations, allowing meaningful comparisons between different measurements. This preprocessing step improves the robustness of subsequent analysis techniques and ensures that results reflect the signal characteristics rather than differences in recording conditions. The approach used by MACS to normalise data is explained in \hyperref[sec:Appendix_B]{Appendix B}.
+Before advanced analysis is performed, signals are often subjected to normalisation. Normalisation is a preprocessing technique that rescales or equalises signal amplitudes. A well-known and commonly used method is the Z-score however there are many other strategies available. The effect is to reduce the influence of recording-level variations, allowing meaningful comparisons between different measurements. This preprocessing step improves the robustness of subsequent analysis techniques and ensures that results reflect the signal characteristics rather than differences in recording conditions. The approach used by MACS to normalise data is explained in \hyperref[sec:Appendix_B]{Appendix B}.
 
 \subsection{LOFAR (Low Frequency Analysis and Recording)}
 
-In underwater acoustics and sonar applications, LOFAR is a fundamental technique. It is a passive narrowband sonar signal-processing technique which displays the spectral content of low-frequency signals over time. These tonal signatures can act as acoustic fingerprints, helping to detect, classify, and sometimes identify ships and submarines from the sounds they radiate into the water. Narrowband is used because:
+In underwater acoustics and sonar applications, LOFAR is a fundamental technique. It is a passive narrowband sonar signal-processing technique which displays the spectral content of low-frequency signals over time. Each vertical slice of the LOFARgram is an FFT of a short analysis window. Consecutive FFTs are displayed over time to form the waterfall. These tonal signatures can act as acoustic fingerprints, helping to detect, classify, and sometimes identify ships and submarines from the sounds they radiate into the water. Narrowband is used because:
 
 \begin{compactitem}
-    \item \textbf{Extreme Long Range: }Low-frequency narrowband signals can travel very long distances through the ocean without losing energy (\href{https://www.youtube.com/watch?v=sP85wUcg6_A}{YouTube}), allowing for early detection of distant threats.
-    \item \textbf{High Signal-to-Noise Ratio: }By filtering out background ocean noise and focusing strictly on ultra-thin frequency bands, LOFAR can extract faint mechanical signals that are otherwise invisible to the naked ear or broadband sensors
+    \item \textbf{Extreme Long Range: }Low-frequency acoustic energy generally experiences lower propagation loss than higher-frequency components, allowing detection over much greater distances (\href{https://www.youtube.com/watch?v=sP85wUcg6_A}{YouTube}), allowing for early detection of distant threats.
+    \item \textbf{High Signal-to-Noise Ratio: }By filtering out background ocean noise and focusing strictly on ultra-thin frequency bands, successive spectra are averaged to improve SNR at the expense of temporal resolution. LOFAR can then extract faint mechanical signals that are otherwise invisible to the naked ear or broadband sensors
 \end{compactitem}
 
-\begin{faintquote}
+\begin{learnpoint}
     Below roughly 100 Hz, ocean conditions can allow very efficient propagation with relatively low energy loss, which is why low-frequency sound may travel enormous distances. But the low-frequency ocean is also a very noisy place, with shipping, machinery, environmental noise and other sources contributing substantial energy. That is exactly why "travels further" does not necessarily mean "easier to detect". Sonar performance ultimately depends on received SNR, not merely propagation distance.
-\end{faintquote}
+\end{learnpoint}
 
 Sound received by the SONAR arrays is transformed into a "frequency domain" which shows how much energy exists for every single frequency. This is typically done using a FFT (Fast Fourier Transform). FFT is a mathematical algorithm which allows the huge amount of information contained in the sound data to be analysed quickly. The result is displayed as a LOFARgram (a time-frequency spectrogram), where persistent frequency components appear as lines. This is useful because ships and submarines generate characteristic underwater noise from:
 
@@ -93,13 +93,13 @@ Sound received by the SONAR arrays is transformed into a "frequency domain" whic
 
 These sources produce distinctive frequency components. By examining the pattern of tonal lines in a LOFAR display, operators can distinguish different vessel types and, specific classes of ships and, sometimes, individual ships. To summarize, NB analysis describes the type of spectral analysis, i.e. high frequency resolution separating spectral components that are very close together to reveal distinct tonals. LOFAR is an application and presentation of a narrowband analysis typically focussing on the lower-frequency part of the spectrum as this is where many diagnostic tonals are, e.g. shaft rate, blade rate etc. So, to be concrete NB refers to spectral resolution / bandwidth and LOFAR describes the signal-processing and visualisation techniques.
 
-\begin{faintquote}
+\begin{learnpoint}
     In summary, LOFAR is a passive sonar technique that converts underwater sounds into a time-frequency display, enabling operators to detect ships and identify them from their unique acoustic signatures. LOFAR is often paired with DEMON analysis.
-\end{faintquote}
+\end{learnpoint}
 
 \subsection{DEMON (Detection of Envelope Modulation on Noise)}
 
-DEMON processing focuses on amplitude modulations (AM) present within broadband noise. In simple terms, it means taking a steady, continuous wave and making it rhythmically louder and quieter over time. For example, the rotation of a ship's propeller produces periodic fluctuations in noise levels at characteristic frequencies, such as:
+DEMON processing focuses on modulation frequencies present within broadband noise. In simple terms, it means taking a steady, continuous wave and making it rhythmically louder and quieter over time. For example, the rotation of a ship's propeller produces periodic fluctuations in noise levels at characteristic frequencies, such as:
 
 \begin{compactitem}
     \item Shaft rotation frequency
@@ -114,9 +114,9 @@ DEMON extracts the amplitude envelope of the received noise and analyses it in t
     \item Widely used in passive sonar target detection and classification systems.
 \end{compactitem}
 
-\begin{faintquote}
+\begin{learnpoint}
    \textbf{LOFAR} emphasizes the ship's frequency spectrum (machinery and tonal components). \textbf{DEMON} is useful for extracting propeller-related modulation and blade-rate information. 
-\end{faintquote}
+\end{learnpoint}
 
 \subsection{Cepstrum and Auto-correlation}
 
@@ -126,7 +126,7 @@ The basic idea behind cepstrum analysis is to detect echoes, repeating patterns,
 
 \textbf{Auto-correlation} is commonly used to detect periodic acoustic signatures produced by ships, submarines, and marine machinery. Many sources generate signals that repeat at regular intervals, such as rotating propellers, diesel engines, pumps, and gear systems. The periodic nature of these sounds produces corresponding peaks in the auto-correlation function. The spacing between peaks indicates the repetition period, from which the rotational speed or blade-passage frequency can be estimated.
 
-In simple terms, auto-correlation measures how similar a signal is to a delayed version of itself. By comparing the signal with progressively shifted copies, it becomes possible to detect hidden periodicities and determine whether certain features repeat over time.
+In simple terms, auto-correlation measures how similar a signal is to a delayed version of itself. By comparing the signal with progressively shifted copies, it becomes possible to detect hidden periodicities and determine whether certain features repeat over time. Cepstrum detects periodicity in the spectrum, ACF detects periodicity in the waveform.
 
 For example, consider a vessel whose propeller completes two revolutions per second. If the acoustic signal generated by the propeller repeats every 0.5 seconds, the auto-correlation function will exhibit peaks separated by approximately 0.5 seconds. The analyst can use these peaks to determine the underlying mechanical characteristics of the vessel and potentially aid in classification and tracking.
 
