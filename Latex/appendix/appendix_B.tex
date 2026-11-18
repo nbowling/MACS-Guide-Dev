@@ -2,7 +2,7 @@
 \label{sec:Appendix_B}
 \subsection{Normalisation}
 
-One of the principal challenges in SONAR processing is that the underwater acoustic environment is highly dynamic. Background noise levels vary due to sea state, vessel traffic, marine life, weather conditions, and the motion of the sonar platform itself. As a result, detection algorithms must distinguish meaningful targets from continually changing acoustic backgrounds. To reduce the impact of this MACS uses a statistical technique called normalization. MACS's normalisation is enabled with a toggle (Section 3) with configurable parameters in the settings panel.
+One of the principal challenges in SONAR processing is that the underwater acoustic environment is highly dynamic. Background noise levels vary due to sea state, vessel traffic, marine life, weather conditions, and the motion of the sonar platform itself. As a result, detection algorithms must distinguish meaningful targets from continually changing acoustic backgrounds. To reduce the impact of this MACS uses a statistical technique called normalization. Normalisation is a general class of preprocessing operations used to compensate for amplitude differences, frequency-response effects, or recording-condition variations. MACS's normalisation is enabled with a toggle (Section 3) with configurable parameters in the settings panel.
 
 \subsubsection{What MACS does}
 
@@ -153,6 +153,10 @@ Suppose another region of the spectrum looks like this:
 \end{tabular}
 
 The standout tone at 530 Hz is only 26 magnitude, which seems tiny compared with the 140 at 50 Hz but the local mean $\approx 21$ and the local standard deviation $\approx 2$ gives $z = \frac{26-21}{2} = 2.5$. This second tone gets a higher z-score than the 50 Hz one so in the final LOFARgram it may actually appear brighter, because it is more unusual relative to its local noise environment.
+
+A waterfall colour display is not a direct representation of acoustic amplitude. It is:
+
+Signal → FFT magnitude/power → scaling → dynamic range mapping → colour
 
 \begin{faintquote}
     That is the key idea behind the statement: "The algorithm used is a sliding-window z-score of the FFT magnitude output before colour mapping." The colours no longer represent absolute acoustic energy. They represent how significant each FFT bin is relative to its local background.
@@ -462,13 +466,13 @@ The Fourier Transform is a cornerstone of modern science and engineering. By con
 
 \subsubsection{What LOFAR analysis is}
 
-LOFAR (Low Frequency Analysis and Recording) is a passive-sonar spectral-analysis technique used to reveal how the low-frequency content of received underwater sound changes with time. In its familiar form, sequential short-time spectra are arranged as a time–frequency display called a LOFARgram. Narrowband tonal lines that may be difficult to distinguish in the raw waveform can then become visually persistent tracks. Each new FFT frame is added as a horizontal line of pixels scrolling bottom to top; the horizontal axis is frequency; colour encodes amplitude in dB. Persistent vertical lines marching across the display indicate tonal components — discrete narrowband signals that stand out from the broadband noise background.
+LOFAR (Low Frequency Analysis and Recording) is a passive-sonar spectral-analysis technique used to reveal how the low-frequency content of received underwater sound changes with time. Most often, sequential short-time spectra are arranged as a time-frequency display called a LOFARgram. Narrowband tonal lines that may be difficult to distinguish in the raw waveform become visually persistent tracks. Each new FFT frame is added as a horizontal line of pixels scrolling bottom to top; the horizontal axis is frequency; colour encodes amplitude in dB.
 
-For marine acoustic analysis, the important point is that LOFAR operates on the received acoustic signal itself. The frequencies displayed are acoustic frequencies. They may arise from rotating or reciprocating machinery, electrical systems, pumps, gears, propeller/shaft phenomena and other periodic sources. Broadband energy from flow, cavitation, sea noise and shipping forms the background against which discrete lines must be detected.
+For marine acoustic analysis, the key point is that LOFAR operates on the received acoustic signal itself. The frequencies displayed are acoustic frequencies. They may arise from rotating or reciprocating machinery, electrical systems, pumps, gears, propeller/shaft or other periodic sources. Broadband energy from flow, cavitation, sea noise and shipping forms the background against which discrete lines must be detected.
 
 \subsubsection{Why LOFAR is useful in the marine environment}
 
-Passive sensors do not need the target to return an active transmitted pulse: they analyse sound already present at the receiver. Research literature uses processed multi-beam LOFAR data for passive underwater-target tracking, and current work continues to treat ship-radiated line-spectrum features and their continuity as important passive-sonar information. The practical value for an analyst is that persistent line structure can be followed over time rather than assessed from a single spectrum.
+Passive sensors do not need the target to return an active transmitted pulse: they analyse sound already present at the receiver.
 
 \textbf{Surface ships: }A surface ship can contribute machinery tonals, propeller/shaft-related components and broadband hydrodynamic or cavitation noise. A LOFARgram helps separate stable or smoothly varying narrowband tracks from the broadband background and makes harmonic or sideband relationships easier to measure.
 
@@ -494,7 +498,7 @@ Passive sensors do not need the target to return an active transmitted pulse: th
  \begin{figure}[ht]
 	\centering
 	\includegraphics[width=400px]{../img/actuals/LOFAR_process.pdf}
-	\caption{LOFAR Process}
+	\caption{LOFAR passive sensor processing for marine vessel detection}
 \end{figure}
 
 \subsubsection{Core processing formulae}
@@ -549,17 +553,17 @@ If a tonal family has fundamental $f_0$, its ideal harmonic positions are
     f_n = n \cdot f_0 \quad n \in  \{1, 2, 3, \dots \}
 \]
 
-If a rotating shaft turns at RPM revolutions per minute, its rotational frequency is
+If a rotating shaft turns at RPM revolutions per minute, its rotational frequency (SR) is
 \[
-    f_s = \frac{RPM}{60}
+    f_{sr} = \frac{RPM}{60}
 \]
 
-A simple N-bladed propeller relationship is
+A simple N-bladed propeller (BR) relationship is
 \[
-    f_{\beta} = N \cdot f_s
+    f_{br} = N \cdot f_s
 \]
 
-where $f_{\beta}$ is blade-passing rate. These mechanical rates may appear directly in acoustic data in some circumstances, or may modulate another acoustic component; the analyst must establish which interpretation fits the observations.
+where $f_{br}$ is blade-passing rate. These mechanical rates may appear directly in acoustic data in some circumstances, or may modulate another acoustic component; the analyst must establish which interpretation fits the observations.
 
 For amplitude modulation of a tonal carrier $f_c $ by a periodic rate $f_m$, first-order sidebands occur at $f_{sideband} = f_c \pm f_m$
 
@@ -599,17 +603,13 @@ If a physically plausible once-per-revolution mechanism is suspected, 1.30 Hz wo
 
 \subsubsection{What DEMON analysis is}
 
-DEMON (Detection of Envelope Modulation ON Noise) extracts the low-frequency modulation imposed on broadband acoustic noise by a vessel's rotating machinery (Figure 32) (primarily propeller shaft and blade-rate harmonics). The result is a second spectrogram whose frequency axis covers 0 - $F_{max}$ Hz, revealing shaft rotation rates and blade rates that are far too low to appear in the LOFARgram. The result is an envelope spectrum: instead of asking which acoustic carrier frequencies contain energy, DEMON asks how rapidly that energy is being modulated.
+DEMON (Detection of Envelope Modulation ON Noise) extracts the low-frequency modulation imposed on broadband acoustic noise by a vessel's rotating machinery (Figure 34), most often propeller shaft and blade-rate harmonics. The result is a second spectrogram whose frequency axis covers 0 - $F_{max}$ Hz, revealing shaft rotation rates and blade rates that are far too low to appear in the LOFARgram. Instead of asking which acoustic carrier frequencies contain energy, DEMON asks how rapidly that energy is being modulated.
 
  \begin{figure}[ht]
 	\centering
 	\includegraphics[width=400px]{../img/actuals/DEMON_modulation.pdf}
 	\caption{Relationship between broadband acoustic energy, low-frequency modulation, the amplitude-modulated waveform and frequency-domain sidebands.}
 \end{figure}
-
-Rotating machinery amplitude-modulates the broadband acoustic noise it generates. For propeller-driven vessels, propeller blades periodically interrupt the cavitation noise; for diesel-engined vessels, piston firing events modulate the radiated noise at crankshaft rate and its harmonics. DEMON demodulates this carrier to make those low frequencies directly visible. It is effective for both propeller shaft / blade-rate detection (surface ships, submarines underway) and diesel engine firing rate detection (diesel-electric submarines at low speed).
-
-A conventional LOFAR spectrum can reveal discrete machinery tonals directly, DEMON is useful when the periodic information is carried as modulation of broadband noise. Propeller-generated broadband energy may therefore look comparatively featureless in an ordinary narrowband spectrum while its envelope contains strong periodic structure.
 
 \begin{tabularx}{\linewidth}{l X}
     \toprule
@@ -622,21 +622,22 @@ A conventional LOFAR spectrum can reveal discrete machinery tonals directly, DEM
     \bottomrule
 \end{tabularx}
 
+\begin{learnpoint}
+    Rotating machinery amplitude-modulates the broadband acoustic noise it generates. For propeller-driven vessels, propeller blades periodically interrupt the cavitation noise; for diesel-engined vessels, piston firing events modulate the radiated noise at crankshaft rate and its harmonics. DEMON demodulates this carrier to make those low frequencies directly visible. It is effective for both propeller shaft / blade-rate detection and diesel engine firing rate detection. A conventional LOFAR spectrum can reveal discrete machinery tonals directly, DEMON is useful when the periodic information is carried as modulation of broadband noise. Propeller-generated broadband energy may therefore look comparatively featureless in an ordinary narrowband spectrum while its envelope contains strong periodic structure.
+\end{learnpoint}
+
 \subsubsection{Modulation: what it means physically}
 
-Modulation occurs when one process causes some property of another signal to vary. In DEMON analysis, the property of greatest interest is amplitude.
+Modulation occurs when one process causes some property of another signal to vary. In DEMON analysis, the property of greatest interest is amplitude. Cavitation produces broadband acoustic noise, but the strength of that noise does not necessarily remain constant. As the propeller rotates, changes in blade loading and the flow of water into the propeller can cause the intensity of the cavitation noise to rise and fall periodically. \textbf{The broadband cavitation noise can therefore be thought of as a carrier, while the slower periodic variation in its amplitude contains information about the rotating machinery.}
 
-Consider a cavitating propeller. Cavitation produces broadband acoustic noise, but the strength of that noise does not necessarily remain constant. As the propeller rotates, changes in blade loading and the flow of water into the propeller can cause the intensity of the cavitation noise to rise and fall periodically.
-
-The broadband cavitation noise can therefore be thought of as a carrier, while the slower periodic variation in its amplitude contains information about the rotating machinery.
 For example, suppose a five-bladed propeller rotates at 120 RPM. Its shaft rate is:
 \[
-    f_sr=\frac{120}{60}=2\text{ Hz}
+    f_{sr}=\frac{120}{60}=2\text{ Hz}
 \]
 
 and its blade rate is.
 \[
-    f_br=5\times2=10\text{ Hz}
+    f_{br}=5\times2=10\text{ Hz}
 \]
 
 If blade passage causes the cavitation noise to become stronger and weaker ten times each second, the broadband noise is amplitude-modulated at 10 Hz, this can be represented as:
@@ -695,7 +696,7 @@ In MACS the horizontal axis is modulation frequency in hertz. Time is the vertic
 
 Assume a surface ship has a 5-bladed propeller turning at 120 RPM and that propeller cavitation supplies a broadband acoustic carrier. The shaft rate is:
 \[
-    f_sr = RPM / 60 = 120 / 60 = 2 Hz
+    f_{sr} = RPM / 60 = 120 / 60 = 2 Hz
 \]
 
 With N = 5 blades, the blade rate is
@@ -719,12 +720,6 @@ A 2 Hz component may also appear when there is once-per-revolution asymmetry, fo
     Irregular isolated peak & Unknown / interference possible & Do not classify from an isolated line. \\
     \bottomrule
 \end{tabularx}
-
-\subsubsection{Submarines versus surface ships}
-
-The physics of modulation is the same for both. The practical balance of sources can differ markedly with operating condition. A surface ship may present strong propeller and cavitation modulation, particularly when loading promotes cavitation. A submerged submarine operating quietly may suppress cavitation and radiated machinery noise, making DEMON components weaker and increasing the value of long integration, array gain and correlation with other passive-sonar evidence. Conversely, a submarine propeller operating under conditions that produce detectable broadband modulation can still yield shaft/blade relationships in DEMON.
-
-DEMON should therefore be treated as one member of a passive-acoustic evidence set rather than a universal ship-identification display. LOFAR tonals, broadband level, bearing behaviour, spectral sidebands, transient events and DEMON modulation families can reinforce one another.
 
 \subsubsection{Common interpretation traps}
 \begin{compactitem}
@@ -750,21 +745,17 @@ DEMON should therefore be treated as one member of a passive-acoustic evidence s
 
 \subsubsection{Summary}
 
-DEMON converts periodic changes in the amplitude of underwater acoustic noise into a low-frequency envelope spectrum. Marine propellers are a particularly important source because shaft rotation, blade passage, wake interaction and cavitation can repeatedly modulate broadband noise.
-
-A useful conceptual chain is therefore:
-
-Rotating mechanism → periodic change in radiated noise amplitude → modulated received waveform → envelope extraction → FFT of envelope → shaft/blade/harmonic candidates
-
-The strongest analysis comes from recognising families of physically consistent frequencies and validating them against independent acoustic and kinematic evidence.
+\begin{learnpoint}
+    DEMON converts periodic changes in the amplitude of underwater acoustic noise into a low-frequency envelope spectrum. Marine propellers are a particularly important source because shaft rotation, blade passage, wake interaction and cavitation can repeatedly modulate broadband noise. The strongest analysis comes from recognising families of physically consistent frequencies and validating them against independent acoustic and kinematic evidence.
+\end{learnpoint}
 
 \subsection{Cepstrum}
 
 \subsubsection{What cepstrum analysis is}
 
-Cepstrum analysis is a second-stage spectral technique designed to reveal periodic structure within a spectrum. Instead of asking only which acoustic frequencies are present, it asks whether peaks, harmonics or sidebands repeat at a regular frequency spacing. A regular spacing $\Delta f$ in hertz produces a cepstral feature at the reciprocal quantity $q = 1 \div \Delta f$, measured in seconds (\textbf{milliseconds in MACS}). This reciprocal spectral coordinate is called quefrency.
+Cepstrum analysis is a second-stage spectral technique designed to reveal periodic structure within a spectrum. Instead of asking only which acoustic frequencies are present, it asks whether peaks, harmonics or sidebands repeat at a regular frequency spacing. A regular spacing $\Delta f$ in hertz produces a cepstral feature at the reciprocal quantity $\tau = 1 \div \Delta f$, measured in seconds (\textbf{milliseconds in MACS}). This reciprocal spectral coordinate is called quefrency.
 
-The terminology is deliberately unusual: quefrency has units of seconds, but it is not the elapsed observation time. It is a time-like lag associated with periodicity in the spectrum. When multiple short-time cepstra are stacked, the result is a cepstrogram. In the MACS-style convention used here, quefrency is the horizontal x-axis and observation time is the vertical y-axis, increasing downwards.
+The terminology is deliberately unusual: quefrency has units of seconds, but it is not the elapsed observation time. It is a time-like lag associated with periodicity in the spectrum. When multiple short-time cepstra are stacked, the result is a cepstrogram. In the MACS-style convention used here, quefrency is the horizontal x-axis and observation time is the vertical y-axis, increasing upwards.
 
 \begin{tabularx}{\linewidth}{l X}
     \toprule
@@ -781,10 +772,6 @@ The terminology is deliberately unusual: quefrency has units of seconds, but it 
 \subsubsection{Why it matters for marine acoustics}
 
 Ship-radiated noise can contain broadband and line-spectrum components. Cepstral processing is useful because repeating spectral spacing can be emphasised even when individual members of the pattern are weak or partially masked. Research has applied cepstrum analysis to underwater ship-radiated noise, including extraction of multipath structure from direct and reflected arrivals, underwater-channel features for target classification, and time-varying cepstral features of moving ships.
-
-\textbf{Surface ships: }For a surface ship, periodic machinery, propulsion-related line structure, harmonics and modulation sidebands can produce regular spectral spacing. A cepstral peak can condense that family of repeated spacings into a clearer reciprocal-period feature. This is useful as corroborating evidence alongside the original spectrum or LOFARgram.
-
-\textbf{Submarines: }For submarines, the same mathematical principle applies. When acoustic lines are weak, a repeated-spacing pattern may remain informative even if individual lines are difficult to distinguish. 
 
 \begin{advisory}
     Cepstrum should nevertheless be treated as supporting evidence rather than unique source identification: other vessels, machinery, propagation and multipath can also produce cepstral structure.
@@ -855,7 +842,7 @@ The LOFARgram remains the primary view of acoustic frequency versus observation 
  \begin{figure}[ht]
 	\centering
 	\includegraphics[width=400px]{../img/actuals/Cepstrum_2.pdf}
-	\caption{MACS-style cepstrogram: quefrency on the horizontal axis and observation on the vertical axis.}
+	\caption{MACS-style cepstrogram: quefrency on the horizontal axis and observation on the vertical axis. (Note: time axis reversed)}
 \end{figure}
 
 \subsubsection{Concrete worked example}
@@ -874,7 +861,7 @@ The corresponding cepstral quefrency is
     \textbf{Important Note: }MACS uses milliseconds so in the above example 0.769 seconds = $769$ms
 \end{advisory}
 
-A persistent cepstral ridge near $\tau = 0.769$ s therefore supports the existence of regular 1.30 Hz spacing in the spectrum. If independent evidence suggests that 1.30 Hz is a once-per-revolution shaft rate, the equivalent rotational speed would be:
+A persistent cepstral line near $\tau = 0.769$ s supports the existence of regular 1.30 Hz spacing in the spectrum. If independent evidence suggests that 1.30 Hz is a once-per-revolution shaft rate, the equivalent rotational speed would be:
 \[
     RPM = 60 \cdot f_{sr} = 60 \times 1.30 = 78 \text{ RPM}
 \]
